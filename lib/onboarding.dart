@@ -1,102 +1,236 @@
-import 'package:concentric_transition/concentric_transition.dart';
 import 'package:flutter/material.dart';
 
-final pages = [
-  const PageData(
-    icon: Icons.food_bank_outlined,
-    title: "Search for your favourite food",
-    bgColor: Color(0xff3b1791),
-    textColor: Colors.white,
-  ),
-  const PageData(
-    icon: Icons.shopping_bag_outlined,
-    title: "Add it to cart",
-    bgColor: Color(0xfffab800),
-    textColor: Color(0xff3b1790),
-  ),
-  const PageData(
-    icon: Icons.delivery_dining,
-    title: "Order and wait",
-    bgColor: Color(0xffffffff),
-    textColor: Color(0xff3b1790),
-  ),
-];
+class OnboardingContents {
+  final String title;
+  final String image;
+  final String desc;
 
-class ConcentricAnimationOnboarding extends StatelessWidget {
-  const ConcentricAnimationOnboarding({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: ConcentricPageView(
-        colors: pages.map((p) => p.bgColor).toList(),
-        radius: screenWidth * 0.1,
-        nextButtonBuilder: (context) => Padding(
-          padding: const EdgeInsets.only(left: 3), // visual center
-          child: Icon(Icons.navigate_next, size: screenWidth * 0.08),
-        ),
-        // enable itemcount to disable infinite scroll
-        itemCount: pages.length,
-        opacityFactor: 2.0,
-        scaleFactor: 2,
-        // verticalPosition: 0.7,
-        // direction: Axis.vertical,
-        // itemCount: pages.length,
-        // physics: NeverScrollableScrollPhysics(),
-        itemBuilder: (index) {
-          final page = pages[index % pages.length];
-          return SafeArea(child: _Page(page: page));
-        },
-      ),
-    );
-  }
-}
-
-class PageData {
-  final String? title;
-  final IconData? icon;
-  final Color bgColor;
-  final Color textColor;
-
-  const PageData({
-    this.title,
-    this.icon,
-    this.bgColor = Colors.white,
-    this.textColor = Colors.black,
+  OnboardingContents({
+    required this.title,
+    required this.image,
+    required this.desc,
   });
 }
 
-class _Page extends StatelessWidget {
-  final PageData page;
+class SizeConfig {
+  static MediaQueryData? _mediaQueryData;
+  static double? screenW;
+  static double? screenH;
+  static double? blockH;
+  static double? blockV;
 
-  const _Page({required this.page});
+  void init(BuildContext context) {
+    _mediaQueryData = MediaQuery.of(context);
+    screenW = _mediaQueryData!.size.width;
+    screenH = _mediaQueryData!.size.height;
+    blockH = screenW! / 100;
+    blockV = screenH! / 100;
+  }
+}
+
+List<OnboardingContents> contents = [
+  OnboardingContents(
+    title: "Choose a branch",
+    image: "assets/images/image1.png",
+    desc: "Hotel De Luna has many branches across Mumbai.",
+  ),
+  OnboardingContents(
+    title: "Book a room",
+    image: "assets/images/image2.png",
+    desc: "Book one of hundreds of types of rooms.",
+  ),
+  OnboardingContents(
+    title: "Enjoy a Luxurious stay",
+    image: "assets/images/image3.png",
+    desc: "Let go, unwind and enjoy with your loved ones.",
+  ),
+];
+
+class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
+
+  @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
+  late PageController _controller;
+
+  @override
+  void initState() {
+    _controller = PageController();
+    super.initState();
+  }
+
+  int _currentPage = 0;
+  List colors = const [Color(0xffDAD3C8), Color(0xffFFE5DE), Color(0xffDCF6E6)];
+
+  AnimatedContainer _buildDots({int? index}) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(50)),
+        color: Color(0xFF000000),
+      ),
+      margin: const EdgeInsets.only(right: 5),
+      height: 10,
+      curve: Curves.easeIn,
+      width: _currentPage == index ? 20 : 10,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(16.0),
-          margin: const EdgeInsets.all(16.0),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: page.textColor,
-          ),
-          child: Icon(page.icon, size: screenHeight * 0.1, color: page.bgColor),
+    SizeConfig().init(context);
+    double width = SizeConfig.screenW!;
+    double height = SizeConfig.screenH!;
+
+    return Scaffold(
+      backgroundColor: colors[_currentPage],
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              flex: 3,
+              child: PageView.builder(
+                physics: const BouncingScrollPhysics(),
+                controller: _controller,
+                onPageChanged: (value) => setState(() => _currentPage = value),
+                itemCount: contents.length,
+                itemBuilder: (context, i) {
+                  return Padding(
+                    padding: const EdgeInsets.all(40.0),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          // Wrap the Image.asset with Expanded
+                          child: Image.asset(
+                            contents[i].image,
+                            // Remove fixed height here, let it be flexible
+                          ),
+                        ),
+                        SizedBox(height: (height >= 840) ? 60 : 30),
+                        Text(
+                          contents[i].title,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: "Mulish",
+                            fontWeight: FontWeight.w600,
+                            fontSize: (width <= 550) ? 30 : 35,
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        Text(
+                          contents[i].desc,
+                          style: TextStyle(
+                            fontFamily: "Mulish",
+                            fontWeight: FontWeight.w300,
+                            fontSize: (width <= 550) ? 17 : 25,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      contents.length,
+                      (int index) => _buildDots(index: index),
+                    ),
+                  ),
+                  _currentPage + 1 == contents.length
+                      ? Padding(
+                          padding: const EdgeInsets.all(30),
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              padding: (width <= 550)
+                                  ? const EdgeInsets.symmetric(
+                                      horizontal: 100,
+                                      vertical: 20,
+                                    )
+                                  : EdgeInsets.symmetric(
+                                      horizontal: width * 0.2,
+                                      vertical: 25,
+                                    ),
+                              textStyle: TextStyle(
+                                fontSize: (width <= 550) ? 13 : 17,
+                              ),
+                            ),
+                            child: const Text("START"),
+                          ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.all(30),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  _controller.jumpToPage(2);
+                                },
+                                style: TextButton.styleFrom(
+                                  elevation: 0,
+                                  textStyle: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: (width <= 550) ? 13 : 17,
+                                  ),
+                                ),
+                                child: const Text(
+                                  "SKIP",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  _controller.nextPage(
+                                    duration: const Duration(milliseconds: 200),
+                                    curve: Curves.easeIn,
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.black,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  elevation: 0,
+                                  padding: (width <= 550)
+                                      ? const EdgeInsets.symmetric(
+                                          horizontal: 30,
+                                          vertical: 20,
+                                        )
+                                      : const EdgeInsets.symmetric(
+                                          horizontal: 30,
+                                          vertical: 25,
+                                        ),
+                                  textStyle: TextStyle(
+                                    fontSize: (width <= 550) ? 13 : 17,
+                                  ),
+                                ),
+                                child: const Text("NEXT"),
+                              ),
+                            ],
+                          ),
+                        ),
+                ],
+              ),
+            ),
+          ],
         ),
-        Text(
-          page.title ?? "",
-          style: TextStyle(
-            color: page.textColor,
-            fontSize: screenHeight * 0.035,
-            fontWeight: FontWeight.bold,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
+      ),
     );
   }
 }

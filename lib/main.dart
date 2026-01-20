@@ -13,10 +13,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      themeMode: ThemeMode.system,
-
-      home: ConcentricAnimationOnboarding(),
-    );
+    return MaterialApp(themeMode: ThemeMode.system, home: OnboardingScreen());
   }
 }
