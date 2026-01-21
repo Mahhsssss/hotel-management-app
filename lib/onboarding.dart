@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class OnboardingContents {
+  //declaring variables for the onboarding contents.
   final String title;
   final String image;
   final String desc;
@@ -13,6 +14,7 @@ class OnboardingContents {
 }
 
 class SizeConfig {
+  //declaring the size of the images within the page.
   static MediaQueryData? _mediaQueryData;
   static double? screenW;
   static double? screenH;
@@ -29,9 +31,10 @@ class SizeConfig {
 }
 
 List<OnboardingContents> contents = [
+  //The actual contents in list format of type OnboardingContents
   OnboardingContents(
     title: "Choose a branch",
-    image: "assets/images/image1.png",
+    image: "assets/images/location.png",
     desc: "Hotel De Luna has many branches across Mumbai.",
   ),
   OnboardingContents(
@@ -47,6 +50,7 @@ List<OnboardingContents> contents = [
 ];
 
 class OnboardingScreen extends StatefulWidget {
+  //Stateful widget for page controller
   const OnboardingScreen({super.key});
 
   @override
@@ -63,18 +67,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   int _currentPage = 0;
-  List colors = const [Color(0xffDAD3C8), Color(0xffFFE5DE), Color(0xffDCF6E6)];
+  List colors = const [
+    Color.fromARGB(212, 124, 173, 138),
+    Color.fromARGB(210, 130, 179, 145),
+    Color.fromARGB(211, 139, 192, 154),
+  ]; //The background colours.
 
   AnimatedContainer _buildDots({int? index}) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(50)),
+        borderRadius: BorderRadius.all(Radius.circular(25)),
         color: Color(0xFF000000),
       ),
       margin: const EdgeInsets.only(right: 5),
       height: 10,
-      curve: Curves.easeIn,
+      curve: Curves.easeInToLinear,
       width: _currentPage == index ? 20 : 10,
     );
   }
@@ -88,16 +96,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       backgroundColor: colors[_currentPage],
       body: SafeArea(
+        //This automatically adds padding to the child
         child: Column(
           children: [
             Expanded(
+              //This fills any available space
               flex: 3,
               child: PageView.builder(
+                //Builds scrollabe pages, and builds the next page when scrolled to, making it memory efficient
                 physics: const BouncingScrollPhysics(),
                 controller: _controller,
                 onPageChanged: (value) => setState(() => _currentPage = value),
                 itemCount: contents.length,
                 itemBuilder: (context, i) {
+                  //Dynamically builds each list items widget
                   return Padding(
                     padding: const EdgeInsets.all(40.0),
                     child: Column(
@@ -109,21 +121,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             // Remove fixed height here, let it be flexible
                           ),
                         ),
-                        SizedBox(height: (height >= 840) ? 60 : 30),
+                        SizedBox(height: (height >= 840) ? 60 : 30), //Title
                         Text(
                           contents[i].title,
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontFamily: "Mulish",
-                            fontWeight: FontWeight.w600,
+                            fontFamily: "Serif",
+                            fontWeight: FontWeight.w800,
                             fontSize: (width <= 550) ? 30 : 35,
                           ),
                         ),
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 15), //Description
                         Text(
                           contents[i].desc,
                           style: TextStyle(
-                            fontFamily: "Mulish",
+                            fontFamily: "Poppins",
                             fontWeight: FontWeight.w300,
                             fontSize: (width <= 550) ? 17 : 25,
                           ),
@@ -155,7 +167,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
+                                borderRadius: BorderRadius.circular(15),
                               ),
                               padding: (width <= 550)
                                   ? const EdgeInsets.symmetric(
@@ -204,7 +216,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.black,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50),
+                                    borderRadius: BorderRadius.circular(5),
                                   ),
                                   elevation: 0,
                                   padding: (width <= 550)
@@ -220,7 +232,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     fontSize: (width <= 550) ? 13 : 17,
                                   ),
                                 ),
-                                child: const Text("NEXT"),
+                                child: const Text(
+                                  "NEXT",
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 247, 229, 229),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
