@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+//Functionality done, need to add images, change colours etc..
+
 class OnboardingContents {
   //declaring variables for the onboarding contents.
   final String title;
@@ -39,12 +41,12 @@ List<OnboardingContents> contents = [
   ),
   OnboardingContents(
     title: "Book a room",
-    image: "assets/images/image2.png",
+    image: "assets/images/paperplane.png",
     desc: "Book one of hundreds of types of rooms.",
   ),
   OnboardingContents(
     title: "Enjoy a Luxurious stay",
-    image: "assets/images/image3.png",
+    image: "assets/images/sun.png",
     desc: "Let go, unwind and enjoy with your loved ones.",
   ),
 ];
@@ -67,18 +69,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   int _currentPage = 0;
-  List colors = const [
-    Color.fromARGB(212, 124, 173, 138),
-    Color.fromARGB(210, 130, 179, 145),
-    Color.fromARGB(211, 139, 192, 154),
-  ]; //The background colours.
+  List<String> bgimages = [
+    "assets/images/hotel_building.jpg",
+    "assets/images/hotel_room.jpg",
+    "assets/images/poolside.jpg",
+  ]; //The background images
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Pre-load all background images into the system cache
+    for (String path in bgimages) {
+      precacheImage(AssetImage(path), context);
+    }
+  }
 
   AnimatedContainer _buildDots({int? index}) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(25)),
-        color: Color(0xFF000000),
+        color: Color.fromARGB(255, 219, 217, 217),
       ),
       margin: const EdgeInsets.only(right: 5),
       height: 10,
@@ -94,159 +105,220 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     double height = SizeConfig.screenH!;
 
     return Scaffold(
-      backgroundColor: colors[_currentPage],
-      body: SafeArea(
-        //This automatically adds padding to the child
-        child: Column(
-          children: [
-            Expanded(
-              //This fills any available space
-              flex: 3,
-              child: PageView.builder(
-                //Builds scrollabe pages, and builds the next page when scrolled to, making it memory efficient
-                physics: const BouncingScrollPhysics(),
-                controller: _controller,
-                onPageChanged: (value) => setState(() => _currentPage = value),
-                itemCount: contents.length,
-                itemBuilder: (context, i) {
-                  //Dynamically builds each list items widget
-                  return Padding(
-                    padding: const EdgeInsets.all(40.0),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          // Wrap the Image.asset with Expanded
-                          child: Image.asset(
-                            contents[i].image,
-                            // Remove fixed height here, let it be flexible
-                          ),
-                        ),
-                        SizedBox(height: (height >= 840) ? 60 : 30), //Title
-                        Text(
-                          contents[i].title,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: "Serif",
-                            fontWeight: FontWeight.w800,
-                            fontSize: (width <= 550) ? 30 : 35,
-                          ),
-                        ),
-                        const SizedBox(height: 15), //Description
-                        Text(
-                          contents[i].desc,
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w300,
-                            fontSize: (width <= 550) ? 17 : 25,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
+      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+      body: Stack(
+        children: [
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 400),
+            // layoutBuilder keeps the old image underneath the new one during the transition
+            layoutBuilder:
+                (Widget? currentChild, List<Widget> previousChildren) {
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      ...previousChildren,
+                      if (currentChild != null) currentChild,
+                    ],
                   );
                 },
+            child: Container(
+              // The ValueKey is CRITICAL. It tells AnimatedSwitcher the image changed.
+              key: ValueKey<int>(_currentPage),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(bgimages[_currentPage]),
+                  fit: BoxFit.cover,
+                  colorFilter: const ColorFilter.mode(
+                    Color.fromARGB(255, 48, 84, 49),
+                    BlendMode.modulate,
+                  ),
+                ),
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      contents.length,
-                      (int index) => _buildDots(index: index),
-                    ),
-                  ),
-                  _currentPage + 1 == contents.length
-                      ? Padding(
-                          padding: const EdgeInsets.all(30),
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              padding: (width <= 550)
-                                  ? const EdgeInsets.symmetric(
-                                      horizontal: 100,
-                                      vertical: 20,
-                                    )
-                                  : EdgeInsets.symmetric(
-                                      horizontal: width * 0.2,
-                                      vertical: 25,
-                                    ),
-                              textStyle: TextStyle(
-                                fontSize: (width <= 550) ? 13 : 17,
+          ),
+
+          SafeArea(
+            //This automatically adds padding to the child
+            child: Column(
+              children: [
+                Expanded(
+                  //This fills any available space
+                  flex: 3,
+                  child: PageView.builder(
+                    //Builds scrollabe pages, and builds the next page when scrolled to, making it memory efficient
+                    physics: const BouncingScrollPhysics(),
+                    controller: _controller,
+                    onPageChanged: (value) =>
+                        setState(() => _currentPage = value),
+                    itemCount: contents.length,
+                    itemBuilder: (context, i) {
+                      //Dynamically builds each list items widget
+                      return Padding(
+                        padding: const EdgeInsets.all(50.0),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              // Wrap the Image.asset with Expanded
+                              child: Image.asset(
+                                contents[i].image,
+                                // Remove fixed height here, let it be flexible
                               ),
                             ),
-                            child: const Text("START"),
-                          ),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.all(30),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  _controller.jumpToPage(2);
-                                },
-                                style: TextButton.styleFrom(
-                                  elevation: 0,
-                                  textStyle: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: (width <= 550) ? 13 : 17,
-                                  ),
-                                ),
-                                child: const Text(
-                                  "SKIP",
-                                  style: TextStyle(color: Colors.black),
-                                ),
+                            SizedBox(height: (height >= 840) ? 40 : 20), //Title
+                            Text(
+                              contents[i].title,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: "Serif",
+                                fontWeight: FontWeight.w800,
+                                fontSize: (width <= 550) ? 30 : 35,
+                                color: Colors.white,
                               ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  _controller.nextPage(
-                                    duration: const Duration(milliseconds: 200),
-                                    curve: Curves.easeIn,
-                                  );
-                                },
+                            ),
+                            const SizedBox(height: 15), //Description
+                            Text(
+                              contents[i].desc,
+                              style: TextStyle(
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w300,
+                                fontSize: (width <= 550) ? 17 : 25,
+                                color: Colors.white,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          contents.length,
+                          (int index) => _buildDots(index: index),
+                        ),
+                      ),
+                      _currentPage + 1 == contents.length
+                          ? Padding(
+                              padding: const EdgeInsets.all(30),
+                              child: ElevatedButton(
+                                onPressed: () {},
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.black,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
+                                  backgroundColor: const Color.fromARGB(
+                                    255,
+                                    209,
+                                    211,
+                                    208,
                                   ),
-                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
                                   padding: (width <= 550)
                                       ? const EdgeInsets.symmetric(
-                                          horizontal: 30,
-                                          vertical: 20,
+                                          horizontal: 80,
+                                          vertical: 15,
                                         )
-                                      : const EdgeInsets.symmetric(
-                                          horizontal: 30,
+                                      : EdgeInsets.symmetric(
+                                          horizontal: width * 0.2,
                                           vertical: 25,
                                         ),
                                   textStyle: TextStyle(
                                     fontSize: (width <= 550) ? 13 : 17,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w700,
                                   ),
                                 ),
                                 child: const Text(
-                                  "NEXT",
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 247, 229, 229),
-                                  ),
+                                  "START",
+                                  style: TextStyle(color: Colors.black),
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                ],
-              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(30),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      _controller.jumpToPage(2);
+                                    },
+                                    style: TextButton.styleFrom(
+                                      elevation: 0,
+                                      textStyle: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: (width <= 550) ? 13 : 17,
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      "SKIP",
+                                      style: TextStyle(
+                                        color: Color.fromARGB(
+                                          255,
+                                          255,
+                                          255,
+                                          255,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      _controller.nextPage(
+                                        duration: const Duration(
+                                          milliseconds: 200,
+                                        ),
+                                        curve: Curves.easeIn,
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color.fromARGB(
+                                        255,
+                                        227,
+                                        219,
+                                        219,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      elevation: 0,
+                                      padding: (width <= 550)
+                                          ? const EdgeInsets.symmetric(
+                                              horizontal: 30,
+                                              vertical: 15,
+                                            )
+                                          : const EdgeInsets.symmetric(
+                                              horizontal: 30,
+                                              vertical: 25,
+                                            ),
+                                      textStyle: TextStyle(
+                                        fontSize: (width <= 550) ? 13 : 17,
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      "NEXT",
+                                      style: TextStyle(
+                                        color: Color.fromARGB(255, 0, 0, 0),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
