@@ -1,0 +1,88 @@
+🔤 FONT SYSTEM
+Primary Font
+
+Playfair Display
+→ Used for headings, titles, card names (serif = luxury, calm)
+
+Secondary Font
+
+Inter (or SF Pro / Poppins as backup)
+→ Used for body text, labels, buttons, ratings
+
+🎨 COLOR PALETTE (Exact Usage)
+Background
+
+App Background: rgb(230, 244, 234)
+(Soft mint green)
+
+Primary Text Colors
+
+Main Heading (Find your peace): #0B1F17
+
+Section Headings (Featured Retreats, Recommended): #0B1F17
+
+Card Title Text: #FFFFFF
+
+Subtitle / Location Text: #D9EDE3
+
+Muted Text (Welcome back): #7FA89A
+
+Accent & Action Colors
+
+Primary Button (Book Now): #A6C94A
+
+Button Text: #FFFFFF
+
+“See All” Text: #8FBF3F
+
+Rating Badge Background: #EAF6E9
+
+Rating Star Icon: #8FBF3F
+
+Rating Number Text: #0B1F17
+
+Overlay & Card Effects
+
+Card Gradient Overlay (bottom):
+rgba(11, 31, 23, 0.65)
+
+Banner Overlay:
+rgba(11, 31, 23, 0.55)
+
+📐 FONT SIZES (Flutter-friendly)
+🔹 Header Area
+Element	Font	Size	Weight
+Welcome back	Inter	14	Regular
+Find your peace	Playfair Display	28	SemiBold
+🔹 Banner
+Element	Font	Size	Weight
+SPECIAL OFFER	Inter	12	Medium
+20% Off	Playfair Display	26	Bold
+Winter retreats	Inter	14	Regular
+Book Now	Inter	14	SemiBold
+🔹 Section Headers
+Element	Font	Size	Weight
+Featured Retreats	Playfair Display	20	SemiBold
+Recommended	Playfair Display	20	SemiBold
+See All	Inter	14	Medium
+🔹 Cards (Retreat Tiles)
+Element	Font	Size	Weight
+Retreat Name	Playfair Display	18	SemiBold
+Location	Inter	13	Regular
+Rating Number	Inter	12	Medium
+🔹 Icons & UI
+Element	Size
+Notification Bell	24
+Location Icon	14
+Star Icon	14
+Card Border Radius	20
+Banner Border Radius	24
+🧱 SPACING SYSTEM (Recommended)
+
+Screen Padding: 16
+
+Section Spacing: 24
+
+Card Gap: 16
+
+Text Line Height: 1.3
