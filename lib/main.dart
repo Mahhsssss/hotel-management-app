@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hotel_de_luna/onboarding.dart';
-// import 'package:hotel_de_luna/splashscreen.dart';
-// import 'package:hotel_de_luna/themedata.dart';
-//import 'package:getwidget/getwidget.dart'; Use this for the custom widgets on any page!
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'onboarding.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -13,10 +14,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      themeMode: ThemeMode.system,
-      home: OnboardingScreen(),
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
+      home: OnboardingScreen(),
     );
   }
 }
