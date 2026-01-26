@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:hotel_de_luna/services/widget_support.dart';
 
 class HotelHomepage extends StatefulWidget {
@@ -84,6 +85,20 @@ class _HotelHomepageState extends State<HotelHomepage> {
                       ],
                     ),
                   ),
+                ),
+              ],
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  "Featured Retreats ",
+                  style: AppWidget.headingcustomtext(Colors.black, 18),
+                ),
+                GFButton(
+                  onPressed: () {},
+                  text: "See all",
+                  type: GFButtonType.transparent,
                 ),
               ],
             ),

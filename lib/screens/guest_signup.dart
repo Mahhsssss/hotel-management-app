@@ -65,10 +65,7 @@ class GuestSignupScreen extends StatelessWidget {
                   );
 
                   if (!context.mounted) return;
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => HotelHomepage()),
-                  );
+                  Navigator.pop(context);
                 } catch (e) {
                   if (!context.mounted) return;
                   ScaffoldMessenger.of(
