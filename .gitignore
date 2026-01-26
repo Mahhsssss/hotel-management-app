@@ -43,3 +43,15 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Firebase config (DO NOT COMMIT)
+android/app/google-services.json
+lib/firebase_options.dart
+firebase.json
+
+# Generated files
+pubspec.lock
+**/GeneratedPluginRegistrant.*
+**/generated_plugin_registrant.*
+**/generated_plugins.cmake
+
