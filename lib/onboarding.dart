@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hotel_de_luna/hotel%20screens/hotel_homepage.dart';
 import 'package:hotel_de_luna/screens/guest_login.dart'; // ✅ ADDED
 import 'package:hotel_de_luna/services/widget_support.dart';
 
@@ -237,7 +238,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   TextButton(
-                                    onPressed: _goToLogin, // ✅ SKIP → LOGIN
+                                    onPressed: () => Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => HotelHomepage(),
+                                      ),
+                                    ), // ✅ SKIP → LOGIN
                                     child: const Text(
                                       "SKIP",
                                       style: TextStyle(color: Colors.white),

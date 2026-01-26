@@ -15,7 +15,16 @@ class AppWidget {
     return TextStyle(
       color: color,
       fontSize: size,
-      fontWeight: FontWeight.w300,
+      fontWeight: FontWeight.w400,
+      fontFamily: "Poppins",
+    );
+  }
+
+  static TextStyle bodybold(Color color, double size) {
+    return TextStyle(
+      color: color,
+      fontSize: size,
+      fontWeight: FontWeight.w700,
       fontFamily: "Poppins",
     );
   }
@@ -33,7 +42,7 @@ class AppWidget {
     return TextStyle(
       color: color,
       fontSize: size,
-      fontWeight: FontWeight.w800,
+      fontWeight: FontWeight.bold,
       fontFamily: GoogleFonts.playfairDisplay().fontFamily,
     );
   }
