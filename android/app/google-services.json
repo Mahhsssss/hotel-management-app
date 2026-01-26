@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "680974815496",
-    "project_id": "hotel-de-luna-3265a",
-    "storage_bucket": "hotel-de-luna-3265a.firebasestorage.app"
+    "project_number": "172313738627",
+    "project_id": "hotel-de-luna-5e60d",
+    "storage_bucket": "hotel-de-luna-5e60d.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:680974815496:android:72f11eb0473610a8b25cbd",
+        "mobilesdk_app_id": "1:172313738627:android:9e227a99bcf2b0b2788ab6",
         "android_client_info": {
           "package_name": "com.example.hotel_de_luna"
         }
@@ -15,7 +15,26 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAhqea9n_X5G28HIrxMq8SdXl7wjF0-MAk"
+          "current_key": "AIzaSyBQNYBfRRJn1wLzvzI5-bH5EFGWlq_8eSs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:172313738627:android:35305399f0e309b2788ab6",
+        "android_client_info": {
+          "package_name": "material.dart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQNYBfRRJn1wLzvzI5-bH5EFGWlq_8eSs"
         }
       ],
       "services": {

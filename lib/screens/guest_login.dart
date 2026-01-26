@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hotel_de_luna/hotel%20screens/hotel_homepage.dart';
 import '../services/auth_service.dart';
 import 'guest_signup.dart';
 import 'employee_login.dart';
@@ -29,7 +30,21 @@ class GuestLoginScreen extends StatelessWidget {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () async {
-                await AuthService().login(email.text, password.text);
+                try {
+                  await AuthService().login(email.text, password.text);
+
+                  if (!context.mounted) return;
+
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => HotelHomepage()),
+                  );
+                } catch (e) {
+                  if (!context.mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Login failed: ${e.toString()}")),
+                  );
+                }
               },
               child: const Text("Login"),
             ),
