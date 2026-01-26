@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hotel_de_luna/hotel_homepage.dart';
+import 'package:hotel_de_luna/services/widget_support.dart';
 
 //Functionality done, need to add images, change colours etc..
 
@@ -168,22 +170,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             Text(
                               contents[i].title,
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontFamily: "Serif",
-                                fontWeight: FontWeight.w800,
-                                fontSize: (width <= 550) ? 30 : 35,
-                                color: Colors.white,
-                              ),
+                              style: AppWidget.headingtext(Colors.white, 27),
                             ),
                             const SizedBox(height: 15), //Description
                             Text(
                               contents[i].desc,
-                              style: TextStyle(
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w300,
-                                fontSize: (width <= 550) ? 17 : 25,
-                                color: Colors.white,
-                              ),
+                              style: AppWidget.bodytext(Colors.white, 17),
                               textAlign: TextAlign.center,
                             ),
                           ],
@@ -208,7 +200,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           ? Padding(
                               padding: const EdgeInsets.all(30),
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const HotelHomepage(), //Change this to sign in page once its made!!
+                                    ),
+                                  );
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color.fromARGB(
                                     255,

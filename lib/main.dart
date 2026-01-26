@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_de_luna/onboarding.dart';
-// import 'package:hotel_de_luna/splashscreen.dart';
-// import 'package:hotel_de_luna/themedata.dart';
-//import 'package:getwidget/getwidget.dart'; Use this for the custom widgets on any page!
 
 void main() {
   runApp(const MyApp());

@@ -37,7 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   getwidget: ^7.0.0
   lottie: ^3.3.2
-  transparent_image: ^2.0.0
+  google_fonts: ^6.2.1
+  firebase_core: ^4.4.0
 
 dev_dependencies:
   flutter_test:
