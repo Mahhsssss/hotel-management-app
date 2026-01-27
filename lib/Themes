@@ -50,11 +50,15 @@ Banner Overlay:
 rgba(11, 31, 23, 0.55)
 
 📐 FONT SIZES (Flutter-friendly)
+
 🔹 Header Area
+
 Element	Font	Size	Weight
 Welcome back	Inter	14	Regular
 Find your peace	Playfair Display	28	SemiBold
+
 🔹 Banner
+
 Element	Font	Size	Weight
 SPECIAL OFFER	Inter	12	Medium
 20% Off	Playfair Display	26	Bold
