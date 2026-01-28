@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:hotel_de_luna/hotel%20screens/featured_retreats.dart';
+import 'package:hotel_de_luna/hotel%20screens/recommended_hotels.dart';
 import 'package:hotel_de_luna/services/widget_support.dart';
 
 class HotelHomepage extends StatefulWidget {
@@ -12,6 +15,7 @@ class HotelHomepage extends StatefulWidget {
 class _HotelHomepageState extends State<HotelHomepage> {
   final ScrollController _mainScrollController = ScrollController();
 
+  // ignore: unused_field
   int _currentCardIndex = 0;
 
   static Widget _buildCard(String title, String sub, String image) {
@@ -139,79 +143,78 @@ class _HotelHomepageState extends State<HotelHomepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       backgroundColor: Color(0xFFE8F4EA),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Navigator.canPop(context)
+            ? const BackButton(color: Colors.white)
+            : null,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+      ),
       body: SingleChildScrollView(
         controller: _mainScrollController,
         physics: BouncingScrollPhysics(),
         child: Column(
           children: [
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.only(top: 50, left: 20, right: 20),
-                    height: 220,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(
-                          "assets/images/homepage-backdrop.jpg",
-                        ),
-                        fit: BoxFit.cover,
-                        colorFilter: const ColorFilter.mode(
-                          Color.fromARGB(255, 67, 117, 69),
-                          BlendMode.modulate,
-                        ),
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.location_on_sharp, color: Colors.white),
-                            SizedBox(width: 4),
-                            Text(
-                              "Mumbai, India",
-                              style: AppWidget.smalltext(Colors.white, 15),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          'Welcome to Hotel De Luna',
-                          style: AppWidget.headingcustomtext(Colors.white, 25),
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          margin: EdgeInsets.only(top: 15, right: 5, left: 5),
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(130, 255, 255, 255),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: TextField(
-                            textAlignVertical: TextAlignVertical.center,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon: Icon(
-                                Icons.search_rounded,
-                                color: const Color.fromARGB(255, 0, 0, 0),
-                              ),
-                              hintText: "Search a location",
-                              hintStyle: AppWidget.smalltext(Colors.black, 16),
-                            ),
-                          ),
-                        ),
-                      ],
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+              child: Container(
+                padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).padding.top + kToolbarHeight - 20,
+                  left: 20,
+                  right: 20,
+                ),
+                height: 20,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/homepage-backdrop.jpg"),
+                    fit: BoxFit.cover,
+                    colorFilter: const ColorFilter.mode(
+                      Color.fromARGB(255, 67, 117, 69),
+                      BlendMode.modulate,
                     ),
                   ),
                 ),
-              ],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: 10),
+                    Text(
+                      'Welcome to Hotel De Luna',
+                      style: AppWidget.headingcustomtext(Colors.white, 25),
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      margin: EdgeInsets.only(top: 15, right: 5, left: 5),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(130, 255, 255, 255),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: TextField(
+                        textAlignVertical: TextAlignVertical.center,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          isDense: true,
+                          prefixIcon: Icon(
+                            Icons.search_rounded,
+                            color: const Color.fromARGB(255, 0, 0, 0),
+                          ),
+                          hintText: "Search a location",
+                          hintStyle: AppWidget.smalltext(Colors.black, 16),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -224,7 +227,12 @@ class _HotelHomepageState extends State<HotelHomepage> {
                   ),
                   GFButton(
                     onPressed: () {
-                      print("Button tapped");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FeaturedRetreats(),
+                        ),
+                      );
                     },
                     text: "See all",
                     color: const Color.fromARGB(255, 50, 109, 48),
@@ -281,7 +289,12 @@ class _HotelHomepageState extends State<HotelHomepage> {
                   ),
                   GFButton(
                     onPressed: () {
-                      print("Button tapped");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RecommendedHotels(),
+                        ),
+                      );
                     },
                     text: "See all",
                     color: const Color.fromARGB(255, 50, 109, 48),

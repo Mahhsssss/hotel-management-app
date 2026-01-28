@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_de_luna/hotel%20screens/hotel_homepage.dart';
-import 'package:hotel_de_luna/screens/guest_login.dart'; // ✅ ADDED
 import 'package:hotel_de_luna/services/widget_support.dart';
 
 //Functionality done, need to add images, change colours etc..
@@ -102,12 +101,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  void _goToLogin() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const GuestLoginScreen()),
-    );
-  }
+  // void _goToLogin() {
+  //   Navigator.pushReplacement(
+  //     context,
+  //     MaterialPageRoute(builder: (_) => const GuestLoginScreen()),
+  //   );
+  // } Commenting for now, will reintegrate once all pages are made
 
   @override
   Widget build(BuildContext context) {
