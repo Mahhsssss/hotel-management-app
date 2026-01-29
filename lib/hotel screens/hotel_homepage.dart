@@ -169,7 +169,7 @@ class _HotelHomepageState extends State<HotelHomepage> {
                   left: 20,
                   right: 20,
                 ),
-                height: 20,
+                height: 220,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   image: DecorationImage(
