@@ -7,10 +7,10 @@ class FeaturedRetreats extends StatefulWidget {
   const FeaturedRetreats({super.key});
 
   @override
-  State<FeaturedRetreats> createState() => _RecommendedHotelsState();
+  State<FeaturedRetreats> createState() => _FeaturedRetreatsState();
 }
 
-class _RecommendedHotelsState extends State<FeaturedRetreats> {
+class _FeaturedRetreatsState extends State<FeaturedRetreats> {
   //Card Constructor
   final List<Map<String, dynamic>> hotels = [
     {
@@ -103,7 +103,7 @@ class _RecommendedHotelsState extends State<FeaturedRetreats> {
     String price,
     String ratings,
     String image,
-    Widget Function() pagebuilder,
+    Widget Function() pageBuilder,
   ) {
     return Card(
       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -166,7 +166,7 @@ class _RecommendedHotelsState extends State<FeaturedRetreats> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => pagebuilder(),
+                                builder: (context) => pageBuilder(),
                               ),
                             );
                           },
@@ -197,70 +197,25 @@ class _RecommendedHotelsState extends State<FeaturedRetreats> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: false,
       backgroundColor: Color(0xFFE8F4EA),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: Navigator.canPop(context)
-            ? const BackButton(color: Colors.white)
+            ? const BackButton(color: Colors.black)
             : null,
         systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      top:
-                          MediaQuery.of(context).padding.top +
-                          kToolbarHeight -
-                          20,
-                      left: 20,
-                      right: 20,
-                    ),
-                    height: 160,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(
-                          "assets/images/homepage-backdrop.jpg",
-                        ),
-                        fit: BoxFit.cover,
-                        colorFilter: const ColorFilter.mode(
-                          Color.fromARGB(255, 67, 117, 69),
-                          BlendMode.modulate,
-                        ),
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 15),
-                          child: Text(
-                            'FEATURED RETREATS',
-                            style: AppWidget.headingcustomtext(
-                              Colors.white,
-                              25,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+            Text(
+              'FEATURED RETREATS',
+              style: AppWidget.headingcustomtext(Colors.black, 25),
             ),
+
             SizedBox(height: 15),
             Align(
               alignment: Alignment.centerLeft,
