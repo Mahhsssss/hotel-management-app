@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hotel_de_luna/hotel%20screens/hotel_homepage.dart';
 import 'package:hotel_de_luna/services/widget_support.dart';
 
 class RecommendedHotels extends StatefulWidget {
@@ -11,13 +12,14 @@ class RecommendedHotels extends StatefulWidget {
 
 class _RecommendedHotelsState extends State<RecommendedHotels> {
   //Card Constructor
-  final List<Map<String, String>> hotels = [
+  final List<Map<String, dynamic>> hotels = [
     {
       "name": 'Hotel Name',
       "location": 'Location',
       "price": '100.00',
       "rating": '4.5/5',
       "image": "assets/images/placeholder.jpg",
+      "destination": () => HotelHomepage(),
     },
 
     {
@@ -26,6 +28,7 @@ class _RecommendedHotelsState extends State<RecommendedHotels> {
       "price": '100.00',
       "rating": '4.5/5',
       "image": "assets/images/placeholder.jpg",
+      "destination": () => HotelHomepage(),
     },
 
     {
@@ -34,6 +37,7 @@ class _RecommendedHotelsState extends State<RecommendedHotels> {
       "price": '100.00',
       "rating": '4.5/5',
       "image": "assets/images/placeholder.jpg",
+      "destination": () => HotelHomepage(),
     },
 
     {
@@ -42,6 +46,7 @@ class _RecommendedHotelsState extends State<RecommendedHotels> {
       "price": '100.00',
       "rating": '4.5/5',
       "image": "assets/images/placeholder.jpg",
+      "destination": () => HotelHomepage(),
     },
 
     {
@@ -50,6 +55,7 @@ class _RecommendedHotelsState extends State<RecommendedHotels> {
       "price": '100.00',
       "rating": '4.5/5',
       "image": "assets/images/placeholder.jpg",
+      "destination": () => HotelHomepage(),
     },
 
     {
@@ -58,6 +64,7 @@ class _RecommendedHotelsState extends State<RecommendedHotels> {
       "price": '100.00',
       "rating": '4.5/5',
       "image": "assets/images/placeholder.jpg",
+      "destination": () => HotelHomepage(),
     },
 
     {
@@ -66,6 +73,7 @@ class _RecommendedHotelsState extends State<RecommendedHotels> {
       "price": '100.00',
       "rating": '4.5/5',
       "image": "assets/images/placeholder.jpg",
+      "destination": () => HotelHomepage(),
     },
 
     {
@@ -74,6 +82,7 @@ class _RecommendedHotelsState extends State<RecommendedHotels> {
       "price": '100.00',
       "rating": '4.5/5',
       "image": "assets/images/placeholder.jpg",
+      "destination": () => HotelHomepage(),
     },
 
     {
@@ -82,17 +91,19 @@ class _RecommendedHotelsState extends State<RecommendedHotels> {
       "price": '100.00',
       "rating": '4.5/5',
       "image": "assets/images/placeholder.jpg",
+      "destination": () => HotelHomepage(),
     },
   ];
 
   int get count => hotels.length.toInt();
   //Card items
-  static Widget _buildListItem(
+  Widget _buildListItem(
     String name,
     String location,
     String price,
     String ratings,
     String image,
+    Widget Function() pageBuilder,
   ) {
     return Card(
       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -152,7 +163,12 @@ class _RecommendedHotelsState extends State<RecommendedHotels> {
                       child: Center(
                         child: ElevatedButton(
                           onPressed: () {
-                            /*Will redirect to the hotel page */
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => pageBuilder(),
+                              ),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             elevation: 2,
@@ -328,6 +344,7 @@ class _RecommendedHotelsState extends State<RecommendedHotels> {
                       hotel["price"]!,
                       hotel["rating"]!,
                       hotel["image"]!,
+                      hotel["destination"]!,
                     );
                   },
                 ),
