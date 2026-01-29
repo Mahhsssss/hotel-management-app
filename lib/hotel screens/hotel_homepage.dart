@@ -169,7 +169,7 @@ class _HotelHomepageState extends State<HotelHomepage> {
                   left: 20,
                   right: 20,
                 ),
-                height: 220,
+                height: 180,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -182,6 +182,7 @@ class _HotelHomepageState extends State<HotelHomepage> {
                   ),
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -190,9 +191,9 @@ class _HotelHomepageState extends State<HotelHomepage> {
                       'Welcome to Hotel De Luna',
                       style: AppWidget.headingcustomtext(Colors.white, 25),
                     ),
-                    SizedBox(height: 10),
+
                     Container(
-                      margin: EdgeInsets.only(top: 15, right: 5, left: 5),
+                      margin: EdgeInsets.only(top: 15),
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         color: const Color.fromARGB(130, 255, 255, 255),
@@ -327,7 +328,7 @@ class _HotelHomepageState extends State<HotelHomepage> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 15),
             SizedBox(
               height: 50,
               width: 275,

@@ -83,8 +83,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     for (String path in bgimages) {
-      precacheImage(AssetImage(path), context);
+      precacheImage(ResizeImage(AssetImage(path), width: 1000), context);
     }
+
+    precacheImage(
+      ResizeImage(AssetImage("assets/images/location.png"), width: 1000),
+      context,
+    );
+    precacheImage(
+      ResizeImage(AssetImage("assets/images/paperplane.png"), width: 1000),
+      context,
+    );
+    precacheImage(
+      ResizeImage(AssetImage("assets/images/sun.png"), width: 1000),
+      context,
+    );
   }
 
   AnimatedContainer _buildDots({int? index}) {
@@ -119,7 +132,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: Stack(
         children: [
           AnimatedSwitcher(
-            duration: const Duration(milliseconds: 400),
+            duration: const Duration(milliseconds: 50),
             layoutBuilder:
                 (Widget? currentChild, List<Widget> previousChildren) {
                   return Stack(
@@ -237,7 +250,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   TextButton(
-                                    onPressed: () => Navigator.pushReplacement(
+                                    onPressed: () => Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => HotelHomepage(),
