@@ -205,17 +205,17 @@ class _FeaturedRetreatsState extends State<FeaturedRetreats> {
         leading: Navigator.canPop(context)
             ? const BackButton(color: Colors.black)
             : null,
-        systemOverlayStyle: SystemUiOverlayStyle.light,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        title: Text(
+          'FEATURED RETREATS',
+          style: AppWidget.headingcustomtext(Colors.black, 23),
+        ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              'FEATURED RETREATS',
-              style: AppWidget.headingcustomtext(Colors.black, 25),
-            ),
-
             SizedBox(height: 15),
             Align(
               alignment: Alignment.centerLeft,

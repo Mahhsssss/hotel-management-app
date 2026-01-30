@@ -169,31 +169,35 @@ class _HotelHomepageState extends State<HotelHomepage> {
                   left: 20,
                   right: 20,
                 ),
-                height: 180,
+                height: 400,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage("assets/images/homepage-backdrop.jpg"),
                     fit: BoxFit.cover,
                     colorFilter: const ColorFilter.mode(
-                      Color.fromARGB(255, 67, 117, 69),
+                      Color.fromARGB(255, 57, 67, 57),
                       BlendMode.modulate,
                     ),
                   ),
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+
                   children: [
-                    SizedBox(height: 10),
                     Text(
-                      'Welcome to Hotel De Luna',
+                      'Welcome to \nHOTEL DE LUNA',
+                      textAlign: TextAlign.center,
                       style: AppWidget.headingcustomtext(Colors.white, 25),
                     ),
-
+                    Text(
+                      'some description here',
+                      style: AppWidget.smalltext(Colors.white, 15),
+                    ),
+                    const SizedBox(height: 70),
                     Container(
-                      margin: EdgeInsets.only(top: 15),
+                      margin: EdgeInsets.only(top: 15, bottom: 15),
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         color: const Color.fromARGB(130, 255, 255, 255),
@@ -243,11 +247,11 @@ class _HotelHomepageState extends State<HotelHomepage> {
               ),
             ),
             SizedBox(
-              height: 220,
+              height: 250,
               width: MediaQuery.of(context).size.width,
               child: GFCarousel(
                 scrollPhysics: const AlwaysScrollableScrollPhysics(),
-                height: 190,
+                height: 220,
                 items: [
                   _buildCard(
                     "Hotel name",
@@ -309,22 +313,26 @@ class _HotelHomepageState extends State<HotelHomepage> {
               width: MediaQuery.of(context).size.width,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ListView.separated(
-                  padding: EdgeInsets.zero,
-                  itemCount: 5,
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const SizedBox(height: 5),
-                  itemBuilder: (BuildContext context, int index) {
-                    final hotel = hotels[index];
+                child: Scrollbar(
+                  thumbVisibility: true,
+                  radius: Radius.circular(4),
+                  child: ListView.separated(
+                    padding: EdgeInsets.zero,
+                    itemCount: 5,
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const SizedBox(height: 5),
+                    itemBuilder: (BuildContext context, int index) {
+                      final hotel = hotels[index];
 
-                    return _buildListItem(
-                      hotel["name"]!,
-                      hotel["location"]!,
-                      hotel["price"]!,
-                      hotel["rating"]!,
-                      hotel["image"]!,
-                    );
-                  },
+                      return _buildListItem(
+                        hotel["name"]!,
+                        hotel["location"]!,
+                        hotel["price"]!,
+                        hotel["rating"]!,
+                        hotel["image"]!,
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
@@ -358,6 +366,7 @@ class _HotelHomepageState extends State<HotelHomepage> {
                 ),
               ),
             ),
+            SizedBox(height: 30),
           ],
         ),
       ),
