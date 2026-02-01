@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:hotel_de_luna/hotel%20screens/featured_retreats.dart';
+import 'package:hotel_de_luna/hotel%20screens/recommended_hotels.dart';
 import 'package:hotel_de_luna/services/widget_support.dart';
 
 class HotelHomepage extends StatefulWidget {
@@ -12,6 +15,7 @@ class HotelHomepage extends StatefulWidget {
 class _HotelHomepageState extends State<HotelHomepage> {
   final ScrollController _mainScrollController = ScrollController();
 
+  // ignore: unused_field
   int _currentCardIndex = 0;
 
   static Widget _buildCard(String title, String sub, String image) {
@@ -139,79 +143,83 @@ class _HotelHomepageState extends State<HotelHomepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       backgroundColor: Color(0xFFE8F4EA),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Navigator.canPop(context)
+            ? const BackButton(color: Colors.white)
+            : null,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+      ),
       body: SingleChildScrollView(
         controller: _mainScrollController,
         physics: BouncingScrollPhysics(),
         child: Column(
           children: [
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.only(top: 50, left: 20, right: 20),
-                    height: 220,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(
-                          "assets/images/homepage-backdrop.jpg",
-                        ),
-                        fit: BoxFit.cover,
-                        colorFilter: const ColorFilter.mode(
-                          Color.fromARGB(255, 67, 117, 69),
-                          BlendMode.modulate,
-                        ),
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.location_on_sharp, color: Colors.white),
-                            SizedBox(width: 4),
-                            Text(
-                              "Mumbai, India",
-                              style: AppWidget.smalltext(Colors.white, 15),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          'Welcome to Hotel De Luna',
-                          style: AppWidget.headingcustomtext(Colors.white, 25),
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          margin: EdgeInsets.only(top: 15, right: 5, left: 5),
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(130, 255, 255, 255),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: TextField(
-                            textAlignVertical: TextAlignVertical.center,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon: Icon(
-                                Icons.search_rounded,
-                                color: const Color.fromARGB(255, 0, 0, 0),
-                              ),
-                              hintText: "Search a location",
-                              hintStyle: AppWidget.smalltext(Colors.black, 16),
-                            ),
-                          ),
-                        ),
-                      ],
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+              child: Container(
+                padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).padding.top + kToolbarHeight - 20,
+                  left: 20,
+                  right: 20,
+                ),
+                height: 400,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/homepage-backdrop.jpg"),
+                    fit: BoxFit.cover,
+                    colorFilter: const ColorFilter.mode(
+                      Color.fromARGB(255, 57, 67, 57),
+                      BlendMode.modulate,
                     ),
                   ),
                 ),
-              ],
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+
+                  children: [
+                    Text(
+                      'Welcome to \nHOTEL DE LUNA',
+                      textAlign: TextAlign.center,
+                      style: AppWidget.headingcustomtext(Colors.white, 25),
+                    ),
+                    Text(
+                      'some description here',
+                      style: AppWidget.smalltext(Colors.white, 15),
+                    ),
+                    const SizedBox(height: 70),
+                    Container(
+                      margin: EdgeInsets.only(top: 15, bottom: 15),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(130, 255, 255, 255),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: TextField(
+                        textAlignVertical: TextAlignVertical.center,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          isDense: true,
+                          prefixIcon: Icon(
+                            Icons.search_rounded,
+                            color: const Color.fromARGB(255, 0, 0, 0),
+                          ),
+                          hintText: "Search a location",
+                          hintStyle: AppWidget.smalltext(Colors.black, 16),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -224,7 +232,12 @@ class _HotelHomepageState extends State<HotelHomepage> {
                   ),
                   GFButton(
                     onPressed: () {
-                      print("Button tapped");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FeaturedRetreats(),
+                        ),
+                      );
                     },
                     text: "See all",
                     color: const Color.fromARGB(255, 50, 109, 48),
@@ -234,11 +247,11 @@ class _HotelHomepageState extends State<HotelHomepage> {
               ),
             ),
             SizedBox(
-              height: 220,
+              height: 250,
               width: MediaQuery.of(context).size.width,
               child: GFCarousel(
                 scrollPhysics: const AlwaysScrollableScrollPhysics(),
-                height: 190,
+                height: 220,
                 items: [
                   _buildCard(
                     "Hotel name",
@@ -281,7 +294,12 @@ class _HotelHomepageState extends State<HotelHomepage> {
                   ),
                   GFButton(
                     onPressed: () {
-                      print("Button tapped");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RecommendedHotels(),
+                        ),
+                      );
                     },
                     text: "See all",
                     color: const Color.fromARGB(255, 50, 109, 48),
@@ -295,26 +313,30 @@ class _HotelHomepageState extends State<HotelHomepage> {
               width: MediaQuery.of(context).size.width,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ListView.separated(
-                  padding: EdgeInsets.zero,
-                  itemCount: 5,
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const SizedBox(height: 5),
-                  itemBuilder: (BuildContext context, int index) {
-                    final hotel = hotels[index];
+                child: Scrollbar(
+                  thumbVisibility: true,
+                  radius: Radius.circular(4),
+                  child: ListView.separated(
+                    padding: EdgeInsets.zero,
+                    itemCount: 5,
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const SizedBox(height: 5),
+                    itemBuilder: (BuildContext context, int index) {
+                      final hotel = hotels[index];
 
-                    return _buildListItem(
-                      hotel["name"]!,
-                      hotel["location"]!,
-                      hotel["price"]!,
-                      hotel["rating"]!,
-                      hotel["image"]!,
-                    );
-                  },
+                      return _buildListItem(
+                        hotel["name"]!,
+                        hotel["location"]!,
+                        hotel["price"]!,
+                        hotel["rating"]!,
+                        hotel["image"]!,
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 15),
             SizedBox(
               height: 50,
               width: 275,
@@ -344,6 +366,7 @@ class _HotelHomepageState extends State<HotelHomepage> {
                 ),
               ),
             ),
+            SizedBox(height: 30),
           ],
         ),
       ),
