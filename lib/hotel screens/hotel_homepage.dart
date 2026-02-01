@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:hotel_de_luna/hotel%20screens/featured_retreats.dart';
 import 'package:hotel_de_luna/hotel%20screens/recommended_hotels.dart';
+import 'package:hotel_de_luna/services/header.dart';
 import 'package:hotel_de_luna/services/widget_support.dart';
 
 class HotelHomepage extends StatefulWidget {
@@ -145,14 +146,12 @@ class _HotelHomepageState extends State<HotelHomepage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Color(0xFFE8F4EA),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: Navigator.canPop(context)
-            ? const BackButton(color: Colors.white)
-            : null,
-        systemOverlayStyle: SystemUiOverlayStyle.light,
+      appBar: AppDrawer.customAppBar(
+        context: context,
+        colors: Colors.white,
+        overlayStyle: SystemUiOverlayStyle.light,
       ),
+      endDrawer: const AppDrawer(),
       body: SingleChildScrollView(
         controller: _mainScrollController,
         physics: BouncingScrollPhysics(),
