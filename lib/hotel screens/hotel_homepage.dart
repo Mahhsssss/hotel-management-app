@@ -105,7 +105,7 @@ class _HotelHomepageState extends State<HotelHomepage> {
       "location": 'Location',
       "price": '100.00',
       "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
+      "image": "assets/images/onboarding/placeholder.webp",
     },
 
     {
@@ -113,7 +113,7 @@ class _HotelHomepageState extends State<HotelHomepage> {
       "location": 'Location',
       "price": '100.00',
       "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
+      "image": "assets/images/onboarding/placeholder.webp",
     },
 
     {
@@ -121,7 +121,7 @@ class _HotelHomepageState extends State<HotelHomepage> {
       "location": 'Location',
       "price": '100.00',
       "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
+      "image": "assets/images/onboarding/placeholder.webp",
     },
 
     {
@@ -129,7 +129,7 @@ class _HotelHomepageState extends State<HotelHomepage> {
       "location": 'Location',
       "price": '100.00',
       "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
+      "image": "assets/images/onboarding/placeholder.webp",
     },
 
     {
@@ -137,7 +137,7 @@ class _HotelHomepageState extends State<HotelHomepage> {
       "location": 'Location',
       "price": '100.00',
       "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
+      "image": "assets/images/onboarding/placeholder.webp",
     },
   ];
 
@@ -255,17 +255,17 @@ class _HotelHomepageState extends State<HotelHomepage> {
                   _buildCard(
                     "Hotel name",
                     "description",
-                    "assets/images/placeholder.jpg",
+                    "assets/images/onboarding/placeholder.webp",
                   ),
                   _buildCard(
                     "Hotel name",
                     "description",
-                    "assets/images/placeholder.jpg",
+                    "assets/images/onboarding/placeholder.webp",
                   ),
                   _buildCard(
                     "Hotel name",
                     "description",
-                    "assets/images/placeholder.jpg",
+                    "assets/images/onboarding/placeholder.webp",
                   ),
                 ],
                 viewportFraction: 0.8,

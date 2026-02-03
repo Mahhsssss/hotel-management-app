@@ -1,51 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:hotel_de_luna/Navigate_temp.dart';
+import 'package:hotel_de_luna/auth%20screens/guest_login.dart';
 import 'package:hotel_de_luna/hotel%20screens/hotel_homepage.dart';
-import 'package:hotel_de_luna/services/widget_support.dart';
-
-//Functionality done, need to add images, change colours etc..
+// import 'package:hotel_de_luna/services/header.dart';
+// import 'package:hotel_de_luna/services/widget_support.dart';
 
 class OnboardingContents {
   final String title;
   final String image;
   final String desc;
 
-  OnboardingContents({
+  const OnboardingContents({
     required this.title,
     required this.image,
     required this.desc,
   });
 }
 
-class SizeConfig {
-  static MediaQueryData? _mediaQueryData;
-  static double? screenW;
-  static double? screenH;
-  static double? blockH;
-  static double? blockV;
-
-  void init(BuildContext context) {
-    _mediaQueryData = MediaQuery.of(context);
-    screenW = _mediaQueryData!.size.width;
-    screenH = _mediaQueryData!.size.height;
-    blockH = screenW! / 100;
-    blockV = screenH! / 100;
-  }
-}
-
-List<OnboardingContents> contents = [
+List<OnboardingContents> contents = const [
   OnboardingContents(
     title: "Choose a branch",
-    image: "assets/images/location.png",
+    image: "assets/images/onboarding/location.webp",
     desc: "Hotel De Luna has many branches across Mumbai.",
   ),
   OnboardingContents(
     title: "Book a room",
-    image: "assets/images/paperplane.png",
+    image: "assets/images/onboarding/paperplane.webp",
     desc: "Book one of hundreds of types of rooms.",
   ),
   OnboardingContents(
     title: "Enjoy a Luxurious stay",
-    image: "assets/images/sun.png",
+    image: "assets/images/onboarding/sun.webp",
     desc: "Let go, unwind and enjoy with your loved ones.",
   ),
 ];
@@ -61,103 +47,89 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   late PageController _controller;
   int _currentPage = 0;
 
-  List<String> bgimages = [
-    "assets/images/hotel_building.jpg",
-    "assets/images/hotel_room.jpg",
-    "assets/images/poolside.jpg",
+  final List<String> bgimages = const [
+    "assets/images/onboarding/hotel_building.webp",
+    "assets/images/onboarding/hotel_room.webp",
+    "assets/images/onboarding/poolside.webp",
   ];
 
   @override
   void initState() {
-    _controller = PageController();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose(); // ✅ GOOD PRACTICE
-    super.dispose();
+    _controller = PageController();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     for (String path in bgimages) {
-      precacheImage(ResizeImage(AssetImage(path), width: 1000), context);
+      precacheImage(AssetImage(path), context);
     }
-
-    precacheImage(
-      ResizeImage(AssetImage("assets/images/location.png"), width: 1000),
-      context,
-    );
-    precacheImage(
-      ResizeImage(AssetImage("assets/images/paperplane.png"), width: 1000),
-      context,
-    );
-    precacheImage(
-      ResizeImage(AssetImage("assets/images/sun.png"), width: 1000),
-      context,
-    );
+    for (var content in contents) {
+      precacheImage(AssetImage(content.image), context);
+    }
   }
 
-  AnimatedContainer _buildDots({int? index}) {
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Widget _buildDots(int index) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
+      margin: const EdgeInsets.only(right: 5),
+      height: 10,
+      width: _currentPage == index ? 20 : 10,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(25)),
         color: Color.fromARGB(255, 219, 217, 217),
       ),
-      margin: const EdgeInsets.only(right: 5),
-      height: 10,
-      curve: Curves.easeInToLinear,
-      width: _currentPage == index ? 20 : 10,
     );
   }
 
-  // void _goToLogin() {
-  //   Navigator.pushReplacement(
-  //     context,
-  //     MaterialPageRoute(builder: (_) => const GuestLoginScreen()),
-  //   );
-  // } Commenting for now, will reintegrate once all pages are made
-
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-    double width = SizeConfig.screenW!;
-    double height = SizeConfig.screenH!;
+    // Optimized: Use MediaQuery directly for better performance than a custom static class
+    final Size size = MediaQuery.of(context).size;
+    final double width = size.width;
 
     return Scaffold(
       backgroundColor: Colors.black,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+      ),
       body: Stack(
         children: [
+          // Background Image Transition
           AnimatedSwitcher(
-            duration: const Duration(milliseconds: 50),
-            layoutBuilder:
-                (Widget? currentChild, List<Widget> previousChildren) {
-                  return Stack(
-                    alignment: Alignment.center,
-                    children: <Widget>[
-                      ...previousChildren,
-                      if (currentChild != null) currentChild,
-                    ],
-                  );
-                },
+            duration: const Duration(milliseconds: 400),
             child: Container(
               key: ValueKey<int>(_currentPage),
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(bgimages[_currentPage]),
+                  image: ResizeImage(
+                    AssetImage(bgimages[_currentPage]),
+                    width:
+                        (MediaQuery.of(context).size.width *
+                                MediaQuery.of(context).devicePixelRatio)
+                            .toInt(),
+                  ),
                   fit: BoxFit.cover,
                   colorFilter: const ColorFilter.mode(
-                    Color.fromARGB(255, 48, 84, 49),
-                    BlendMode.modulate,
+                    Color.fromARGB(150, 20, 40, 20), // Adjusted for readability
+                    BlendMode.darken,
                   ),
                 ),
               ),
             ),
           ),
 
+          // Content Layer
           SafeArea(
             child: Column(
               children: [
@@ -171,26 +143,38 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     itemCount: contents.length,
                     itemBuilder: (context, i) {
                       return Padding(
-                        padding: const EdgeInsets.all(50.0),
+                        padding: const EdgeInsets.all(40.0),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Expanded(child: Image.asset(contents[i].image)),
-                            SizedBox(height: (height >= 840) ? 40 : 20),
+                            Expanded(
+                              child: Image.asset(
+                                contents[i].image,
+                                cacheWidth: 300,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
                             Text(
                               contents[i].title,
                               textAlign: TextAlign.center,
-                              style: AppWidget.headingtext(Colors.white, 27),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Poppins",
+                              ),
                             ),
                             const SizedBox(height: 15),
                             Text(
                               contents[i].desc,
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w300,
-                                fontSize: (width <= 550) ? 17 : 25,
-                                color: Colors.white,
+                                fontSize: width <= 550 ? 16 : 22,
+                                color: Colors.white70,
                               ),
-                              textAlign: TextAlign.center,
                             ),
                           ],
                         ),
@@ -199,96 +183,90 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                 ),
 
+                // Bottom Controls
                 Expanded(
                   flex: 1,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(
                           contents.length,
-                          (index) => _buildDots(index: index),
+                          (index) => _buildDots(index),
                         ),
                       ),
 
-                      _currentPage + 1 == contents.length
-                          ? Padding(
-                              padding: const EdgeInsets.all(30),
-                              child: ElevatedButton(
-                                onPressed: () {},
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 30,
+                          vertical: 20,
+                        ),
+                        child: _currentPage + 1 == contents.length
+                            ? ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const GuestLoginScreen(),
+                                    ),
+                                  );
+                                }, //GuestLoginScreen
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color.fromARGB(
-                                    255,
-                                    209,
-                                    211,
-                                    208,
-                                  ),
+                                  backgroundColor: const Color(0xFFD1D3D0),
+                                  foregroundColor: Colors.black,
+                                  minimumSize: Size(width * 0.7, 55),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15),
                                   ),
-                                  padding: (width <= 550)
-                                      ? const EdgeInsets.symmetric(
-                                          horizontal: 80,
-                                          vertical: 15,
-                                        )
-                                      : EdgeInsets.symmetric(
-                                          horizontal: width * 0.2,
-                                          vertical: 25,
-                                        ),
                                 ),
-                                child: const Text(
-                                  "START",
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                              ),
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.all(30),
-                              child: Row(
+                                child: const Text("GET STARTED"),
+                              )
+                            : Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   TextButton(
-                                    onPressed: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => HotelHomepage(),
-                                      ),
-                                    ), // ✅ SKIP → LOGIN
+                                    onPressed: () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const NavigateTemp(),
+                                        ),
+                                      );
+                                    },
                                     child: const Text(
                                       "SKIP",
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(color: Colors.white70),
                                     ),
                                   ),
                                   ElevatedButton(
                                     onPressed: () {
                                       _controller.nextPage(
                                         duration: const Duration(
-                                          milliseconds: 200,
+                                          milliseconds: 300,
                                         ),
-                                        curve: Curves.easeIn,
+                                        curve: Curves.easeInOut,
                                       );
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color.fromARGB(
-                                        255,
-                                        227,
-                                        219,
-                                        219,
-                                      ),
+                                      backgroundColor: Colors.white,
+                                      foregroundColor: Colors.black,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 30,
+                                        vertical: 15,
+                                      ),
                                     ),
-                                    child: const Text(
-                                      "NEXT",
-                                      style: TextStyle(color: Colors.black),
-                                    ),
+                                    child: const Text("NEXT"),
                                   ),
                                 ],
                               ),
-                            ),
+                      ),
                     ],
                   ),
                 ),
