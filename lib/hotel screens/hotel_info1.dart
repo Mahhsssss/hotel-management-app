@@ -1,21 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HotelDetailsPage(),
-    );
-  }
-}
-
 class HotelDetailsPage extends StatefulWidget {
   const HotelDetailsPage({super.key});
 
@@ -41,60 +25,63 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
+            // 🖼 IMAGE SLIDER WITH SCALE ANIMATION (LIKE IMAGE)
             // 🖼 IMAGE SLIDER
             Stack(
               children: [
                 SizedBox(
                   height: 280,
                   child: PageView.builder(
+                    controller: PageController(viewportFraction: 0.9),
                     itemCount: hotelImages.length,
                     onPageChanged: (index) {
-                      setState(() {
-                        currentIndex = index;
-                      });
+                      setState(() => currentIndex = index);
                     },
                     itemBuilder: (context, index) {
-                      return Image.asset(
-                        hotelImages[index],
-                        fit: BoxFit.cover,
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              opaque: false,
+                              pageBuilder: (_, __, ___) => FullScreenImage(
+                                imagePath: hotelImages[index],
+                                tag: 'hotelImage$index',
+                              ),
+                            ),
+                          );
+                        },
+                        child: Hero(
+                          tag: 'hotelImage$index',
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(28),
+                            child: Image.asset(
+                              hotelImages[index],
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
                       );
                     },
                   ),
                 ),
 
+                // BACK BUTTON
                 Positioned(
                   top: 40,
                   left: 16,
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () {},
-                  ),
-                ),
-
-                Positioned(
-                  bottom: 16,
-                  left: 0,
-                  right: 0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      hotelImages.length,
-                      (index) => Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: currentIndex == index ? 10 : 6,
-                        height: 6,
-                        decoration: BoxDecoration(
-                          color: currentIndex == index
-                              ? Colors.white
-                              : Colors.white54,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.black38,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () => Navigator.pop(context),
                     ),
                   ),
                 ),
               ],
             ),
+
+
 
             const SizedBox(height: 16),
 
@@ -182,7 +169,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
 
             const SizedBox(height: 24),
 
-            // ⭐ REVIEWS SECTION
+            //  REVIEWS SECTION
             sectionHeader("Reviews", "See all"),
             const ReviewTile(
               name: "Aarav Mehta",
@@ -253,7 +240,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
   }
 }
 
-// 🔹 INFO CHIP
+//  INFO CHIP
 Widget infoChip(IconData icon, String text) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -271,7 +258,7 @@ Widget infoChip(IconData icon, String text) {
   );
 }
 
-// 🔹 SECTION HEADER
+// SECTION HEADER
 Widget sectionHeader(String title, String action) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -288,7 +275,7 @@ Widget sectionHeader(String title, String action) {
   );
 }
 
-// 🏨 AMENITY CARD
+// AMENITY CARD
 class AmenityCard extends StatelessWidget {
   final String image;
   final String label;
@@ -335,7 +322,7 @@ class AmenityCard extends StatelessWidget {
   }
 }
 
-// ⭐ REVIEW TILE
+// REVIEW TILE
 class ReviewTile extends StatelessWidget {
   final String name;
   final int rating;
@@ -393,3 +380,48 @@ class ReviewTile extends StatelessWidget {
     );
   }
 }
+class FullScreenImage extends StatelessWidget {
+  final String imagePath;
+  final String tag;
+
+  const FullScreenImage({
+    super.key,
+    required this.imagePath,
+    required this.tag,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: GestureDetector(
+        onVerticalDragDown: (_) => Navigator.pop(context),
+        child: Stack(
+          children: [
+            Center(
+              child: Hero(
+                tag: tag,
+                child: InteractiveViewer(
+                  minScale: 1,
+                  maxScale: 4,
+                  child: Image.asset(imagePath),
+                ),
+              ),
+            ),
+
+            // CLOSE BUTTON
+            Positioned(
+              top: 40,
+              right: 16,
+              child: IconButton(
+                icon: const Icon(Icons.close, color: Colors.white, size: 28),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+

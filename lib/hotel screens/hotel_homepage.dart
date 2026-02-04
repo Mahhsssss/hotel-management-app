@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:hotel_de_luna/hotel%20screens/hotel_info1.dart';
 import 'package:hotel_de_luna/services/widget_support.dart';
 
 class HotelHomepage extends StatefulWidget {
@@ -326,6 +327,7 @@ class _HotelHomepageState extends State<HotelHomepage> {
                 ),
                 child: ElevatedButton(
                   onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> HotelDetailsPage()));
                     /* Will navigate to booking screen/ filtering screen*/
                   },
                   style: ElevatedButton.styleFrom(
