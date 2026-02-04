@@ -9,7 +9,7 @@ class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
   static AppBar customAppBar({
-    required BuildContext context,
+    required BuildContext context,  
     String? title,
     required colors,
     SystemUiOverlayStyle overlayStyle = SystemUiOverlayStyle.dark,
