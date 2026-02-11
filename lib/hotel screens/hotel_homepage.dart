@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:hotel_de_luna/hotel%20screens/featured_retreats.dart';
-import 'package:hotel_de_luna/hotel%20screens/hotel_info_screens/hotel_info1.dart';
 import 'package:hotel_de_luna/hotel%20screens/recommended_hotels.dart';
+import 'package:hotel_de_luna/screens/filtering_screen.dart';
 import 'package:hotel_de_luna/services/header.dart';
 import 'package:hotel_de_luna/services/widget_support.dart';
 
@@ -351,7 +351,7 @@ class _HotelHomepageState extends State<HotelHomepage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => HotelDetailsPage(),
+                        builder: (context) => HotelFilterScreen(),
                       ),
                     );
                     /* Will navigate to booking screen/ filtering screen*/
