@@ -44,4 +44,3 @@ flutter:
   assets:
     - assets/images/
     - assets/images/onboarding/
-    - assets/lottie/Hotel_Booking_Check.json

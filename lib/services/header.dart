@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:hotel_de_luna/hotel%20screens/hotel_homepage.dart';
 import 'package:hotel_de_luna/services/widget_support.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
   static AppBar customAppBar({
-    required BuildContext context,  
+    required BuildContext context,
     String? title,
     required colors,
     SystemUiOverlayStyle overlayStyle = SystemUiOverlayStyle.dark,
