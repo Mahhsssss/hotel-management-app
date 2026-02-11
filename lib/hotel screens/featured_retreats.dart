@@ -18,7 +18,7 @@ class _FeaturedRetreatsState extends State<FeaturedRetreats> {
       "location": 'Location',
       "price": '100.00',
       "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
+      "image": "assets/images/onboarding/placeholder.webp",
       "destination": () => HotelHomepage(),
     },
 
@@ -27,7 +27,7 @@ class _FeaturedRetreatsState extends State<FeaturedRetreats> {
       "location": 'Location',
       "price": '100.00',
       "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
+      "image": "assets/images/onboarding/placeholder.webp",
       "destination": () => HotelHomepage(),
     },
 
@@ -36,7 +36,7 @@ class _FeaturedRetreatsState extends State<FeaturedRetreats> {
       "location": 'Location',
       "price": '100.00',
       "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
+      "image": "assets/images/onboarding/placeholder.webp",
       "destination": () => HotelHomepage(),
     },
 
@@ -45,7 +45,7 @@ class _FeaturedRetreatsState extends State<FeaturedRetreats> {
       "location": 'Location',
       "price": '100.00',
       "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
+      "image": "assets/images/onboarding/placeholder.webp",
       "destination": () => HotelHomepage(),
     },
 
@@ -54,7 +54,7 @@ class _FeaturedRetreatsState extends State<FeaturedRetreats> {
       "location": 'Location',
       "price": '100.00',
       "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
+      "image": "assets/images/onboarding/placeholder.webp",
       "destination": () => HotelHomepage(),
     },
 
@@ -63,7 +63,7 @@ class _FeaturedRetreatsState extends State<FeaturedRetreats> {
       "location": 'Location',
       "price": '100.00',
       "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
+      "image": "assets/images/onboarding/placeholder.webp",
       "destination": () => HotelHomepage(),
     },
 
@@ -72,7 +72,7 @@ class _FeaturedRetreatsState extends State<FeaturedRetreats> {
       "location": 'Location',
       "price": '100.00',
       "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
+      "image": "assets/images/onboarding/placeholder.webp",
       "destination": () => HotelHomepage(),
     },
 
@@ -81,7 +81,7 @@ class _FeaturedRetreatsState extends State<FeaturedRetreats> {
       "location": 'Location',
       "price": '100.00',
       "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
+      "image": "assets/images/onboarding/placeholder.webp",
       "destination": () => HotelHomepage(),
     },
 
@@ -90,7 +90,7 @@ class _FeaturedRetreatsState extends State<FeaturedRetreats> {
       "location": 'Location',
       "price": '100.00',
       "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
+      "image": "assets/images/onboarding/placeholder.webp",
       "destination": () => HotelHomepage(),
     },
   ];
