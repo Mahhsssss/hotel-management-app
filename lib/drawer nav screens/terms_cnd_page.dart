@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:hotel_de_luna/services/header.dart';
 
 class TermsConditionsPage extends StatelessWidget {
   const TermsConditionsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF1F8F4), // light green background
+    return Scaffold( 
+      extendBodyBehindAppBar: true,
+      appBar: AppDrawer.customAppBar(
+        context: context,
+        colors: Colors.black,
+        overlayStyle: SystemUiOverlayStyle.dark,
+      ),
+      endDrawer: const AppDrawer(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
@@ -14,7 +22,7 @@ class TermsConditionsPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
 
               // Green Icon
               Icon(
