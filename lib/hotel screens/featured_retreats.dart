@@ -14,85 +14,38 @@ class _FeaturedRetreatsState extends State<FeaturedRetreats> {
   //Card Constructor
   final List<Map<String, dynamic>> hotels = [
     {
-      "name": 'Hotel Name',
-      "location": 'Location',
-      "price": '100.00',
-      "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
+      "name": 'Hotel De Luna- Andheri',
+      "location": 'Andheri',
+      "rating": '3.9/5',
+      "image": "assets/andheri_img/andheri_exterior.webp",
       "destination": () => HotelHomepage(),
     },
 
     {
-      "name": 'Hotel Name',
-      "location": 'Location',
-      "price": '100.00',
-      "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
+      "name": 'Hotel De Luna- Bandra',
+      "location": 'Bandra',
+      "rating": '4.3/5',
+      "image": "assets/bandra_img/bandra_exterior (2).webp",
       "destination": () => HotelHomepage(),
     },
 
     {
-      "name": 'Hotel Name',
-      "location": 'Location',
-      "price": '100.00',
+      "name": 'Hotel De Luna- Borivali',
+      "location": 'Borivali',
       "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
+      "image": "assets/borivali_img/borivali_exterior.webp",
       "destination": () => HotelHomepage(),
     },
 
     {
-      "name": 'Hotel Name',
-      "location": 'Location',
-      "price": '100.00',
-      "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
+      "name": 'Hotel De Luna- Churchgate',
+      "location": 'Churchgate',
+      "rating": '4.3/5',
+      "image": "assets/churchgate_img/churchgate_exterior (3).webp",
       "destination": () => HotelHomepage(),
     },
 
-    {
-      "name": 'Hotel Name',
-      "location": 'Location',
-      "price": '100.00',
-      "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
-      "destination": () => HotelHomepage(),
-    },
-
-    {
-      "name": 'Hotel Name',
-      "location": 'Location',
-      "price": '100.00',
-      "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
-      "destination": () => HotelHomepage(),
-    },
-
-    {
-      "name": 'Hotel Name',
-      "location": 'Location',
-      "price": '100.00',
-      "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
-      "destination": () => HotelHomepage(),
-    },
-
-    {
-      "name": 'Hotel Name',
-      "location": 'Location',
-      "price": '100.00',
-      "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
-      "destination": () => HotelHomepage(),
-    },
-
-    {
-      "name": 'Hotel Name',
-      "location": 'Location',
-      "price": '100.00',
-      "rating": '4.5/5',
-      "image": "assets/images/placeholder.jpg",
-      "destination": () => HotelHomepage(),
-    },
+    
   ];
 
   int get count => hotels.length.toInt();
