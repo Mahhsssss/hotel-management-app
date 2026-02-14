@@ -11,9 +11,9 @@ class _HotelDetailsPageState_two_c extends State<HotelDetailsPage_two_c> {
   int currentIndex = 0;
 
   final List<String> hotelImages = [
-    "assets/images/hotel1.jpg",
-    "assets/images/hotel2.webp",
-    "assets/images/hotel3.webp",
+    "assets/bandra_img/bandra_r3.webp",
+    "assets/bandra_img/bandra_r1.webp",
+    "assets/bandra_img/bandra_r2.webp",
   ];
 
   @override

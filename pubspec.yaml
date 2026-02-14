@@ -10,8 +10,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
-  font_awesome_flutter: ^10.7.0
+  table_calendar: ^3.0.9
+
+  font_awesome_flutter: ^10.12.0
+
 
   # UI & Animations
   concentric_transition: ^1.0.3
@@ -38,9 +40,14 @@ dev_dependencies:
   url_launcher: ^6.3.2
 
 
+
 flutter:
   uses-material-design: true
 
   assets:
     - assets/images/
-    - assets/images/onboarding/
+    - assets/andheri_img/
+    - assets/bandra_img/
+    - assets/borivali_img/
+    - assets/churchgate_img/
+

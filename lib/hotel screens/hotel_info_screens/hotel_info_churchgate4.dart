@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 
-class HotelDetailsPage_four_b extends StatefulWidget {
-  const HotelDetailsPage_four_b({super.key});
+class HotelDetailsPage_four_c extends StatefulWidget {
+  const HotelDetailsPage_four_c({super.key});
 
   @override
-  State<HotelDetailsPage_four_b> createState() => _HotelDetailsPageState_four_b();
+  State<HotelDetailsPage_four_c> createState() => _HotelDetailsPageState_four_c();
 }
 
-class _HotelDetailsPageState_four_b extends State<HotelDetailsPage_four_b> {
+class _HotelDetailsPageState_four_c extends State<HotelDetailsPage_four_c> {
   int currentIndex = 0;
 
   final List<String> hotelImages = [
-    "assets/images/hotel1.jpg",
-    "assets/images/hotel2.webp",
-    "assets/images/hotel3.webp",
+    "assets/churchgate_img/churchgate_r1.webp",
+    "assets/churchgate_img/churchgate_r2.webp",
+    "assets/churchgate_img/churchgate_r3.webp",
+    "assets/churchgate_img/churchgate_r4.webp",
   ];
 
   @override
