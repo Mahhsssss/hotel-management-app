@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:hotel_de_luna/hotel%20screens/featured_retreats.dart';
-import 'package:hotel_de_luna/hotel%20screens/hotel_info_screens/hotel_info1.dart';
+import 'package:hotel_de_luna/hotel%20screens/hotel_info_screens/hotel_info_andheri.dart';
 import 'package:hotel_de_luna/hotel%20screens/recommended_hotels.dart';
 import 'package:hotel_de_luna/services/header.dart';
 import 'package:hotel_de_luna/services/widget_support.dart';
