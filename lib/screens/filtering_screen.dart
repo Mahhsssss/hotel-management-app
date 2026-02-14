@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 class HotelFilterScreen extends StatefulWidget {
@@ -33,13 +35,7 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
     "Triple Room",
   ];
 
-  final amenities = [
-    "Gym",
-    "Spa",
-    "Restaurant",
-    "Parking",
-    "Wi-Fi",
-  ];
+  final amenities = ["Gym", "Spa", "Restaurant", "Parking", "Wi-Fi"];
 
   Future<void> pickDate(bool isStart) async {
     final date = await showDatePicker(
@@ -69,7 +65,6 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             /// 📅 DATE PICKER
             _sectionTitle("Trip Dates"),
             Row(
@@ -81,9 +76,22 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
             ),
 
             _sectionTitle("Guests"),
-            _dropdown("Adults", adults, ["1","2","3","4"], (v)=>setState(()=>adults=v!)),
-            _dropdown("Children", children, ["0","1","2","3"], (v)=>setState(()=>children=v!)),
-            _dropdown("Pets Allowed", pets, ["Yes","No"], (v)=>setState(()=>pets=v!)),
+            _dropdown("Adults", adults, [
+              "1",
+              "2",
+              "3",
+              "4",
+            ], (v) => setState(() => adults = v!)),
+            _dropdown("Children", children, [
+              "0",
+              "1",
+              "2",
+              "3",
+            ], (v) => setState(() => children = v!)),
+            _dropdown("Pets Allowed", pets, [
+              "Yes",
+              "No",
+            ], (v) => setState(() => pets = v!)),
 
             _sectionTitle("Room Types"),
             _multiSelect(roomTypes, selectedRoomTypes),
@@ -92,11 +100,18 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
             _multiSelect(amenities, selectedAmenities),
 
             _sectionTitle("Price Range"),
-            _radioGroup(["Low","Medium","High"], priceRange, (v)=>setState(()=>priceRange=v)),
+            _radioGroup(
+              ["Low", "Medium", "High"],
+              priceRange,
+              (v) => setState(() => priceRange = v),
+            ),
 
             _sectionTitle("Star Rating"),
-            _radioGroup(["1","2","3","4","5"], starRating.toString(),
-                (v)=>setState(()=>starRating=int.parse(v))),
+            _radioGroup(
+              ["1", "2", "3", "4", "5"],
+              starRating.toString(),
+              (v) => setState(() => starRating = int.parse(v)),
+            ),
 
             const SizedBox(height: 30),
 
@@ -130,14 +145,16 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
     padding: const EdgeInsets.only(top: 22, bottom: 8),
     child: Text(
       title,
-      style: const TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-      ),
+      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
     ),
   );
 
-  Widget _dropdown(String label, String value, List<String> items, Function(String?) onChanged) {
+  Widget _dropdown(
+    String label,
+    String value,
+    List<String> items,
+    Function(String?) onChanged,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: DropdownButtonFormField(
@@ -146,7 +163,9 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
           labelText: label,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         ),
-        items: items.map((e)=>DropdownMenuItem(value: e, child: Text(e))).toList(),
+        items: items
+            .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+            .toList(),
         onChanged: onChanged,
       ),
     );
@@ -171,7 +190,9 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
               color: isSelected ? Colors.green.shade100 : Colors.white,
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
-                color: isSelected ? Colors.green.shade800 : Colors.grey.shade400,
+                color: isSelected
+                    ? Colors.green.shade800
+                    : Colors.grey.shade400,
                 width: 2,
               ),
             ),
@@ -188,7 +209,11 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
     );
   }
 
-  Widget _radioGroup(List<String> options, String groupValue, Function(String) onChanged) {
+  Widget _radioGroup(
+    List<String> options,
+    String groupValue,
+    Function(String) onChanged,
+  ) {
     return Column(
       children: options.map((e) {
         return RadioListTile(
@@ -219,7 +244,9 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
               Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 6),
               Text(
-                date == null ? "Select date" : "${date.day}/${date.month}/${date.year}",
+                date == null
+                    ? "Select date"
+                    : "${date.day}/${date.month}/${date.year}",
                 style: TextStyle(color: Colors.green.shade700),
               ),
             ],
