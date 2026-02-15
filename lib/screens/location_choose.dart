@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'filtering_screen.dart';
+
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
@@ -37,6 +39,7 @@ class _ExplorePageState extends State<ExplorePage> {
       filteredLocations = results;
     });
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -117,8 +120,19 @@ class DestinationCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+Widget build(BuildContext context) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => HotelFilterScreen(
+            selectedLocation: title,
+          ),
+        ),
+      );
+    },
+    child: Column(
       children: [
         Expanded(
           child: ClipRRect(
@@ -141,6 +155,7 @@ class DestinationCard extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
+    ),
+  );
+}
 }
