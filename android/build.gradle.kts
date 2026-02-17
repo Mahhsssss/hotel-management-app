@@ -10,7 +10,6 @@ plugins {
     id("org.jetbrains.kotlin.android") apply false
 }
 
-
 val newBuildDir: Directory =
     rootProject.layout.buildDirectory
         .dir("../../build")
