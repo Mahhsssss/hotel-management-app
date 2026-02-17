@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hotel_de_luna/database.dart';
+import 'package:hotel_de_luna/employee%20screens/employee/employee_tasks.dart';
 import 'package:hotel_de_luna/services/header.dart';
 
 class EmployeeMain extends StatelessWidget {
-  const EmployeeMain({super.key});
+  final String uid;
+  final DatabaseService _db = DatabaseService();
+
+  EmployeeMain({super.key, required this.uid});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,27 +19,56 @@ class EmployeeMain extends StatelessWidget {
         overlayStyle: SystemUiOverlayStyle.dark,
       ),
       endDrawer: const AppDrawer(),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          children: [
-            const ProfilePic(),
-            const SizedBox(height: 40),
-            ProfileMenu(
-              text: "My Account",
-              icon: Icons.person,
-              press: () => {},
-            ),
-            ProfileMenu(text: "Tasks", icon: Icons.task, press: () {}),
-            ProfileMenu(
-              text: "Schedule",
-              icon: Icons.calendar_month,
-              press: () {},
-            ),
+      body: StreamBuilder<List<Employee>>(
+        stream: _db.employees,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-            ProfileMenu(text: "Log Out", icon: Icons.login, press: () {}),
-          ],
-        ),
+          final currentUser = snapshot.data!.firstWhere((e) => e.uid == uid);
+
+          return SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Column(
+              children: [
+                const ProfilePic(),
+                const SizedBox(height: 40),
+                ProfileMenu(
+                  text: "My Account",
+                  icon: Icons.person,
+                  press: () => {},
+                ),
+                ProfileMenu(
+                  text: "Tasks",
+                  icon: Icons.task,
+                  press: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EmployeeTasks(uid: uid),
+                      ),
+                    );
+                  },
+                ),
+                ProfileMenu(
+                  text: "Schedule",
+                  icon: Icons.calendar_month,
+                  press: () {},
+                ),
+
+                if (currentUser.permissions != "none")
+                  ProfileMenu(
+                    text: "Manage Employees",
+                    icon: Icons.calendar_month,
+                    press: () {},
+                  ),
+
+                ProfileMenu(text: "Log Out", icon: Icons.login, press: () {}),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

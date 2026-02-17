@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hotel_de_luna/employee%20screens/admin/admin_main.dart';
 import 'package:hotel_de_luna/employee%20screens/employee/employee_main.dart';
-import 'package:hotel_de_luna/employee%20screens/reception/reception_main.dart';
-// import 'package:hotel_de_luna/employee%20screens/admin_page.dart';
-// import 'package:hotel_de_luna/employee%20screens/employee_page.dart';
-// import 'package:hotel_de_luna/employee%20screens/receptionist_page.dart';
 import '../services/auth_service.dart';
 
 class EmployeeLoginScreen extends StatelessWidget {
@@ -30,29 +25,27 @@ class EmployeeLoginScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 final user = await AuthService().login(
-                  email.text,
-                  password.text,
+                  email.text.trim(),
+                  password.text.trim(),
                 );
 
-                if (user != null && context.mounted) {
-                  if (email.text.trim() == "admin@gmail.com") {
+                if (user != null) {
+                  // 1. Capture the UID
+                  String uid = user.uid;
+
+                  // 2. Forward it to the next page
+                  if (context.mounted) {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => AdminMain()),
-                    );
-                  } else if (email.text.trim() == "receptionist@gmail.com") {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => ReceptionMain()),
-                    );
-                  } else {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => EmployeeMain()),
+                      MaterialPageRoute(
+                        builder: (context) => EmployeeMain(uid: uid),
+                      ),
                     );
                   }
-                }
+                } else {}
               },
+
+              // ignore: use_build_context_synchronously
               child: const Text("Sign In"),
             ),
             TextButton(
