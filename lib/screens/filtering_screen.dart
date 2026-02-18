@@ -15,6 +15,8 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
 
   // ---------------- FILTER STATES ----------------
 
+  // ---------------- FILTER STATES ----------------
+
   String selectedRoomType = "Deluxe Room";
   int selectedRating = 3;
   String selectedPriceCategory = "Medium";
@@ -27,6 +29,9 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
   DateTime? endDate;
 
   List<String> selectedAmenities = [];
+
+ 
+  
 
   final List<String> amenitiesList = [
     "WiFi",
@@ -64,6 +69,7 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
 
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+        
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -93,8 +99,61 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
 
             _buildCustomDropdown("Children", ["0","1","2","3"], guestsChildren,
                 (v) => setState(() => guestsChildren = v!)),
+            // -------- TRIP DATES --------
+            _buildSectionTitle("Trip Dates"),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildDatePickerCard("Start Date", startDate, true),
+                ),
+                const SizedBox(width: 15),
+                Expanded(
+                  child: _buildDatePickerCard("End Date", endDate, false),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 25),
+
+            // -------- GUESTS --------
+            _buildSectionTitle("Guests"),
+            _buildCustomDropdown("Adults", ["1","2","3","4"], guestsAdults,
+                (v) => setState(() => guestsAdults = v!)),
 
             const SizedBox(height: 15),
+
+            _buildCustomDropdown("Children", ["0","1","2","3"], guestsChildren,
+                (v) => setState(() => guestsChildren = v!)),
+
+            const SizedBox(height: 15),
+
+            _buildCustomDropdown("Pets Present", ["No","Yes"], petsPresent,
+                (v) => setState(() => petsPresent = v!)),
+
+            const SizedBox(height: 25),
+
+            // -------- ROOM TYPES --------
+            _buildSectionTitle("Room Types"),
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: [
+                "Deluxe Room",
+                "One Bedroom Suite",
+                "Junior Suite",
+                "Executive Suite",
+                "Presidential Suite",
+                "Single Room",
+                "Double / Queen",
+                "Twin Room"
+              ].map((type) => _buildSelectionChip(
+                    type,
+                    selectedRoomType == type,
+                    () => setState(() => selectedRoomType = type),
+                  )).toList(),
+            ),
+
+            const SizedBox(height: 25),
 
             _buildCustomDropdown("Pets Present", ["No","Yes"], petsPresent,
                 (v) => setState(() => petsPresent = v!)),
@@ -163,9 +222,50 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
                 );
               }).toList(),
             ),
+            const SizedBox(height: 25),
+
+            // -------- PRICE --------
+            _buildSectionTitle("Price Range"),
+            _buildPriceOption("Low"),
+            _buildPriceOption("Medium"),
+            _buildPriceOption("High"),
+
+            const SizedBox(height: 25),
+
+            // -------- STAR --------
+            _buildSectionTitle("Star Rating"),
+            ...[1,2,3,4,5].map((star) => _buildStarOption(star)),
+
+            const SizedBox(height: 25),
+
+            // -------- AMENITIES --------
+            _buildSectionTitle("Amenities"),
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: amenitiesList.map((amenity) {
+                final isSelected = selectedAmenities.contains(amenity);
+
+                return FilterChip(
+                  label: Text(amenity),
+                  selected: isSelected,
+                  selectedColor: lightGreenBg,
+                  checkmarkColor: primaryGreen,
+                  onSelected: (value) {
+                    setState(() {
+                      if (value) {
+                        selectedAmenities.add(amenity);
+                      } else {
+                        selectedAmenities.remove(amenity);
+                      }
+                    });
+                  },
+                );
+              }).toList(),
+            ),
 
             const SizedBox(height: 100),
-          ],
+          ]
         ),
       ),
 
@@ -345,29 +445,26 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
           const Center(child: CircularProgressIndicator()),
     );
 
-    try {
-      final hotels = await HotelService().getFilteredHotels(
-        location: widget.selectedLocation,
-        roomType: selectedRoomType,
-        starRating: selectedRating,
-        priceCategory: selectedPriceCategory,
-        selectedAmenities: selectedAmenities,
-      );
-
-      if (!mounted) return;
-
-      Navigator.pop(context);
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => HotelListScreen(hotels: hotels),
-        ),
-      );
-    } catch (e) {
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Error: $e")));
+    try { 
+      final hotels = await 
+      HotelService().getFilteredHotels(
+         location: widget.selectedLocation, 
+         roomType: selectedRoomType, 
+         starRating: selectedRating, 
+         priceCategory: selectedPriceCategory, 
+         selectedAmenities: selectedAmenities, 
+         ); 
+         if (!mounted) return; 
+         Navigator.pop(context); 
+         Navigator.push( context, 
+         MaterialPageRoute( builder: (_) => HotelListScreen(hotels: hotels), 
+         ), 
+         ); 
+    } catch (e) { 
+      Navigator.pop(context); 
+      ScaffoldMessenger.of(context) 
+      .showSnackBar(SnackBar(content: Text(
+        "Error: $e")));
+      } 
     }
   }
-}

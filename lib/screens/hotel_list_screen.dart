@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import '../models/hotel_model.dart';
 import 'hotel_details_page.dart';
 
+
 class HotelListScreen extends StatelessWidget {
   final List<Hotel> hotels;
   const HotelListScreen({super.key, required this.hotels});
+  
 
   @override
   Widget build(BuildContext context) {

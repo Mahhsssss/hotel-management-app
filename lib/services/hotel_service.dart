@@ -8,8 +8,9 @@ class HotelService {
     required String location,
     required String roomType,
     required int starRating,
-    required List<String> selectedAmenities,
     required String priceCategory,
+    required List<String> selectedAmenities,
+    
   }) async {
     // 1. Start with the collection reference
     Query<Map<String, dynamic>> query = _db.collection('hotels');
