@@ -45,6 +45,13 @@ class NavigateTemp extends StatelessWidget {
               ),
               child: Text("Go to Employee Page"),
             ),
+            ElevatedButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ExplorePage()),
+              ),
+              child: Text("Go to explore Page"),
+            ),
           ],
         ),
       ),
