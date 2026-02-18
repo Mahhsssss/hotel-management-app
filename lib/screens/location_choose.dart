@@ -11,10 +11,10 @@ class ExplorePage extends StatefulWidget {
 class _ExplorePageState extends State<ExplorePage> {
   // Original list (never changes)
   final List<Map<String, String>> allLocations = [
-    {"name": "ANDHERI", "image": "assets/images/andheri_loc.jpg"},
-    {"name": "BORIVALI", "image": "assets/images/borivali_loc.webp"},
-    {"name": "BANDRA", "image": "assets/images/bandra_loc.webp"},
-    {"name": "CHURCHGATE", "image": "assets/images/churchgate_loc.webp"},
+    {"name": "ANDHERI", "image": "assets/images/andheri.webp"},
+    {"name": "BORIVALI", "image": "assets/images/borivali.webp"},
+    {"name": "BANDRA", "image": "assets/images/bandra.webp"},
+    {"name": "CHURCHGATE", "image": "assets/images/churchgate.webp"},
   ];
 
   // List shown on UI (changes with search)
