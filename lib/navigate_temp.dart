@@ -3,6 +3,7 @@ import 'package:hotel_de_luna/employee%20screens/admin_page.dart';
 import 'package:hotel_de_luna/employee%20screens/employee_page.dart';
 import 'package:hotel_de_luna/employee%20screens/receptionist_page.dart';
 import 'package:hotel_de_luna/hotel%20screens/hotel_homepage.dart';
+import 'package:hotel_de_luna/employee screens/userprofiles.dart';
 
 class NavigateTemp extends StatelessWidget {
   const NavigateTemp({super.key});
@@ -45,6 +46,15 @@ class NavigateTemp extends StatelessWidget {
               ),
               child: Text("Go to Employee Page"),
             ),
+            ElevatedButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MyAccountScreen()),
+              ),
+              child: Text("Go to userprofile Page"),
+            ),
+            
+            
           ],
         ),
       ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hotel_de_luna/Navigate_temp.dart';
 import 'package:hotel_de_luna/auth%20screens/guest_login.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+
 
 class OnboardingContents {
   final String title;
@@ -54,6 +56,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void initState() {
     super.initState();
     _controller = PageController();
+    FlutterNativeSplash.remove();
+
   }
 
   @override

@@ -1,6 +1,6 @@
 name: hotel_de_luna
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -10,18 +10,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  cupertino_icons: ^1.0.8
   table_calendar: ^3.0.9
-
   font_awesome_flutter: ^10.12.0
-
 
   # UI & Animations
   concentric_transition: ^1.0.3
   getwidget: ^7.0.0
   lottie: ^3.3.2
-
-  # Icons
-  cupertino_icons: ^1.0.8
 
   # Firebase
   firebase_core: ^2.32.0
@@ -31,23 +28,34 @@ dependencies:
   # Fonts
   google_fonts: ^6.2.1
 
+  # Socials
+  url_launcher: ^6.3.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
 
-  #Socials
-  url_launcher: ^6.3.2
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.4.0
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: assets/images/logo.png
 
+flutter_native_splash:
+  color: "#faf9f2"
+  image: assets/images/logo3.png
+  android: true
+  ios: true
 
 flutter:
   uses-material-design: true
-
   assets:
     - assets/images/
+    - assets/images/onboarding/
     - assets/andheri_img/
     - assets/bandra_img/
     - assets/borivali_img/
     - assets/churchgate_img/
-
