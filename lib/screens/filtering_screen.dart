@@ -53,7 +53,7 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
         backgroundColor: primaryGreen,
         centerTitle: true,
         title: const Text(
-          "Hotel Filters ✨",
+          "Filter By Choice",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
@@ -218,6 +218,20 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
           initialDate: date ?? now,
           firstDate: now,
           lastDate: DateTime(2030),
+          builder:(context,child){
+            return Theme(
+              data: Theme.of(context).copyWith(
+                colorScheme: ColorScheme.light(
+                  primary: primaryGreen,
+                  onPrimary: Colors.white,
+                  onSurface: Colors.black
+
+                ),
+                dialogBackgroundColor: Colors.white
+              ),
+              child:child!,
+            );
+          },
         );
 
         if (picked != null) {
