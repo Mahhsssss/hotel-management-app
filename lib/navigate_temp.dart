@@ -45,7 +45,6 @@ class NavigateTemp extends StatelessWidget {
               ),
               child: Text("Go to Employee Page"),
             ),
-<<<<<<< HEAD
             ElevatedButton(
               onPressed: () => Navigator.push(
                 context,
@@ -53,8 +52,6 @@ class NavigateTemp extends StatelessWidget {
               ),
               child: Text("Go to explore Page"),
             ),
-=======
->>>>>>> 65fe828dca311a5a48f111174ef4c225039004d6
           ],
         ),
       ),
