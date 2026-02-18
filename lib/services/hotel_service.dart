@@ -8,6 +8,7 @@ class HotelService {
     required String location,
     required String roomType,
     required int starRating,
+    required String priceCategory,
     required List<String> selectedAmenities,
   }) async {
 

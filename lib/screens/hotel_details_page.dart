@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/hotel_model.dart';
-import 'payment_screen.dart';
+//import 'payment_screen.dart';
 
 class HotelDetailsPage extends StatelessWidget {
   final Hotel hotel;
@@ -132,15 +132,15 @@ class HotelDetailsPage extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) =>
-                                  PaymentScreen(hotel: hotel),
-                            ),
-                          );
-                        },
+                        // onPressed: () {
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (_) =>
+                        //           PaymentScreen(hotel: hotel),
+                        //     ),
+                        //   );
+                        // },
                         child: const Text(
                           "BOOK NOW",
                           style: TextStyle(fontSize: 18),
