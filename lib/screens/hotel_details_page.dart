@@ -5,7 +5,14 @@ import 'final_booking_details_page.dart';
 class HotelDetailsPage extends StatefulWidget {
   final Hotel hotels;
 
-  const HotelDetailsPage({super.key, required this.hotel});
+  const HotelDetailsPage({super.key, required this.hotels});
+  @override
+  State<HotelDetailsPage> createState() => _HotelDetailsPageState();
+}
+
+class _HotelDetailsPageState extends State<HotelDetailsPage> {
+  int currentIndex = 0;
+  final PageController pageController = PageController();
 
   @override
   Widget build(BuildContext context) {

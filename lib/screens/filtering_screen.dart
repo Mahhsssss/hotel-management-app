@@ -12,9 +12,6 @@ class HotelFilterScreen extends StatefulWidget {
 }
 
 class _HotelFilterScreenState extends State<HotelFilterScreen> {
-
-  // ---------------- FILTER STATES ----------------
-
   // ---------------- FILTER STATES ----------------
 
   String selectedRoomType = "Deluxe Room";
@@ -30,24 +27,20 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
 
   List<String> selectedAmenities = [];
 
- 
-  
-
   final List<String> amenitiesList = [
     "WiFi",
     "Swimming Pool",
-    
+
     "Parking",
     "Gym",
     "Restaurant",
     "Spa",
-    
   ];
 
   final Color primaryGreen = const Color(0xFF388E3C);
   final Color lightGreenBg = const Color(0xFFE8F5E9);
 
-  // ---------------- UI ----------------
+  // Start of ui:-
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +51,7 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
         backgroundColor: primaryGreen,
         centerTitle: true,
         title: const Text(
-          "Filter By Choice",
+          "Filter your Hotel Requirements",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
@@ -69,11 +62,9 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
 
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-        
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             // -------- TRIP DATES --------
             _buildSectionTitle("Trip Dates"),
             Row(
@@ -92,43 +83,30 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
 
             // -------- GUESTS --------
             _buildSectionTitle("Guests"),
-            _buildCustomDropdown("Adults", ["1","2","3","4"], guestsAdults,
-                (v) => setState(() => guestsAdults = v!)),
-
-            const SizedBox(height: 15),
-
-            _buildCustomDropdown("Children", ["0","1","2","3"], guestsChildren,
-                (v) => setState(() => guestsChildren = v!)),
-            // -------- TRIP DATES --------
-            _buildSectionTitle("Trip Dates"),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildDatePickerCard("Start Date", startDate, true),
-                ),
-                const SizedBox(width: 15),
-                Expanded(
-                  child: _buildDatePickerCard("End Date", endDate, false),
-                ),
-              ],
+            _buildCustomDropdown(
+              "Adults",
+              ["1", "2", "3", "4"],
+              guestsAdults,
+              (v) => setState(() => guestsAdults = v!),
             ),
 
-            const SizedBox(height: 25),
+            const SizedBox(height: 15),
 
-            // -------- GUESTS --------
-            _buildSectionTitle("Guests"),
-            _buildCustomDropdown("Adults", ["1","2","3","4"], guestsAdults,
-                (v) => setState(() => guestsAdults = v!)),
+            _buildCustomDropdown(
+              "Children",
+              ["0", "1", "2", "3"],
+              guestsChildren,
+              (v) => setState(() => guestsChildren = v!),
+            ),
 
             const SizedBox(height: 15),
 
-            _buildCustomDropdown("Children", ["0","1","2","3"], guestsChildren,
-                (v) => setState(() => guestsChildren = v!)),
-
-            const SizedBox(height: 15),
-
-            _buildCustomDropdown("Pets Present", ["No","Yes"], petsPresent,
-                (v) => setState(() => petsPresent = v!)),
+            _buildCustomDropdown(
+              "Pets Present",
+              ["No", "Yes"],
+              petsPresent,
+              (v) => setState(() => petsPresent = v!),
+            ),
 
             const SizedBox(height: 25),
 
@@ -137,48 +115,25 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
             Wrap(
               spacing: 10,
               runSpacing: 10,
-              children: [
-                "Deluxe Room",
-                "One Bedroom Suite",
-                "Junior Suite",
-                "Executive Suite",
-                "Presidential Suite",
-                "Single Room",
-                "Double / Queen",
-                "Twin Room"
-              ].map((type) => _buildSelectionChip(
-                    type,
-                    selectedRoomType == type,
-                    () => setState(() => selectedRoomType = type),
-                  )).toList(),
-            ),
-
-            const SizedBox(height: 25),
-
-            _buildCustomDropdown("Pets Present", ["No","Yes"], petsPresent,
-                (v) => setState(() => petsPresent = v!)),
-
-            const SizedBox(height: 25),
-
-            // -------- ROOM TYPES --------
-            _buildSectionTitle("Room Types"),
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: [
-                "Deluxe Room",
-                "One Bedroom Suite",
-                "Junior Suite",
-                "Executive Suite",
-                "Presidential Suite",
-                "Single Room",
-                "Double / Queen",
-                "Twin Room"
-              ].map((type) => _buildSelectionChip(
-                    type,
-                    selectedRoomType == type,
-                    () => setState(() => selectedRoomType = type),
-                  )).toList(),
+              children:
+                  [
+                        "Deluxe Room",
+                        "One Bedroom Suite",
+                        "Junior Suite",
+                        "Executive Suite",
+                        "Presidential Suite",
+                        "Single Room",
+                        "Double / Queen",
+                        "Twin Room",
+                      ]
+                      .map(
+                        (type) => _buildSelectionChip(
+                          type,
+                          selectedRoomType == type,
+                          () => setState(() => selectedRoomType = type),
+                        ),
+                      )
+                      .toList(),
             ),
 
             const SizedBox(height: 25),
@@ -193,48 +148,7 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
 
             // -------- STAR --------
             _buildSectionTitle("Star Rating"),
-            ...[1,2,3,4,5].map((star) => _buildStarOption(star)),
-
-            const SizedBox(height: 25),
-
-            // -------- AMENITIES --------
-            _buildSectionTitle("Amenities"),
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: amenitiesList.map((amenity) {
-                final isSelected = selectedAmenities.contains(amenity);
-
-                return FilterChip(
-                  label: Text(amenity),
-                  selected: isSelected,
-                  selectedColor: lightGreenBg,
-                  checkmarkColor: primaryGreen,
-                  onSelected: (value) {
-                    setState(() {
-                      if (value) {
-                        selectedAmenities.add(amenity);
-                      } else {
-                        selectedAmenities.remove(amenity);
-                      }
-                    });
-                  },
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 25),
-
-            // -------- PRICE --------
-            _buildSectionTitle("Price Range"),
-            _buildPriceOption("Low"),
-            _buildPriceOption("Medium"),
-            _buildPriceOption("High"),
-
-            const SizedBox(height: 25),
-
-            // -------- STAR --------
-            _buildSectionTitle("Star Rating"),
-            ...[1,2,3,4,5].map((star) => _buildStarOption(star)),
+            ...[1, 2, 3, 4, 5].map((star) => _buildStarOption(star)),
 
             const SizedBox(height: 25),
 
@@ -265,7 +179,7 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
             ),
 
             const SizedBox(height: 100),
-          ]
+          ],
         ),
       ),
 
@@ -301,10 +215,7 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
       padding: const EdgeInsets.only(bottom: 12),
       child: Text(
         title,
-        style: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -318,20 +229,6 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
           initialDate: date ?? now,
           firstDate: now,
           lastDate: DateTime(2030),
-          builder:(context,child){
-            return Theme(
-              data: Theme.of(context).copyWith(
-                colorScheme: ColorScheme.light(
-                  primary: primaryGreen,
-                  onPrimary: Colors.white,
-                  onSurface: Colors.black
-
-                ),
-                dialogBackgroundColor: Colors.white
-              ),
-              child:child!,
-            );
-          },
         );
 
         if (picked != null) {
@@ -367,42 +264,42 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
     );
   }
 
-  Widget _buildCustomDropdown(String label, List<String> items,
-      String current, ValueChanged<String?> onChanged) {
+  Widget _buildCustomDropdown(
+    String label,
+    List<String> items,
+    String current,
+    ValueChanged<String?> onChanged,
+  ) {
     return DropdownButtonFormField<String>(
-      value: current,
+      initialValue: current,
       decoration: InputDecoration(
         labelText: label,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
       ),
       items: items
-          .map((value) =>
-              DropdownMenuItem(value: value, child: Text(value)))
+          .map((value) => DropdownMenuItem(value: value, child: Text(value)))
           .toList(),
       onChanged: onChanged,
     );
   }
 
   Widget _buildSelectionChip(
-      String label, bool isSelected, VoidCallback onTap) {
+    String label,
+    bool isSelected,
+    VoidCallback onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
           color: isSelected ? lightGreenBg : Colors.white,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-              color: isSelected ? primaryGreen : Colors.grey),
+          border: Border.all(color: isSelected ? primaryGreen : Colors.grey),
         ),
         child: Text(
           label,
-          style: TextStyle(
-            color: isSelected ? primaryGreen : Colors.black,
-          ),
+          style: TextStyle(color: isSelected ? primaryGreen : Colors.black),
         ),
       ),
     );
@@ -441,30 +338,31 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) =>
-          const Center(child: CircularProgressIndicator()),
+      builder: (_) => const Center(child: CircularProgressIndicator()),
     );
 
-    try { 
-      final hotels = await 
-      HotelService().getFilteredHotels(
-         location: widget.selectedLocation, 
-         roomType: selectedRoomType, 
-         starRating: selectedRating, 
-         priceCategory: selectedPriceCategory, 
-         selectedAmenities: selectedAmenities, 
-         ); 
-         if (!mounted) return; 
-         Navigator.pop(context); 
-         Navigator.push( context, 
-         MaterialPageRoute( builder: (_) => HotelListScreen(hotels: hotels), 
-         ), 
-         ); 
-    } catch (e) { 
-      Navigator.pop(context); 
-      ScaffoldMessenger.of(context) 
-      .showSnackBar(SnackBar(content: Text(
-        "Error: $e")));
-      } 
+    try {
+      final hotels = await HotelService().getFilteredHotels(
+        location: widget.selectedLocation,
+        roomType: selectedRoomType,
+        starRating: selectedRating,
+        priceCategory: selectedPriceCategory,
+        selectedAmenities: selectedAmenities,
+      );
+
+      if (!mounted) return;
+
+      Navigator.pop(context);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => HotelListScreen(hotels: hotels)),
+      );
+    } catch (e) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Error: $e")));
     }
   }
+}

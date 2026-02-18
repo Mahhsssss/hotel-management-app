@@ -6,6 +6,7 @@ import 'package:hotel_de_luna/employee screens/receptionist_page.dart';
 import 'package:hotel_de_luna/hotel screens/hotel_homepage.dart';
 import 'package:hotel_de_luna/models/hotel_model.dart';
 import 'package:hotel_de_luna/screens/final_booking_details_page.dart';
+import 'package:hotel_de_luna/screens/location_choose.dart';
 
 class NavigateTemp extends StatelessWidget {
   const NavigateTemp({super.key});

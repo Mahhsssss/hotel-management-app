@@ -1,15 +1,3 @@
-// ============================================================
-// FILE LOCATION: lib/auth screens/guest_login.dart
-// REPLACE your existing guest_login.dart with this file
-// ============================================================
-// WHAT WAS ADDED (UI is completely unchanged):
-//   1. Loading state with spinner on button
-//   2. Firebase Auth — signs in with email/password
-//   3. Error handling — converts Firebase codes to readable messages
-//   4. Password visibility toggle
-//   5. After login → navigates to HotelHomepage
-// ============================================================
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../hotel screens/hotel_homepage.dart';
@@ -113,7 +101,7 @@ class _GuestLoginScreenState extends State<GuestLoginScreen> {
     }
   }
 
-  // ── Show error as SnackBar ─────────────────────────────────
+  // ── Show error as Snackbar
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -124,7 +112,7 @@ class _GuestLoginScreenState extends State<GuestLoginScreen> {
     );
   }
 
-  // ── BUILD — UI same as before ──────────────────────────────
+  // UI
   @override
   Widget build(BuildContext context) {
     return Scaffold(

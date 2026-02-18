@@ -1,19 +1,3 @@
-// ============================================================
-// FILE LOCATION: lib/auth screens/guest_signup.dart
-// REPLACE your existing guest_signup.dart with this file
-// ============================================================
-// WHAT WAS ADDED (UI is completely unchanged):
-//   1. Loading state with spinner on button
-//   2. Firebase Auth — creates email/password account
-//   3. Firestore — saves to Customers collection with your exact schema:
-//      - Name
-//      - Email ID
-//      - userId (same as Firebase Auth UID)
-//   4. Error handling — shows readable error messages
-//   5. Password validation (min 6 chars)
-//   6. Name validation (can't be empty)
-// ============================================================
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
