@@ -55,7 +55,8 @@ class Tasks {
   String taskName;
   String description;
   bool completed;
-  String id; // Internal ID for database operations
+  String id;
+  String Uid; // Internal ID for database operations
 
   Tasks({
     required this.taskName,
@@ -63,12 +64,14 @@ class Tasks {
     required this.employee,
     required this.completed,
     required this.id,
+    required this.Uid,
   });
 
   factory Tasks.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return Tasks(
       id: doc.id,
+      Uid: data['Uid'] ?? '',
       taskName: data['Tasks name'] ?? '',
       description: data['description'] ?? '',
       employee: data['employee'] ?? '',
@@ -82,6 +85,7 @@ class Tasks {
       'description': description,
       'employee': employee,
       'completed': completed,
+      'Uid': Uid,
     };
   }
 }
@@ -105,7 +109,7 @@ class DatabaseService {
   // 2. ACCESS TASKS
   Stream<List<Tasks>> get tasks {
     return _db
-        .collection('tasks')
+        .collection('Tasks')
         .snapshots()
         .map(
           (snapshot) =>
@@ -113,8 +117,14 @@ class DatabaseService {
         );
   }
 
-  Future<void> addTask(String name, String desc, String empName) async {
-    await _db.collection('tasks').add({
+  Future<void> addTask(
+    String Uid,
+    String name,
+    String desc,
+    String empName,
+  ) async {
+    await _db.collection('Tasks').add({
+      'Uid': Uid,
       'Tasks name': name,
       'description': desc,
       'employee': empName,
@@ -130,6 +140,6 @@ class DatabaseService {
   }
 
   Future<void> updateTask(Tasks Tasks) async {
-    await _db.collection('tasks').doc(Tasks.id).update(Tasks.toMap());
+    await _db.collection('Tasks').doc(Tasks.id).update(Tasks.toMap());
   }
 }

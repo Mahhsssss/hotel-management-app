@@ -9,12 +9,6 @@ import 'package:hotel_de_luna/services/header.dart';
 
 // ignore_for_file: avoid_print
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:hotel_de_luna/database.dart';
-import 'package:hotel_de_luna/employee%20screens/employee/employee_tasks.dart';
-import 'package:hotel_de_luna/services/header.dart';
-
 class EmployeeMain extends StatelessWidget {
   final String uid;
   final DatabaseService _db = DatabaseService();
@@ -106,12 +100,12 @@ class EmployeeMain extends StatelessWidget {
                   press: () {},
                 ),
 
-                // if (currentUser.Permissions != "none")
-                //   ProfileMenu(
-                //     text: "Manage Employees",
-                //     icon: Icons.people,
-                //     press: () {},
-                //   ),
+                if (currentUser.Permissions != "none")
+                  ProfileMenu(
+                    text: "Manage Employees",
+                    icon: Icons.people,
+                    press: () {},
+                  ),
                 ProfileMenu(
                   text: "Log Out",
                   icon: Icons.logout,
