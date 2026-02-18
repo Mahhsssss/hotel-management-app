@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/hotel_model.dart';
-import 'payment_screen.dart';
+// import 'payment_screen.dart';
 
 class HotelDetailsPage extends StatelessWidget {
   final Hotel hotel;
