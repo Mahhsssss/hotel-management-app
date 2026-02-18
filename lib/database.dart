@@ -3,50 +3,61 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // --- MODELS ---
 
 class Employee {
-  final String name;
-  final String permissions;
-  final String role;
-  final String salary;
-  final String uid;
+  final String docId;
+  final String Name;
+  final String Permissions;
+  final String Role;
+  final String Salary;
+  final String Uid;
 
   Employee({
-    required this.name,
-    required this.permissions,
-    required this.role,
-    required this.salary,
-    required this.uid,
+    required this.docId,
+    required this.Name,
+    required this.Permissions,
+    required this.Role,
+    required this.Salary,
+    required this.Uid,
   });
 
   factory Employee.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return Employee(
-      uid: data['uid'] ?? 'Unknown',
-      name: data['name'] ?? 'Unknown',
-      permissions: data['permissions'] ?? 'None',
-      role: data['role'] ?? 'Employee',
-      salary: data['salary'] ?? 'none',
+      docId: doc.id,
+      Uid: data['Uid']?.toString() ?? 'Unknown',
+      Name: data['Name']?.toString() ?? 'Unknown',
+      Permissions: data['Permissions']?.toString() ?? 'None',
+      Role: data['Role']?.toString() ?? 'Employee',
+      Salary: data['Salary']?.toString() ?? 'none',
     );
+  }
+
+  String toStringValue(dynamic value) {
+    if (value == null) return 'Unknown';
+    if (value is String) return value;
+    if (value is int) return value.toString(); // Convert int to String
+    if (value is double) return value.toString(); // Convert double to String
+    return value.toString(); // Fallback
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'name': name,
-      'permissions': permissions,
-      'role': role,
-      'salary': salary,
-      'uid': uid,
+      'Name': Name,
+      'Permissions': Permissions,
+      'Role': Role,
+      'Salary': Salary,
+      'Uid': Uid,
     };
   }
 }
 
-class Task {
+class Tasks {
   String employee;
   String taskName;
   String description;
   bool completed;
   String id; // Internal ID for database operations
 
-  Task({
+  Tasks({
     required this.taskName,
     required this.description,
     required this.employee,
@@ -54,11 +65,11 @@ class Task {
     required this.id,
   });
 
-  factory Task.fromFirestore(DocumentSnapshot doc) {
+  factory Tasks.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
-    return Task(
+    return Tasks(
       id: doc.id,
-      taskName: data['Task name'] ?? '',
+      taskName: data['Tasks name'] ?? '',
       description: data['description'] ?? '',
       employee: data['employee'] ?? '',
       completed: data['completed'] ?? false,
@@ -67,7 +78,7 @@ class Task {
 
   Map<String, dynamic> toMap() {
     return {
-      'Task name': taskName,
+      'Tasks name': taskName,
       'description': description,
       'employee': employee,
       'completed': completed,
@@ -81,9 +92,9 @@ class DatabaseService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // 1. ACCESS EMPLOYEES
-  Stream<List<Employee>> get employees {
+  Stream<List<Employee>> get Employees {
     return _db
-        .collection('employees')
+        .collection('Employees')
         .snapshots()
         .map(
           (snapshot) =>
@@ -92,19 +103,19 @@ class DatabaseService {
   }
 
   // 2. ACCESS TASKS
-  Stream<List<Task>> get tasks {
+  Stream<List<Tasks>> get tasks {
     return _db
         .collection('tasks')
         .snapshots()
         .map(
           (snapshot) =>
-              snapshot.docs.map((doc) => Task.fromFirestore(doc)).toList(),
+              snapshot.docs.map((doc) => Tasks.fromFirestore(doc)).toList(),
         );
   }
 
   Future<void> addTask(String name, String desc, String empName) async {
     await _db.collection('tasks').add({
-      'Task name': name,
+      'Tasks name': name,
       'description': desc,
       'employee': empName,
       'completed': false,
@@ -113,12 +124,12 @@ class DatabaseService {
 
   Future<void> updateEmployee(Employee employee) async {
     await _db
-        .collection('employees')
-        .doc(employee.uid)
+        .collection('Employees')
+        .doc(employee.Uid)
         .update(employee.toMap());
   }
 
-  Future<void> updateTask(Task task) async {
-    await _db.collection('tasks').doc(task.id).update(task.toMap());
+  Future<void> updateTask(Tasks Tasks) async {
+    await _db.collection('tasks').doc(Tasks.id).update(Tasks.toMap());
   }
 }

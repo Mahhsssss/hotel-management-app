@@ -1,3 +1,14 @@
+// ignore_for_file: avoid_print
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:hotel_de_luna/database.dart';
+import 'package:hotel_de_luna/employee%20screens/employee/employee_tasks.dart';
+import 'package:hotel_de_luna/services/header.dart';
+
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hotel_de_luna/database.dart';
@@ -9,6 +20,7 @@ class EmployeeMain extends StatelessWidget {
   final DatabaseService _db = DatabaseService();
 
   EmployeeMain({super.key, required this.uid});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,13 +32,40 @@ class EmployeeMain extends StatelessWidget {
       ),
       endDrawer: const AppDrawer(),
       body: StreamBuilder<List<Employee>>(
-        stream: _db.employees,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
+        stream: _db.Employees,
+        builder: (context, empSnapshot) {
+          if (empSnapshot.hasError) {
+            print("🔴 ERROR: ${empSnapshot.error}");
+          }
+
+          if (empSnapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final currentUser = snapshot.data!.firstWhere((e) => e.uid == uid);
+          if (empSnapshot.hasError) {
+            return Center(
+              child: Text(
+                'Error: ${empSnapshot.error}',
+                style: const TextStyle(color: Colors.red),
+              ),
+            );
+          }
+
+          if (!empSnapshot.hasData || empSnapshot.data!.isEmpty) {
+            return const Center(child: Text('No employees found in database'));
+          }
+
+          final currentUser = empSnapshot.data!.firstWhere(
+            (e) => e.Uid == uid,
+            orElse: () => Employee(
+              docId: 'Unknown',
+              Name: 'Unknown',
+              Permissions: 'Unknown',
+              Role: 'Unknown',
+              Salary: 'Unknown',
+              Uid: uid,
+            ),
+          );
 
           return SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: 20),
@@ -34,6 +73,16 @@ class EmployeeMain extends StatelessWidget {
               children: [
                 const ProfilePic(),
                 const SizedBox(height: 40),
+
+                Text(
+                  "Welcome, ${currentUser.Name != 'Unknown' ? currentUser.Name : 'Employee'}",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+
                 ProfileMenu(
                   text: "My Account",
                   icon: Icons.person,
@@ -57,14 +106,22 @@ class EmployeeMain extends StatelessWidget {
                   press: () {},
                 ),
 
-                if (currentUser.permissions != "none")
-                  ProfileMenu(
-                    text: "Manage Employees",
-                    icon: Icons.calendar_month,
-                    press: () {},
-                  ),
-
-                ProfileMenu(text: "Log Out", icon: Icons.login, press: () {}),
+                // if (currentUser.Permissions != "none")
+                //   ProfileMenu(
+                //     text: "Manage Employees",
+                //     icon: Icons.people,
+                //     press: () {},
+                //   ),
+                ProfileMenu(
+                  text: "Log Out",
+                  icon: Icons.logout,
+                  press: () async {
+                    await FirebaseAuth.instance.signOut();
+                    if (context.mounted) {
+                      Navigator.pushReplacementNamed(context, '/login');
+                    }
+                  },
+                ),
               ],
             ),
           );

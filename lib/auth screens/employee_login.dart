@@ -9,6 +9,7 @@ class EmployeeLoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final email = TextEditingController();
     final password = TextEditingController();
+    final AuthService _auth = AuthService(); // Create single instance
 
     return Scaffold(
       backgroundColor: const Color(0xFFE6F4EA),
@@ -24,28 +25,58 @@ class EmployeeLoginScreen extends StatelessWidget {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () async {
-                final user = await AuthService().login(
-                  email.text.trim(),
-                  password.text.trim(),
+                // Show loading indicator
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (context) =>
+                      const Center(child: CircularProgressIndicator()),
                 );
 
-                if (user != null) {
-                  // 1. Capture the UID
-                  String uid = user.uid;
+                try {
+                  final user = await _auth.login(
+                    email.text.trim(),
+                    password.text.trim(),
+                  );
 
-                  // 2. Forward it to the next page
-                  if (context.mounted) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => EmployeeMain(uid: uid),
-                      ),
-                    );
+                  // Close loading dialog
+                  if (context.mounted) Navigator.pop(context);
+
+                  if (user != null) {
+                    String uid = user.uid;
+                    print("✅ Login successful! UID: $uid"); // Debug print
+
+                    if (context.mounted) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EmployeeMain(uid: uid),
+                        ),
+                      );
+                    }
+                  } else {
+                    // Show error message
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Login failed. Check your credentials.',
+                          ),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
                   }
-                } else {}
+                } catch (e) {
+                  if (context.mounted) Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Error: $e'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
               },
-
-              // ignore: use_build_context_synchronously
               child: const Text("Sign In"),
             ),
             TextButton(
