@@ -24,8 +24,9 @@ class _EmployeeTasksState extends State<EmployeeTasks> {
     return StreamBuilder(
       stream: _db.employees, // Listen to the employees collection
       builder: (context, empSnapshot) {
-        if (!empSnapshot.hasData)
+        if (!empSnapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
+        }
 
         // Find the currentUser profile info
         final currentUser = empSnapshot.data!.firstWhere(
@@ -60,7 +61,7 @@ class _EmployeeTasksState extends State<EmployeeTasks> {
 
                 return Column(
                   children: [
-                    Container(
+                    SizedBox(
                       height: MediaQuery.of(context).size.height / 9,
                       child: Row(
                         children: [
