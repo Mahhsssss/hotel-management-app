@@ -44,7 +44,7 @@ class _PaymentPageState extends State<PaymentPage> {
       final data = widget.bookingData;
       final hotel = widget.hotel;
 
-      debugPrint('▶ Saving booking...');
+      debugPrint('Saving booking...');
 
       final docRef = FirebaseFirestore.instance.collection('BOOKINGS').doc();
 
