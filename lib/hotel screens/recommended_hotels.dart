@@ -233,12 +233,12 @@ class _RecommendedHotelsState extends State<RecommendedHotels> {
 
               // Hotels List
               _isLoading
-                  ? Container(
+                  ? SizedBox(
                       height: MediaQuery.of(context).size.height * 0.6,
                       child: Center(child: CircularProgressIndicator()),
                     )
                   : _errorMessage != null
-                  ? Container(
+                  ? SizedBox(
                       height: MediaQuery.of(context).size.height * 0.6,
                       child: Center(
                         child: Column(
@@ -259,7 +259,7 @@ class _RecommendedHotelsState extends State<RecommendedHotels> {
                       ),
                     )
                   : _hotels.isEmpty
-                  ? Container(
+                  ? SizedBox(
                       height: MediaQuery.of(context).size.height * 0.6,
                       child: Center(child: Text('No hotels found')),
                     )

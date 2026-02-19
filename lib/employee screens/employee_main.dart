@@ -1,33 +1,21 @@
-<<<<<<< HEAD
 // ignore_for_file: avoid_print
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hotel_de_luna/database.dart';
-import 'package:hotel_de_luna/employee%20screens/employee/employee_tasks.dart';
-import 'package:hotel_de_luna/employee%20screens/employee/manage_employees.dart';
+import 'package:hotel_de_luna/auth%20screens/employee_login.dart';
+import 'package:hotel_de_luna/services/database.dart';
+import 'package:hotel_de_luna/employee%20screens/employee_tasks.dart';
+import 'package:hotel_de_luna/employee%20screens/manage_employees.dart';
 import 'package:hotel_de_luna/services/header.dart';
 
 // ignore_for_file: avoid_print
 
-=======
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:hotel_de_luna/services/database.dart';
-import 'package:hotel_de_luna/employee%20screens/employee/employee_tasks.dart';
-import 'package:hotel_de_luna/services/header.dart';
-
->>>>>>> main
 class EmployeeMain extends StatelessWidget {
   final String uid;
   final DatabaseService _db = DatabaseService();
 
   EmployeeMain({super.key, required this.uid});
-<<<<<<< HEAD
-
-=======
->>>>>>> main
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +25,6 @@ class EmployeeMain extends StatelessWidget {
         colors: Colors.black,
         overlayStyle: SystemUiOverlayStyle.dark,
       ),
-<<<<<<< HEAD
       body: StreamBuilder<List<Employee>>(
         stream: _db.Employees,
         builder: (context, empSnapshot) {
@@ -74,17 +61,6 @@ class EmployeeMain extends StatelessWidget {
             ),
           );
           print("Current user name: ${currentUser.Name}");
-=======
-      endDrawer: const AppDrawer(),
-      body: StreamBuilder<List<Employee>>(
-        stream: _db.employees,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final currentUser = snapshot.data!.firstWhere((e) => e.uid == uid);
->>>>>>> main
 
           return SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: 20),
@@ -93,7 +69,6 @@ class EmployeeMain extends StatelessWidget {
                 const ProfilePic(),
                 const SizedBox(height: 40),
 
-<<<<<<< HEAD
                 Text(
                   "Welcome, ${currentUser.Name != 'Unknown' ? currentUser.Name : 'Employee'}",
                   style: const TextStyle(
@@ -104,36 +79,17 @@ class EmployeeMain extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 ProfileMenu(
-                  text: "My Account",
-                  icon: Icons.person,
-                  press: () => {},
-                ),
-
-=======
->>>>>>> main
-                ProfileMenu(
                   text: "Tasks",
                   icon: Icons.task,
                   press: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-<<<<<<< HEAD
                         builder: (context) =>
                             EmployeeTasks(uid: uid, name: currentUser.Name),
-=======
-                        builder: (context) => EmployeeTasks(uid: uid),
->>>>>>> main
                       ),
                     );
                   },
-                ),
-<<<<<<< HEAD
-
-                ProfileMenu(
-                  text: "Schedule",
-                  icon: Icons.calendar_month,
-                  press: () {},
                 ),
 
                 if (currentUser.Permissions != "none")
@@ -156,20 +112,18 @@ class EmployeeMain extends StatelessWidget {
                   press: () async {
                     await FirebaseAuth.instance.signOut();
                     if (context.mounted) {
-                      Navigator.pushReplacementNamed(context, '/login');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Signed out')),
+                      );
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EmployeeLoginScreen(),
+                        ),
+                      );
                     }
                   },
                 ),
-=======
-                if (currentUser.permissions != "none")
-                  ProfileMenu(
-                    text: "Manage Employees",
-                    icon: Icons.calendar_month,
-                    press: () {},
-                  ),
-
-                ProfileMenu(text: "Log Out", icon: Icons.login, press: () {}),
->>>>>>> main
               ],
             ),
           );
@@ -192,13 +146,7 @@ class ProfilePic extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           const CircleAvatar(
-<<<<<<< HEAD
             backgroundImage: AssetImage("assets/images/no_profile.webp"),
-=======
-            backgroundImage: AssetImage(
-              "assets/images/onboarding/placeholder.webp",
-            ),
->>>>>>> main
           ),
         ],
       ),

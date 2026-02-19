@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import '../models/booking_data.dart';
 import '../services/hotel_service.dart';
-import 'hotel_list_screen.dart';
 
 class HotelFilterScreen extends StatefulWidget {
   final String selectedLocation;
@@ -239,13 +238,13 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
         selectedAmenities: List.from(selectedAmenities),
       );
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) =>
-              HotelListScreen(hotels: hotels, bookingData: bookingData),
-        ),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (_) =>
+      //         HotelListScreen(hotels: hotels, bookingData: bookingData),
+      //   ),
+      // );
     } catch (e) {
       if (!mounted) return;
       Navigator.pop(context);

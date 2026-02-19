@@ -1,76 +1,108 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // --- MODELS ---
 
 class Employee {
-  final String name;
-  final String permissions;
-  final String role;
-  final String salary;
-  final String uid;
+  final String docId;
+  final String Name;
+  final String Permissions;
+  final String Role;
+  final String Salary;
+  final String Uid;
 
   Employee({
-    required this.name,
-    required this.permissions,
-    required this.role,
-    required this.salary,
-    required this.uid,
+    required this.docId,
+    required this.Name,
+    required this.Permissions,
+    required this.Role,
+    required this.Salary,
+    required this.Uid,
   });
 
   factory Employee.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return Employee(
-      uid: data['uid'] ?? 'Unknown',
-      name: data['name'] ?? 'Unknown',
-      permissions: data['permissions'] ?? 'None',
-      role: data['role'] ?? 'Employee',
-      salary: data['salary'] ?? 'none',
+      docId: doc.id,
+      Uid: data['Uid']?.toString() ?? 'Unknown',
+      Name: data['Name']?.toString() ?? 'Unknown',
+      Permissions: data['Permissions']?.toString() ?? 'None',
+      Role: data['Role']?.toString() ?? 'Employee',
+      Salary: data['Salary']?.toString() ?? 'none',
     );
+  }
+
+  String toStringValue(dynamic value) {
+    if (value == null) return 'Unknown';
+    if (value is String) return value;
+    if (value is int) return value.toString(); // Convert int to String
+    if (value is double) return value.toString(); // Convert double to String
+    return value.toString(); // Fallback
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'name': name,
-      'permissions': permissions,
-      'role': role,
-      'salary': salary,
-      'uid': uid,
+      'Name': Name,
+      'Permissions': Permissions,
+      'Role': Role,
+      'Salary': Salary,
+      'Uid': Uid,
     };
   }
 }
 
-class Task {
+class Tasks {
   String employee;
   String taskName;
   String description;
   bool completed;
-  String id; // Internal ID for database operations
+  String id;
+  String Uid; // Internal ID for database operations
 
-  Task({
+  Tasks({
     required this.taskName,
     required this.description,
     required this.employee,
     required this.completed,
     required this.id,
+    required this.Uid,
   });
 
-  factory Task.fromFirestore(DocumentSnapshot doc) {
+  factory Tasks.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
-    return Task(
+
+    // Handle completed field - ensure it's a bool
+    bool completedValue = false;
+    if (data['completed'] != null) {
+      if (data['completed'] is bool) {
+        completedValue = data['completed'] as bool;
+      } else if (data['completed'] is String) {
+        // If it's a string like "true" or "false"
+        completedValue = data['completed'].toString().toLowerCase() == 'true';
+      } else if (data['completed'] is int) {
+        // If it's 0 or 1
+        completedValue = data['completed'] == 1;
+      }
+    }
+
+    return Tasks(
       id: doc.id,
-      taskName: data['Task name'] ?? '',
-      description: data['description'] ?? '',
-      employee: data['employee'] ?? '',
-      completed: data['completed'] ?? false,
+      Uid: data['Uid']?.toString() ?? '',
+      taskName: data['Tasks name']?.toString() ?? '',
+      description: data['description']?.toString() ?? '',
+      employee: data['employee']?.toString() ?? '',
+      completed: completedValue, // Now guaranteed to be bool
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'Task name': taskName,
+      'Tasks name': taskName,
       'description': description,
       'employee': employee,
       'completed': completed,
+      'Uid': Uid,
     };
   }
 }
@@ -81,9 +113,9 @@ class DatabaseService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // 1. ACCESS EMPLOYEES
-  Stream<List<Employee>> get employees {
+  Stream<List<Employee>> get Employees {
     return _db
-        .collection('employees')
+        .collection('Employees')
         .snapshots()
         .map(
           (snapshot) =>
@@ -92,19 +124,25 @@ class DatabaseService {
   }
 
   // 2. ACCESS TASKS
-  Stream<List<Task>> get tasks {
+  Stream<List<Tasks>> get tasks {
     return _db
-        .collection('tasks')
+        .collection('Tasks')
         .snapshots()
         .map(
           (snapshot) =>
-              snapshot.docs.map((doc) => Task.fromFirestore(doc)).toList(),
+              snapshot.docs.map((doc) => Tasks.fromFirestore(doc)).toList(),
         );
   }
 
-  Future<void> addTask(String name, String desc, String empName) async {
-    await _db.collection('tasks').add({
-      'Task name': name,
+  Future<void> addTask(
+    String Uid,
+    String name,
+    String desc,
+    String empName,
+  ) async {
+    await _db.collection('Tasks').add({
+      'Uid': Uid,
+      'Tasks name': name,
       'description': desc,
       'employee': empName,
       'completed': false,
@@ -113,12 +151,80 @@ class DatabaseService {
 
   Future<void> updateEmployee(Employee employee) async {
     await _db
-        .collection('employees')
-        .doc(employee.uid)
+        .collection('Employees')
+        .doc(employee.Uid)
         .update(employee.toMap());
   }
 
-  Future<void> updateTask(Task task) async {
-    await _db.collection('tasks').doc(task.id).update(task.toMap());
+  // In your DatabaseService, add this method
+  Future<String> getEmployeeNameFromRef(dynamic employeeRef) async {
+    if (employeeRef == null) return 'Unknown';
+
+    try {
+      DocumentReference ref;
+      if (employeeRef is DocumentReference) {
+        ref = employeeRef;
+      } else if (employeeRef is String) {
+        // If it's a string path, convert to reference
+        ref = _db.doc(employeeRef);
+      } else {
+        return 'Unknown';
+      }
+
+      DocumentSnapshot empDoc = await ref.get();
+      if (empDoc.exists) {
+        Map<String, dynamic> data = empDoc.data() as Map<String, dynamic>;
+        return data['Name'] ?? 'Unknown';
+      }
+    } catch (e) {
+      print('Error fetching employee name: $e');
+    }
+
+    return 'Unknown';
+  }
+
+  Future<Employee?> getEmpFromUid(String Uid) async {
+    if (Uid.isEmpty) {
+      print("Error: UID is empty");
+      return null;
+    }
+
+    try {
+      var query = await FirebaseFirestore.instance
+          .collection('Employees')
+          .where('Uid', isEqualTo: Uid)
+          .limit(1)
+          .get();
+
+      if (query.docs.isEmpty) {
+        print("No employee with UID $Uid");
+        return null;
+      }
+
+      var doc = query.docs.first;
+      var data = doc.data();
+
+      return Employee(
+        docId: doc.id,
+        Uid: data['Uid']?.toString() ?? 'Unknown',
+        Name: data['Name']?.toString() ?? 'Unknown',
+        Permissions: data['Permissions']?.toString() ?? 'None',
+        Role: data['Role']?.toString() ?? 'Employee',
+        Salary: data['Salary']?.toString() ?? 'none',
+      );
+    } catch (e) {
+      print('Error fetching employee by UID $Uid: $e');
+      return null;
+    }
+  }
+
+  Future<void> updateTask(Tasks task) async {
+    await _db.collection('Tasks').doc(task.id).update({
+      'Task name': task.taskName,
+      'description': task.description,
+      'employee': task.employee,
+      'completed': task.completed, // Force bool
+      'Uid': task.Uid,
+    });
   }
 }
