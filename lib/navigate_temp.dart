@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hotel_de_luna/auth screens/guest_login.dart';
 import 'package:hotel_de_luna/employee%20screens/employee_main.dart';
-import 'package:hotel_de_luna/hotel screens/hotel_homepage.dart';
+import 'package:hotel_de_luna/hotel%20screens/hotel_homepage.dart';
+import 'package:hotel_de_luna/auth screens/guest_login.dart';
 import 'package:hotel_de_luna/models/booking_data.dart';
 import 'package:hotel_de_luna/models/hotel_model.dart';
 import 'package:hotel_de_luna/screens/explore_page.dart';
@@ -36,69 +36,64 @@ class NavigateTemp extends StatelessWidget {
 
     return Scaffold(
       body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  "Dev Navigation Page",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text("This is a tester page to skip login etc.. "),
+            ElevatedButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HotelHomepage()),
+              ),
+              child: Text("Go to Hotel HomePage"),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      EmployeeMain(uid: 'cWwfeKu3ElQOWMGDstDsBsDONeq1'),
                 ),
               ),
+              child: Text("Go to Employee profile page"),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      EmployeeMain(uid: 'zGUjfG1SV9PUtI23zVB6UQIQ3wY2'),
+                ),
+              ),
+              child: Text("Go to Receptionist Profile page"),
+            ),
 
-              ElevatedButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const GuestLoginScreen(),
-                  ),
+            ElevatedButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      EmployeeMain(uid: 'P0se35cjagderlKRH3m2TrRb1JK2'),
                 ),
-                child: const Text("Go to Guest Login Page"),
               ),
+              child: Text("Go to Admin Profile page"),
+            ),
 
-              ElevatedButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HotelHomepage()),
-                ),
-                child: const Text("Go to Hotel HomePage"),
+            ElevatedButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ExplorePage()),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FinalBookingDetailsPage(
-                        hotel: dummyHotel,
-                        bookingData: dummyBookingData, // ← fixed
-                      ),
-                    ),
-                  );
-                },
-                child: const Text("Go to Final Booking Page"),
+              child: Text("Go to explore page"),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ExplorePage()),
               ),
-
-              ElevatedButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ExplorePage()),
-                ),
-                child: const Text("Go to Explore Page"),
-              ),
-              ElevatedButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        EmployeeMain(uid: 'P0se35cjagderlKRH3m2TrRb1JK2'),
-                  ),
-                ),
-                child: const Text("Go to Admin Page"),
-              ),
-            ],
-          ),
+              child: Text("Go to explore page"),
+            ),
+          ],
         ),
       ),
     );
