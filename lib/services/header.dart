@@ -12,6 +12,7 @@ class AppDrawer extends StatelessWidget {
     required BuildContext context,
     String? title,
     required colors,
+
     SystemUiOverlayStyle overlayStyle = SystemUiOverlayStyle.dark,
   }) {
     return AppBar(
@@ -29,6 +30,26 @@ class AppDrawer extends StatelessWidget {
           ),
         ),
       ],
+      systemOverlayStyle: overlayStyle.copyWith(
+        statusBarColor: Colors.transparent,
+      ),
+    );
+  }
+
+  static AppBar customEmpAppBar({
+    required BuildContext context,
+    String? title,
+    required colors,
+
+    SystemUiOverlayStyle overlayStyle = SystemUiOverlayStyle.dark,
+  }) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      title: title != null
+          ? Text(title, style: AppWidget.headingtext(colors, 20))
+          : null,
+      centerTitle: true,
+      iconTheme: IconThemeData(color: colors, size: 30),
       systemOverlayStyle: overlayStyle.copyWith(
         statusBarColor: Colors.transparent,
       ),

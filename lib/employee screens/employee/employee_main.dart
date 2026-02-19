@@ -25,7 +25,6 @@ class EmployeeMain extends StatelessWidget {
         colors: Colors.black,
         overlayStyle: SystemUiOverlayStyle.dark,
       ),
-      endDrawer: const AppDrawer(),
       body: StreamBuilder<List<Employee>>(
         stream: _db.Employees,
         builder: (context, empSnapshot) {
@@ -61,6 +60,7 @@ class EmployeeMain extends StatelessWidget {
               Uid: uid,
             ),
           );
+          print("Current user name: ${currentUser.Name}");
 
           return SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: 20),
@@ -83,6 +83,7 @@ class EmployeeMain extends StatelessWidget {
                   icon: Icons.person,
                   press: () => {},
                 ),
+
                 ProfileMenu(
                   text: "Tasks",
                   icon: Icons.task,
@@ -90,11 +91,13 @@ class EmployeeMain extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => EmployeeTasks(uid: uid),
+                        builder: (context) =>
+                            EmployeeTasks(uid: uid, name: currentUser.Name),
                       ),
                     );
                   },
                 ),
+
                 ProfileMenu(
                   text: "Schedule",
                   icon: Icons.calendar_month,
@@ -147,9 +150,7 @@ class ProfilePic extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           const CircleAvatar(
-            backgroundImage: AssetImage(
-              "assets/images/onboarding/placeholder.webp",
-            ),
+            backgroundImage: AssetImage("assets/images/no_profile.webp"),
           ),
         ],
       ),

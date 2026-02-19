@@ -1,8 +1,10 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hotel_de_luna/database.dart';
 import 'package:hotel_de_luna/employee%20screens/employee/employee_tasks.dart';
+import 'package:hotel_de_luna/services/header.dart';
 
 class ManageEmployees extends StatelessWidget {
   final String uid;
@@ -13,6 +15,11 @@ class ManageEmployees extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppDrawer.customEmpAppBar(
+        context: context,
+        colors: Colors.black,
+        overlayStyle: SystemUiOverlayStyle.dark,
+      ),
       body: StreamBuilder<List<Employee>>(
         stream: _db.Employees,
         builder: (context, empSnapshot) {
@@ -56,8 +63,10 @@ class ManageEmployees extends StatelessWidget {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          EmployeeTasks(uid: currentEmployee.Uid),
+                      builder: (context) => EmployeeTasks(
+                        uid: currentEmployee.Uid,
+                        name: currentEmployee.Name,
+                      ),
                     ),
                   ),
                 );

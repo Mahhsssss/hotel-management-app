@@ -38,16 +38,6 @@ class NavigateTemp extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      EmployeeTasks(uid: 'cWwfeKu3ElQOWMGDstDsBsDONeq1'),
-                ),
-              ),
-              child: Text("Go to Employee tasks"),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
                       EmployeeMain(uid: 'zGUjfG1SV9PUtI23zVB6UQIQ3wY2'),
                 ),
               ),

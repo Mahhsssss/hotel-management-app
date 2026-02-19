@@ -7,8 +7,8 @@ import 'package:hotel_de_luna/services/header.dart';
 
 class EmployeeTasks extends StatefulWidget {
   final String uid;
-
-  const EmployeeTasks({super.key, required this.uid});
+  final String name;
+  const EmployeeTasks({super.key, required this.uid, required this.name});
 
   @override
   State<EmployeeTasks> createState() => _EmployeeTasksState();
@@ -22,7 +22,7 @@ class _EmployeeTasksState extends State<EmployeeTasks> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: const Color(0xFFE8F4EA),
-      appBar: AppDrawer.customAppBar(
+      appBar: AppDrawer.customEmpAppBar(
         context: context,
         colors: Colors.black,
         overlayStyle: SystemUiOverlayStyle.dark,
@@ -57,26 +57,33 @@ class _EmployeeTasksState extends State<EmployeeTasks> {
 
               Container(
                 padding: const EdgeInsets.all(20),
-                child: Column(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CircularProgressIndicator(
                       value: progressValue,
+                      constraints: BoxConstraints(),
                       strokeWidth: 8,
                       backgroundColor: Colors.grey.shade300,
                       color: Colors.black,
                     ),
-                    const SizedBox(height: 10),
-                    Text(
-                      "${(progressValue * 100).toInt()}% Completed",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      "$completed of $total tasks completed",
-                      style: const TextStyle(fontSize: 14),
+                    const SizedBox(width: 20),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${(progressValue * 100).toInt()}% Completed",
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          "$completed of $total tasks completed",
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ],
                     ),
                   ],
                 ),

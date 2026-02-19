@@ -147,7 +147,30 @@ class DatabaseService {
       return null;
     }
 
-    try {} catch (e) {
+    try {
+      var query = await FirebaseFirestore.instance
+          .collection('Employees')
+          .where('Uid', isEqualTo: Uid)
+          .limit(1)
+          .get();
+
+      if (query.docs.isEmpty) {
+        print("No employee with UID $Uid");
+        return null;
+      }
+
+      var doc = query.docs.first;
+      var data = doc.data() as Map<String, dynamic>;
+
+      return Employee(
+        docId: doc.id,
+        Uid: data['Uid']?.toString() ?? 'Unknown',
+        Name: data['Name']?.toString() ?? 'Unknown',
+        Permissions: data['Permissions']?.toString() ?? 'None',
+        Role: data['Role']?.toString() ?? 'Employee',
+        Salary: data['Salary']?.toString() ?? 'none',
+      );
+    } catch (e) {
       print('Error fetching employee by UID $Uid: $e');
       return null;
     }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hotel_de_luna/employee%20screens/employee/employee_main.dart';
+import 'package:hotel_de_luna/services/header.dart';
 import '../services/auth_service.dart';
 
 class EmployeeLoginScreen extends StatelessWidget {
@@ -9,9 +11,14 @@ class EmployeeLoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final email = TextEditingController();
     final password = TextEditingController();
-    final AuthService _auth = AuthService(); // Create single instance
+    final AuthService auth = AuthService(); // Create single instance
 
     return Scaffold(
+      appBar: AppDrawer.customEmpAppBar(
+        context: context,
+        colors: Colors.black,
+        overlayStyle: SystemUiOverlayStyle.dark,
+      ),
       backgroundColor: const Color(0xFFE6F4EA),
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -34,7 +41,7 @@ class EmployeeLoginScreen extends StatelessWidget {
                 );
 
                 try {
-                  final user = await _auth.login(
+                  final user = await auth.login(
                     email.text.trim(),
                     password.text.trim(),
                   );
