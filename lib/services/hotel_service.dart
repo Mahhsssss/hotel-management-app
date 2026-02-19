@@ -81,6 +81,7 @@ class HotelService {
         // Rethrow to handle the error in HotelFilterScreen
         rethrow;
       }
+<<<<<<< HEAD
     }
 
     // Optional: Method to test amenities filter alone
@@ -106,6 +107,11 @@ class HotelService {
         rethrow;
       }
     }
+=======
+    }
+    return [];
+  }
+>>>>>>> main
 
     // Optional: Method to get all hotels (no filters)
     Future<List<Hotel>> getAllHotels() async {
@@ -121,4 +127,21 @@ class HotelService {
       }
     }
   }
+<<<<<<< HEAD
+=======
+
+  // Optional: Method to get all hotels (no filters)
+  Future<List<Hotel>> getAllHotels() async {
+    try {
+      final snapshot = await _db.collection('hotels').get();
+
+      return snapshot.docs.map((doc) {
+        return Hotel.fromFirestore(doc.data(), doc.id);
+      }).toList();
+    } catch (e) {
+      print("Error fetching all hotels: $e");
+      rethrow;
+    }
+  }
+>>>>>>> main
 }
