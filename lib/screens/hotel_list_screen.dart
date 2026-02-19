@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import '../models/hotel_model.dart';
 import 'hotel_details_page.dart';
 
-
 class HotelListScreen extends StatelessWidget {
   final List<Hotel> hotels;
   const HotelListScreen({super.key, required this.hotels});
-  
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +60,7 @@ class HotelListScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: Colors.black,
                           blurRadius: 10,
                           offset: const Offset(0, 5),
                         ),
@@ -76,7 +74,8 @@ class HotelListScreen extends StatelessWidget {
                           children: [
                             ClipRRect(
                               borderRadius: const BorderRadius.vertical(
-                                  top: Radius.circular(20)),
+                                top: Radius.circular(20),
+                              ),
                               child: Image.asset(
                                 hotel.images.first,
                                 height: 200,
@@ -90,7 +89,9 @@ class HotelListScreen extends StatelessWidget {
                               right: 15,
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 8),
+                                  horizontal: 12,
+                                  vertical: 8,
+                                ),
                                 decoration: BoxDecoration(
                                   color: primaryGreen,
                                   borderRadius: BorderRadius.circular(12),
@@ -98,8 +99,9 @@ class HotelListScreen extends StatelessWidget {
                                 child: Text(
                                   "₹ ${hotel.price}",
                                   style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
@@ -125,12 +127,16 @@ class HotelListScreen extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      const Icon(Icons.star,
-                                          color: Colors.orange, size: 20),
+                                      const Icon(
+                                        Icons.star,
+                                        color: Colors.orange,
+                                        size: 20,
+                                      ),
                                       Text(
                                         " ${hotel.starRating}",
                                         style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -139,8 +145,11 @@ class HotelListScreen extends StatelessWidget {
                               const SizedBox(height: 8),
                               Row(
                                 children: [
-                                  Icon(Icons.location_on,
-                                      color: Colors.grey[600], size: 16),
+                                  Icon(
+                                    Icons.location_on,
+                                    color: Colors.grey[600],
+                                    size: 16,
+                                  ),
                                   const SizedBox(width: 4),
                                   Text(
                                     hotel.location,
@@ -155,7 +164,9 @@ class HotelListScreen extends StatelessWidget {
                                 children: hotel.amenities.take(3).map((a) {
                                   return Container(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 4),
+                                      horizontal: 8,
+                                      vertical: 4,
+                                    ),
                                     decoration: BoxDecoration(
                                       color: lightGreenBg,
                                       borderRadius: BorderRadius.circular(8),
@@ -163,9 +174,10 @@ class HotelListScreen extends StatelessWidget {
                                     child: Text(
                                       a,
                                       style: const TextStyle(
-                                          fontSize: 10,
-                                          color: primaryGreen,
-                                          fontWeight: FontWeight.bold),
+                                        fontSize: 10,
+                                        color: primaryGreen,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   );
                                 }).toList(),
