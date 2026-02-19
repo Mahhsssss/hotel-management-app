@@ -115,7 +115,6 @@ class _EmployeeTasksState extends State<EmployeeTasks> {
                               ),
                               subtitle: Text(task.description),
                               trailing: Checkbox(
-                                // fillColor: ,
                                 value: task.completed,
                                 onChanged: (value) async {
                                   final updatedTask = Tasks(

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // --- MODELS ---
@@ -137,6 +139,18 @@ class DatabaseService {
         .collection('Employees')
         .doc(employee.Uid)
         .update(employee.toMap());
+  }
+
+  Future<Employee?> getEmpFromUid(String Uid) async {
+    if (Uid.isEmpty) {
+      print("Error: UID is empty");
+      return null;
+    }
+
+    try {} catch (e) {
+      print('Error fetching employee by UID $Uid: $e');
+      return null;
+    }
   }
 
   Future<void> updateTask(Tasks Tasks) async {
