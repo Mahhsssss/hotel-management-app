@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import '../models/hotel_model.dart';
@@ -24,35 +26,129 @@ class HotelService {
     query = query.where('roomType', isEqualTo: roomType);
 
     // 4. Star Rating
+<<<<<<< HEAD
     query = query.where('starRating', isEqualTo: starRating);
+=======
+    query = query.where('starRating', isGreaterThanOrEqualTo: starRating);
+>>>>>>> 847f87269f59342b47f9d1143e61647e78215c66
 
     // 5. Price Range
     if (priceCategory == "Low") {
       query = query.where('price', isLessThanOrEqualTo: 5000);
     } else if (priceCategory == "Medium") {
+<<<<<<< HEAD
       query = query
           .where('price', isGreaterThan: 5000)
           .where('price', isLessThanOrEqualTo: 15000);
+=======
+      query = query.where('price', isLessThanOrEqualTo: 15000);
+>>>>>>> 847f87269f59342b47f9d1143e61647e78215c66
     } else if (priceCategory == "High") {
       query = query.where('price', isGreaterThan: 15000);
     }
 
+<<<<<<< HEAD
     // 6. Amenities Filter (limited to 10 items per Firestore query)
+=======
+    // 6. Amenities Filter
+>>>>>>> 847f87269f59342b47f9d1143e61647e78215c66
     if (selectedAmenities.isNotEmpty) {
       query = query.where('amenities', arrayContainsAny: selectedAmenities);
     }
 
     try {
+      // DEBUG: Print the filter criteria
+      print("=== FILTER CRITERIA ===");
+      print("Location: $location");
+      print("Room Type: $roomType");
+      print("Star Rating: $starRating");
+      print("Price Category: $priceCategory");
+      print("Amenities selected: $selectedAmenities");
+
       final snapshot = await query.get();
 
+<<<<<<< HEAD
       // 7. Map using Hotel.fromFirestore factory
+=======
+      // DEBUG: Print results
+      print("=== RESULTS ===");
+      print("Number of hotels found: ${snapshot.docs.length}");
+
+      // Print first few hotels to see their details
+      for (var i = 0; i < snapshot.docs.length && i < 3; i++) {
+        var doc = snapshot.docs[i];
+        var data = doc.data();
+        print("Hotel ${i + 1}: ${data['name'] ?? 'Unknown'}");
+        print("  Location: ${data['location']}");
+        print("  Room Type: ${data['roomType']}");
+        print("  Price: ${data['price']}");
+        print("  Star Rating: ${data['starRating']}");
+        print("  Amenities: ${data['amenities']}");
+      }
+
+      // 7. Map the data using your Hotel.fromFirestore factory
+>>>>>>> 847f87269f59342b47f9d1143e61647e78215c66
       return snapshot.docs.map((doc) {
         return Hotel.fromFirestore(doc.data(), doc.id);
       }).toList();
     } catch (e) {
+<<<<<<< HEAD
       // Fixed: use debugPrint instead of print (avoids avoid_print lint warning)
       debugPrint("Error fetching filtered hotels: $e");
       rethrow;
     }
   }
+=======
+      print("❌ Error fetching filtered hotels: $e");
+
+      // Check if it's an index error
+      if (e.toString().contains('requires an index')) {
+        print(
+          "⚠️ Firestore index required! Check the error message for the index creation link.",
+        );
+      }
+
+      // Rethrow to handle the error in HotelFilterScreen
+      rethrow;
+    }
+  }
+
+  // Optional: Method to test amenities filter alone
+  Future<List<Hotel>> testAmenitiesOnly(List<String> amenities) async {
+    try {
+      Query<Map<String, dynamic>> query = _db.collection('hotels');
+
+      if (amenities.isNotEmpty) {
+        query = query.where('amenities', arrayContainsAny: amenities);
+      }
+
+      final snapshot = await query.get();
+
+      print("=== AMENITIES ONLY TEST ===");
+      print("Testing amenities: $amenities");
+      print("Hotels found: ${snapshot.docs.length}");
+
+      return snapshot.docs.map((doc) {
+        return Hotel.fromFirestore(doc.data(), doc.id);
+      }).toList();
+    } catch (e) {
+      print("Error in amenities test: $e");
+      rethrow;
+    }
+  }
+
+  // Optional: Method to get all hotels (no filters)
+  Future<List<Hotel>> getAllHotels() async {
+    try {
+      final snapshot = await _db.collection('hotels').get();
+
+      return snapshot.docs.map((doc) {
+        return Hotel.fromFirestore(doc.data(), doc.id);
+      }).toList();
+    } catch (e) {
+      print("Error fetching all hotels: $e");
+      rethrow;
+    }
+  }
+>>>>>>> 847f87269f59342b47f9d1143e61647e78215c66
 }

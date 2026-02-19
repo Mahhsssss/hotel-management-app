@@ -1,11 +1,3 @@
-// lib/screens/filtering_screen.dart
-//
-// FIXES:
-//   - Dates and guests were collected but NEVER passed forward.
-//   - Now builds a BookingData object and sends it to HotelListScreen.
-//   - Replaced deprecated RadioListTile groupValue/onChanged with RadioGroup.
-//   - UI is completely unchanged.
-
 import 'package:flutter/material.dart';
 import '../models/booking_data.dart';
 import '../services/hotel_service.dart';
@@ -31,10 +23,9 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
   List<String> selectedAmenities = [];
 
   final List<String> amenitiesList = [
-    "WiFi",
-    "Swimming Pool",
-    "Parking",
-    "Gym",
+    "Wifi",
+    "Pool",
+    "Parking area",
     "Restaurant",
     "Spa",
   ];
