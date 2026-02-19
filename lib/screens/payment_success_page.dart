@@ -14,7 +14,7 @@ class PaymentSuccessPage extends StatelessWidget {
   final String bookingId;
   final String hotelName;
   final BookingData bookingData; // ← replaces checkIn/checkOut
-  final int totalAmount;         // ← replaces totalPrice
+  final int totalAmount; // ← replaces totalPrice
 
   const PaymentSuccessPage({
     super.key,
@@ -90,8 +90,7 @@ class PaymentSuccessPage extends StatelessWidget {
             ),
           ],
         ),
-        child:
-            const Icon(Icons.check_rounded, size: 75, color: Colors.white),
+        child: const Icon(Icons.check_rounded, size: 75, color: Colors.white),
       ),
     );
   }
@@ -191,9 +190,10 @@ class PaymentSuccessPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label,
-                    style:
-                        const TextStyle(fontSize: 12, color: Colors.grey)),
+                Text(
+                  label,
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
                 const SizedBox(height: 2),
                 Text(
                   value,
@@ -231,7 +231,7 @@ class PaymentSuccessPage extends StatelessWidget {
         onPressed: () {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (_) => const HotelHomepage()),
+            MaterialPageRoute(builder: (_) => HotelHomepage()),
             (route) => false,
           );
         },

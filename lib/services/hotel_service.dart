@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import '../models/hotel_model.dart';
 
 class HotelService {
@@ -83,44 +82,47 @@ class HotelService {
         rethrow;
       }
     }
+
+    // Optional: Method to test amenities filter alone
+    Future<List<Hotel>> testAmenitiesOnly(List<String> amenities) async {
+      try {
+        Query<Map<String, dynamic>> query = _db.collection('hotels');
+
+        if (amenities.isNotEmpty) {
+          query = query.where('amenities', arrayContainsAny: amenities);
+        }
+
+        final snapshot = await query.get();
+
+        print("=== AMENITIES ONLY TEST ===");
+        print("Testing amenities: $amenities");
+        print("Hotels found: ${snapshot.docs.length}");
+
+        return snapshot.docs.map((doc) {
+          return Hotel.fromFirestore(doc.data(), doc.id);
+        }).toList();
+      } catch (e) {
+        print("Error in amenities test: $e");
+        rethrow;
+      }
+    }
+
     return [];
   }
 
-  // Optional: Method to test amenities filter alone
-  Future<List<Hotel>> testAmenitiesOnly(List<String> amenities) async {
-    try {
-      Query<Map<String, dynamic>> query = _db.collection('hotels');
-
-      if (amenities.isNotEmpty) {
-        query = query.where('amenities', arrayContainsAny: amenities);
-      }
-
-      final snapshot = await query.get();
-
-      print("=== AMENITIES ONLY TEST ===");
-      print("Testing amenities: $amenities");
-      print("Hotels found: ${snapshot.docs.length}");
-
-      return snapshot.docs.map((doc) {
-        return Hotel.fromFirestore(doc.data(), doc.id);
-      }).toList();
-    } catch (e) {
-      print("Error in amenities test: $e");
-      rethrow;
-    }
-  }
-
-  // Optional: Method to get all hotels (no filters)
   Future<List<Hotel>> getAllHotels() async {
     try {
       final snapshot = await _db.collection('hotels').get();
+
+      print("=== ALL HOTELS ===");
+      print("Total hotels found: ${snapshot.docs.length}");
 
       return snapshot.docs.map((doc) {
         return Hotel.fromFirestore(doc.data(), doc.id);
       }).toList();
     } catch (e) {
       print("Error fetching all hotels: $e");
-      rethrow;
+      return []; // Return empty list on error
     }
   }
 }

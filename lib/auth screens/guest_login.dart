@@ -57,7 +57,7 @@ class _GuestLoginScreenState extends State<GuestLoginScreen> {
       // Use pushReplacement so back button doesn't go back to login
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const HotelHomepage()),
+        MaterialPageRoute(builder: (_) => HotelHomepage()),
       );
     } on FirebaseAuthException catch (e) {
       setState(() => isLoading = false);
