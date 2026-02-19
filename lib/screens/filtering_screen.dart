@@ -1,122 +1,305 @@
 import 'package:flutter/material.dart';
+import '../models/booking_data.dart';
+import '../services/hotel_service.dart';
+import 'hotel_list_screen.dart';
 
 class HotelFilterScreen extends StatefulWidget {
-  const HotelFilterScreen({super.key});
+  final String selectedLocation;
+  const HotelFilterScreen({super.key, required this.selectedLocation});
 
   @override
-  _HotelFilterScreenState createState() => _HotelFilterScreenState();
+  State<HotelFilterScreen> createState() => _HotelFilterScreenState();
 }
 
 class _HotelFilterScreenState extends State<HotelFilterScreen> {
+  String selectedRoomType = "Deluxe Room";
+  int selectedRating = 3;
+  String selectedPriceCategory = "Medium";
+  String guestsAdults = "1";
+  String guestsChildren = "0";
+  String petsPresent = "No";
   DateTime? startDate;
   DateTime? endDate;
-
-  String adults = "1";
-  String children = "0";
-  String pets = "No";
-
-  String priceRange = "Medium";
-  int starRating = 3;
-
-  List<String> selectedRoomTypes = [];
   List<String> selectedAmenities = [];
 
-  final roomTypes = [
-    "Deluxe Room",
-    "One Bedroom Suite",
-    "Junior Suite",
-    "Executive Suite",
-    "Presidential Suite",
-    "Single Room",
-    "Double / Queen",
-    "Twin Room",
-    "Triple Room",
-  ];
-
-  final amenities = [
-    "Gym",
-    "Spa",
+  final List<String> amenitiesList = [
+    "Wifi",
+    "Pool",
+    "Parking area",
     "Restaurant",
-    "Parking",
-    "Wi-Fi",
+    "Spa",
   ];
 
-  Future<void> pickDate(bool isStart) async {
-    final date = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2030),
-    );
-    if (date != null) {
-      setState(() {
-        isStart ? startDate = date : endDate = date;
-      });
-    }
-  }
+  final Color primaryGreen = const Color(0xFF388E3C);
+  final Color lightGreenBg = const Color(0xFFE8F5E9);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F8F7),
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Hotel Filters ✨"),
-        backgroundColor: Colors.green.shade700,
+        backgroundColor: primaryGreen,
         centerTitle: true,
+        title: const Text(
+          "Filter your Hotel Requirements",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
-            /// 📅 DATE PICKER
-            _sectionTitle("Trip Dates"),
+            _buildSectionTitle("Trip Dates"),
             Row(
               children: [
-                _dateCard("Start Date", startDate, () => pickDate(true)),
-                const SizedBox(width: 12),
-                _dateCard("End Date", endDate, () => pickDate(false)),
+                Expanded(
+                  child: _buildDatePickerCard("Start Date", startDate, true),
+                ),
+                const SizedBox(width: 15),
+                Expanded(
+                  child: _buildDatePickerCard("End Date", endDate, false),
+                ),
               ],
             ),
+            const SizedBox(height: 25),
 
-            _sectionTitle("Guests"),
-            _dropdown("Adults", adults, ["1","2","3","4"], (v)=>setState(()=>adults=v!)),
-            _dropdown("Children", children, ["0","1","2","3"], (v)=>setState(()=>children=v!)),
-            _dropdown("Pets Allowed", pets, ["Yes","No"], (v)=>setState(()=>pets=v!)),
+            _buildSectionTitle("Guests"),
+            _buildCustomDropdown(
+              "Adults",
+              ["1", "2", "3", "4"],
+              guestsAdults,
+              (v) => setState(() => guestsAdults = v!),
+            ),
+            const SizedBox(height: 15),
+            _buildCustomDropdown(
+              "Children",
+              ["0", "1", "2", "3"],
+              guestsChildren,
+              (v) => setState(() => guestsChildren = v!),
+            ),
+            const SizedBox(height: 15),
+            _buildCustomDropdown(
+              "Pets Present",
+              ["No", "Yes"],
+              petsPresent,
+              (v) => setState(() => petsPresent = v!),
+            ),
+            const SizedBox(height: 25),
 
-            _sectionTitle("Room Types"),
-            _multiSelect(roomTypes, selectedRoomTypes),
+            _buildSectionTitle("Room Types"),
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children:
+                  [
+                        "Deluxe Room",
+                        "One Bedroom Suite",
+                        "Junior Suite",
+                        "Executive Suite",
+                        "Presidential Suite",
+                        "Single Room",
+                        "Double / Queen",
+                        "Twin Room",
+                      ]
+                      .map(
+                        (type) => _buildSelectionChip(
+                          type,
+                          selectedRoomType == type,
+                          () => setState(() => selectedRoomType = type),
+                        ),
+                      )
+                      .toList(),
+            ),
+            const SizedBox(height: 25),
 
-            _sectionTitle("Amenities"),
-            _multiSelect(amenities, selectedAmenities),
+            _buildSectionTitle("Price Range"),
+            // Fixed: use RadioGroup instead of deprecated RadioListTile params
+            RadioGroup<String>(
+              groupValue: selectedPriceCategory,
+              onChanged: (v) => setState(() => selectedPriceCategory = v!),
+              values: const ["Low", "Medium", "High"],
+              labels: const ["Low", "Medium", "High"],
+              activeColor: primaryGreen,
+            ),
+            const SizedBox(height: 25),
 
-            _sectionTitle("Price Range"),
-            _radioGroup(["Low","Medium","High"], priceRange, (v)=>setState(()=>priceRange=v)),
+            _buildSectionTitle("Star Rating"),
+            RadioGroup<int>(
+              groupValue: selectedRating,
+              onChanged: (v) => setState(() => selectedRating = v!),
+              values: const [1, 2, 3, 4, 5],
+              labels: const [
+                "1 Stars",
+                "2 Stars",
+                "3 Stars",
+                "4 Stars",
+                "5 Stars",
+              ],
+              activeColor: primaryGreen,
+            ),
+            const SizedBox(height: 25),
 
-            _sectionTitle("Star Rating"),
-            _radioGroup(["1","2","3","4","5"], starRating.toString(),
-                (v)=>setState(()=>starRating=int.parse(v))),
+            _buildSectionTitle("Amenities"),
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: amenitiesList.map((amenity) {
+                final isSelected = selectedAmenities.contains(amenity);
+                return FilterChip(
+                  label: Text(amenity),
+                  selected: isSelected,
+                  selectedColor: lightGreenBg,
+                  checkmarkColor: primaryGreen,
+                  onSelected: (value) {
+                    setState(() {
+                      if (value) {
+                        selectedAmenities.add(amenity);
+                      } else {
+                        selectedAmenities.remove(amenity);
+                      }
+                    });
+                  },
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 100),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: ElevatedButton(
+          onPressed: _search,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primaryGreen,
+            minimumSize: const Size(double.infinity, 55),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+          ),
+          child: const Text(
+            "Show Hotels 🌿",
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
-            const SizedBox(height: 30),
+  // ── THE KEY FIX: build BookingData and pass it to next screen ─
+  void _search() async {
+    if (startDate == null || endDate == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please select start and end dates")),
+      );
+      return;
+    }
+    if (!endDate!.isAfter(startDate!)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Check-out must be after check-in")),
+      );
+      return;
+    }
 
-            /// 🔘 BUTTON
-            SizedBox(
-              width: double.infinity,
-              height: 52,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green.shade700,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                ),
-                onPressed: () {},
-                child: const Text(
-                  "Show Hotels 🌿",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(child: CircularProgressIndicator()),
+    );
+
+    try {
+      final hotels = await HotelService().getFilteredHotels(
+        location: widget.selectedLocation,
+        roomType: selectedRoomType,
+        starRating: selectedRating,
+        priceCategory: selectedPriceCategory,
+        selectedAmenities: selectedAmenities,
+      );
+
+      if (!mounted) return;
+      Navigator.pop(context); // close loading
+
+      final bookingData = BookingData(
+        location: widget.selectedLocation,
+        checkIn: startDate!,
+        checkOut: endDate!,
+        adults: int.parse(guestsAdults),
+        children: int.parse(guestsChildren),
+        selectedAmenities: List.from(selectedAmenities),
+      );
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) =>
+              HotelListScreen(hotels: hotels, bookingData: bookingData),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      Navigator.pop(context);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Error: $e")));
+    }
+  }
+
+  // ── UI helpers ──────────────────────────────────────────────────
+
+  Widget _buildSectionTitle(String title) => Padding(
+    padding: const EdgeInsets.only(bottom: 12),
+    child: Text(
+      title,
+      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    ),
+  );
+
+  Widget _buildDatePickerCard(String title, DateTime? date, bool isStart) {
+    return InkWell(
+      onTap: () async {
+        final now = DateTime.now();
+        final picked = await showDatePicker(
+          context: context,
+          initialDate: date ?? now,
+          firstDate: now,
+          lastDate: DateTime(2030),
+        );
+        if (picked != null) {
+          setState(() {
+            if (isStart) {
+              startDate = picked;
+              if (endDate != null && !endDate!.isAfter(picked)) endDate = null;
+            } else {
+              endDate = picked;
+            }
+          });
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          border: Border.all(color: primaryGreen),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 5),
+            Text(
+              date == null
+                  ? "Select date"
+                  : "${date.day}/${date.month}/${date.year}",
+              style: TextStyle(color: primaryGreen),
             ),
           ],
         ),
@@ -124,108 +307,87 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
     );
   }
 
-  /// ===================== WIDGETS =====================
-
-  Widget _sectionTitle(String title) => Padding(
-    padding: const EdgeInsets.only(top: 22, bottom: 8),
-    child: Text(
-      title,
-      style: const TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
+  Widget _buildCustomDropdown(
+    String label,
+    List<String> items,
+    String current,
+    ValueChanged<String?> onChanged,
+  ) {
+    return DropdownButtonFormField<String>(
+      initialValue: current,
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
       ),
-    ),
-  );
+      items: items
+          .map((v) => DropdownMenuItem(value: v, child: Text(v)))
+          .toList(),
+      onChanged: onChanged,
+    );
+  }
 
-  Widget _dropdown(String label, String value, List<String> items, Function(String?) onChanged) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: DropdownButtonFormField(
-        initialValue: value,
-        decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+  Widget _buildSelectionChip(
+    String label,
+    bool isSelected,
+    VoidCallback onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          color: isSelected ? lightGreenBg : Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: isSelected ? primaryGreen : Colors.grey),
         ),
-        items: items.map((e)=>DropdownMenuItem(value: e, child: Text(e))).toList(),
-        onChanged: onChanged,
+        child: Text(
+          label,
+          style: TextStyle(color: isSelected ? primaryGreen : Colors.black),
+        ),
       ),
     );
   }
+}
 
-  Widget _multiSelect(List<String> options, List<String> selected) {
-    return Wrap(
-      spacing: 10,
-      runSpacing: 10,
-      children: options.map((item) {
-        final isSelected = selected.contains(item);
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              isSelected ? selected.remove(item) : selected.add(item);
-            });
-          },
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            decoration: BoxDecoration(
-              color: isSelected ? Colors.green.shade100 : Colors.white,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: isSelected ? Colors.green.shade800 : Colors.grey.shade400,
-                width: 2,
-              ),
-            ),
-            child: Text(
-              item,
-              style: TextStyle(
-                color: isSelected ? Colors.green.shade900 : Colors.black,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
+// ── RadioGroup widget — replaces deprecated RadioListTile params ──
+class RadioGroup<T> extends StatelessWidget {
+  final T groupValue;
+  final ValueChanged<T?> onChanged;
+  final List<T> values;
+  final List<String> labels;
+  final Color activeColor;
 
-  Widget _radioGroup(List<String> options, String groupValue, Function(String) onChanged) {
+  const RadioGroup({
+    super.key,
+    required this.groupValue,
+    required this.onChanged,
+    required this.values,
+    required this.labels,
+    required this.activeColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
-      children: options.map((e) {
-        return RadioListTile(
-          title: Text(e),
-          value: e,
-          groupValue: groupValue,
-          activeColor: Colors.green.shade700,
-          onChanged: (val) => onChanged(val.toString()),
+      children: List.generate(values.length, (i) {
+        return InkWell(
+          onTap: () => onChanged(values[i]),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Row(
+              children: [
+                Radio<T>(
+                  value: values[i],
+                  groupValue: groupValue,
+                  activeColor: activeColor,
+                  onChanged: onChanged,
+                ),
+                Text(labels[i], style: const TextStyle(fontSize: 15)),
+              ],
+            ),
+          ),
         );
-      }).toList(),
-    );
-  }
-
-  Widget _dateCard(String label, DateTime? date, VoidCallback onTap) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: Colors.green.shade600),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
-              const SizedBox(height: 6),
-              Text(
-                date == null ? "Select date" : "${date.day}/${date.month}/${date.year}",
-                style: TextStyle(color: Colors.green.shade700),
-              ),
-            ],
-          ),
-        ),
-      ),
+      }),
     );
   }
 }

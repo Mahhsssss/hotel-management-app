@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'filtering_screen.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
@@ -10,10 +11,10 @@ class ExplorePage extends StatefulWidget {
 class _ExplorePageState extends State<ExplorePage> {
   // Original list (never changes)
   final List<Map<String, String>> allLocations = [
-    {"name": "ANDHERI", "image": "assets/iamges/andheri.webp"},
-    {"name": "BORIVALI", "image": "assets/images/borivali.webp"},
-    {"name": "BANDRA", "image": "assets/images/bandra.webp"},
-    {"name": "CHURCHGATE", "image": "assets/images/churchgate.webp"},
+    {"name": "ANDHERI", "image": "assets/images/andheri_loc.jpg"},
+    {"name": "BORIVALI", "image": "assets/images/borivali_loc.webp"},
+    {"name": "BANDRA", "image": "assets/images/bandra_loc.webp"},
+    {"name": "CHURCHGATE", "image": "assets/images/churchgate_loc.webp"},
   ];
 
   // List shown on UI (changes with search)
@@ -110,37 +111,43 @@ class DestinationCard extends StatelessWidget {
   final String image;
   final String title;
 
-  const DestinationCard({
-    super.key,
-    required this.image,
-    required this.title,
-  });
+  const DestinationCard({super.key, required this.image, required this.title});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Image.asset(
-              image,
-              width: double.infinity,
-              fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => HotelFilterScreen(selectedLocation: title),
+          ),
+        );
+      },
+      child: Column(
+        children: [
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.asset(
+                image,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 10),
-        Text(
-          title,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            letterSpacing: 1,
+          const SizedBox(height: 10),
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
