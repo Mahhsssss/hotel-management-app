@@ -1,5 +1,8 @@
+<<<<<<< HEAD
+=======
 // ignore_for_file: avoid_print
 
+>>>>>>> main
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/hotel_model.dart';
 
@@ -10,6 +13,29 @@ class HotelService {
     required String location,
     required String roomType,
     required int starRating,
+<<<<<<< HEAD
+    required List<String> selectedAmenities,
+  }) async {
+
+    Query<Map<String, dynamic>> query = _db
+        .collection('hotels')
+        .where('location', isEqualTo: location)
+        .where('starRating', isGreaterThanOrEqualTo: starRating)
+        .where('roomType', isEqualTo: roomType);
+
+    if (selectedAmenities.isNotEmpty) {
+      query = query.where(
+        'amenities',
+        arrayContainsAny: selectedAmenities,
+      );
+    }
+
+    final snapshot = await query.get();
+
+    return snapshot.docs
+        .map((doc) => Hotel.fromFirestore(doc.data(), doc.id))
+        .toList();
+=======
     required String priceCategory,
     required List<String> selectedAmenities,
   }) async {
@@ -124,5 +150,6 @@ class HotelService {
       print("Error fetching all hotels: $e");
       return []; // Return empty list on error
     }
+>>>>>>> main
   }
 }

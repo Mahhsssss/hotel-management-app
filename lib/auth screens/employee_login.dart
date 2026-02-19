@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hotel_de_luna/employee%20screens/admin_page.dart';
-import 'package:hotel_de_luna/employee%20screens/employee_page.dart';
-import 'package:hotel_de_luna/employee%20screens/receptionist_page.dart';
+import 'package:flutter/services.dart';
+import 'package:hotel_de_luna/employee%20screens/employee/employee_main.dart';
+import 'package:hotel_de_luna/services/header.dart';
 import '../services/auth_service.dart';
 
 class EmployeeLoginScreen extends StatelessWidget {
@@ -11,8 +11,14 @@ class EmployeeLoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final email = TextEditingController();
     final password = TextEditingController();
+    final AuthService auth = AuthService(); // Create single instance
 
     return Scaffold(
+      appBar: AppDrawer.customEmpAppBar(
+        context: context,
+        colors: Colors.black,
+        overlayStyle: SystemUiOverlayStyle.dark,
+      ),
       backgroundColor: const Color(0xFFE6F4EA),
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -26,30 +32,56 @@ class EmployeeLoginScreen extends StatelessWidget {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () async {
-                final user = await AuthService().login(
-                  email.text,
-                  password.text,
+                // Show loading indicator
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (context) =>
+                      const Center(child: CircularProgressIndicator()),
                 );
 
-                if (user != null && context.mounted) {
-                  if (email.text.trim() == "admin@gmail.com") {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => AdminPage()),
-                    );
-                  } else if (email.text.trim() == "receptionist@gmail.com") {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ReceptionistPage(),
-                      ),
-                    );
+                try {
+                  final user = await auth.login(
+                    email.text.trim(),
+                    password.text.trim(),
+                  );
+
+                  // Close loading dialog
+                  if (context.mounted) Navigator.pop(context);
+
+                  if (user != null) {
+                    String uid = user.uid;
+                    print("✅ Login successful! UID: $uid"); // Debug print
+
+                    if (context.mounted) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EmployeeMain(uid: uid),
+                        ),
+                      );
+                    }
                   } else {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => EmployeePage()),
-                    );
+                    // Show error message
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Login failed. Check your credentials.',
+                          ),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
                   }
+                } catch (e) {
+                  if (context.mounted) Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Error: $e'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
                 }
               },
               child: const Text("Sign In"),

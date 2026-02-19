@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import '../models/booking_data.dart';
 import '../services/hotel_service.dart';
