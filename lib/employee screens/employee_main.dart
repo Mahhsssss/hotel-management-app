@@ -3,9 +3,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hotel_de_luna/database.dart';
-import 'package:hotel_de_luna/employee%20screens/employee/employee_tasks.dart';
-import 'package:hotel_de_luna/employee%20screens/employee/manage_employees.dart';
+import 'package:hotel_de_luna/auth%20screens/employee_login.dart';
+import 'package:hotel_de_luna/services/database.dart';
+import 'package:hotel_de_luna/employee%20screens/employee_tasks.dart';
+import 'package:hotel_de_luna/employee%20screens/manage_employees.dart';
 import 'package:hotel_de_luna/services/header.dart';
 
 // ignore_for_file: avoid_print
@@ -78,12 +79,6 @@ class EmployeeMain extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 ProfileMenu(
-                  text: "My Account",
-                  icon: Icons.person,
-                  press: () => {},
-                ),
-
-                ProfileMenu(
                   text: "Tasks",
                   icon: Icons.task,
                   press: () {
@@ -95,12 +90,6 @@ class EmployeeMain extends StatelessWidget {
                       ),
                     );
                   },
-                ),
-
-                ProfileMenu(
-                  text: "Schedule",
-                  icon: Icons.calendar_month,
-                  press: () {},
                 ),
 
                 if (currentUser.Permissions != "none")
@@ -123,7 +112,15 @@ class EmployeeMain extends StatelessWidget {
                   press: () async {
                     await FirebaseAuth.instance.signOut();
                     if (context.mounted) {
-                      Navigator.pushReplacementNamed(context, '/login');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Signed out')),
+                      );
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EmployeeLoginScreen(),
+                        ),
+                      );
                     }
                   },
                 ),

@@ -2,12 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hotel_de_luna/database.dart';
+import 'package:hotel_de_luna/services/database.dart';
 import 'package:hotel_de_luna/services/header.dart';
 
 class EmployeeTasks extends StatefulWidget {
   final String uid;
   final String name;
+
   const EmployeeTasks({super.key, required this.uid, required this.name});
 
   @override
@@ -26,8 +27,8 @@ class _EmployeeTasksState extends State<EmployeeTasks> {
         context: context,
         colors: Colors.black,
         overlayStyle: SystemUiOverlayStyle.dark,
+        title: "Employee Tasks",
       ),
-      endDrawer: const AppDrawer(),
       body: StreamBuilder<List<Tasks>>(
         stream: _db.tasks,
         builder: (context, taskSnapshot) {
@@ -40,10 +41,23 @@ class _EmployeeTasksState extends State<EmployeeTasks> {
           }
 
           final myTasks =
-              (taskSnapshot.data as List?)?.where((task) {
+              taskSnapshot.data?.where((task) {
                 return task.Uid == widget.uid;
               }).toList() ??
               [];
+
+          List<Tasks> uncompleted_tasks = [];
+          List<Tasks> completed_tasks = [];
+
+          for (var task in myTasks) {
+            if (task.completed) {
+              completed_tasks.add(task);
+            } else {
+              uncompleted_tasks.add(task);
+            }
+          }
+
+          final sortedTasks = [...uncompleted_tasks, ...completed_tasks];
 
           print("Tasks found for this employee: ${myTasks.length}");
 
@@ -55,40 +69,49 @@ class _EmployeeTasksState extends State<EmployeeTasks> {
             children: [
               const SizedBox(height: 120),
 
+              // Display employee name
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  'Employee: ${widget.name}',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              // Progress indicator
               Container(
                 padding: const EdgeInsets.all(20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Column(
                   children: [
                     CircularProgressIndicator(
                       value: progressValue,
-                      constraints: BoxConstraints(),
                       strokeWidth: 8,
                       backgroundColor: Colors.grey.shade300,
                       color: Colors.black,
                     ),
-                    const SizedBox(width: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${(progressValue * 100).toInt()}% Completed",
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          "$completed of $total tasks completed",
-                          style: const TextStyle(fontSize: 14),
-                        ),
-                      ],
+                    const SizedBox(height: 10),
+                    Text(
+                      "${(progressValue * 100).toInt()}% Completed",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      "$completed of $total tasks completed",
+                      style: const TextStyle(fontSize: 14),
                     ),
                   ],
                 ),
               ),
 
+              // Task list
               Expanded(
                 child: myTasks.isEmpty
                     ? const Center(
@@ -100,7 +123,7 @@ class _EmployeeTasksState extends State<EmployeeTasks> {
                     : ListView.builder(
                         itemCount: myTasks.length,
                         itemBuilder: (context, index) {
-                          final task = myTasks[index];
+                          final task = sortedTasks[index];
 
                           return Card(
                             margin: const EdgeInsets.symmetric(
@@ -120,7 +143,40 @@ class _EmployeeTasksState extends State<EmployeeTasks> {
                                       : null,
                                 ),
                               ),
-                              subtitle: Text(task.description),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(task.description),
+                                  const SizedBox(height: 4),
+                                  // Display who assigned the task using FutureBuilder
+                                  FutureBuilder<String>(
+                                    future: _db.getEmployeeNameFromRef(
+                                      task.employee,
+                                    ),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Text(
+                                          'Assigned by: Loading...',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey[600],
+                                            fontStyle: FontStyle.italic,
+                                          ),
+                                        );
+                                      }
+                                      return Text(
+                                        'Assigned by: ${snapshot.data ?? 'Unknown'}',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey[600],
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
                               trailing: Checkbox(
                                 value: task.completed,
                                 onChanged: (value) async {
@@ -129,7 +185,8 @@ class _EmployeeTasksState extends State<EmployeeTasks> {
                                     id: task.id,
                                     taskName: task.taskName,
                                     description: task.description,
-                                    employee: task.employee,
+                                    employee:
+                                        task.employee, // Keep the reference
                                     completed: value ?? false,
                                   );
 

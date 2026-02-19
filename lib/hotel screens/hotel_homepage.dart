@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:getwidget/getwidget.dart';
+import 'package:getwidget/components/card/gf_card.dart';
+import 'package:getwidget/components/carousel/gf_carousel.dart';
+import 'package:getwidget/components/list_tile/gf_list_tile.dart';
 import 'package:hotel_de_luna/hotel%20screens/recommended_hotels.dart';
+import 'package:hotel_de_luna/models/hotel_model.dart';
 import 'package:hotel_de_luna/screens/explore_page.dart';
 import 'package:hotel_de_luna/screens/filtering_screen.dart';
 import 'package:hotel_de_luna/services/header.dart';
+import 'package:hotel_de_luna/services/hotel_service.dart';
 import 'package:hotel_de_luna/services/widget_support.dart';
 
 class HotelHomepage extends StatefulWidget {
-  const HotelHomepage({super.key});
+  HotelHomepage({super.key});
+  final _hotelService = HotelService();
+
+  final List<Hotel> _hotels = [];
+  final bool _isLoading = true;
+  String? _errorMessage;
 
   @override
   State<HotelHomepage> createState() => _HotelHomepageState();

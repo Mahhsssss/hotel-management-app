@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+// import 'package:qr_flutter/qr_flutter.dart';
 import '../models/hotel_model.dart';
 import '../models/booking_data.dart';
 import 'payment_success_page.dart';
@@ -483,22 +483,22 @@ class _PaymentPageState extends State<PaymentPage> {
                 ),
               ],
             ),
-            child: QrImageView(
-              data: upiUrl,
-              version: QrVersions.auto,
-              size: 200,
-              backgroundColor: Colors.white,
-              eyeStyle: const QrEyeStyle(
-                eyeShape: QrEyeShape.square,
-                color: Color(0xFF1B5E20),
-              ),
-              dataModuleStyle: const QrDataModuleStyle(
-                dataModuleShape: QrDataModuleShape.square,
-                color: Color(0xFF1B5E20),
-              ),
-            ),
+            // child: QrImageView(
+            //   data: upiUrl,
+            //   version: QrVersions.auto,
+            //   size: 200,
+            //   backgroundColor: Colors.white,
+            //   eyeStyle: const QrEyeStyle(
+            //     eyeShape: QrEyeShape.square,
+            //     color: Color(0xFF1B5E20),
+            //   ),
+            //   dataModuleStyle: const QrDataModuleStyle(
+            //     dataModuleShape: QrDataModuleShape.square,
+            //     color: Color(0xFF1B5E20),
+            //   ),
           ),
 
+          // ),
           const SizedBox(height: 16),
 
           // ── UPI ID below QR with copy button ─────────────────
