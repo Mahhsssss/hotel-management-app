@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hotel_de_luna/employee%20screens/employee/employee_main.dart';
 import 'package:hotel_de_luna/services/header.dart';
 import '../services/auth_service.dart';
 
@@ -54,12 +53,12 @@ class EmployeeLoginScreen extends StatelessWidget {
                     print("✅ Login successful! UID: $uid"); // Debug print
 
                     if (context.mounted) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EmployeeMain(uid: uid),
-                        ),
-                      );
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => EmployeeMain(uid: uid),
+                      //   ),
+                      // );
                     }
                   } else {
                     // Show error message
