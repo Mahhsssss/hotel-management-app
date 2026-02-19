@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:hotel_de_luna/drawer%20nav%20screens/terms_cnd_page.dart';
 import 'package:hotel_de_luna/hotel%20screens/hotel_homepage.dart';
 import 'package:hotel_de_luna/services/widget_support.dart';
 
@@ -16,7 +17,9 @@ class AppDrawer extends StatelessWidget {
     SystemUiOverlayStyle overlayStyle = SystemUiOverlayStyle.dark,
   }) {
     return AppBar(
-      backgroundColor: Colors.transparent,
+      backgroundColor: const Color.fromARGB(0, 255, 255, 255),
+      scrolledUnderElevation: 0, 
+      surfaceTintColor: Colors.transparent,
       title: title != null
           ? Text(title, style: AppWidget.headingtext(colors, 20))
           : null,
@@ -31,7 +34,7 @@ class AppDrawer extends StatelessWidget {
         ),
       ],
       systemOverlayStyle: overlayStyle.copyWith(
-        statusBarColor: Colors.transparent,
+        statusBarColor: const Color.fromARGB(0, 0, 0, 0),
       ),
     );
   }
@@ -97,7 +100,7 @@ class AppDrawer extends StatelessWidget {
               ),
 
               ListTile(
-                onTap: () => Navigator.push(
+                onTap: () => Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => HotelHomepage()),
                 ),
@@ -114,7 +117,7 @@ class AppDrawer extends StatelessWidget {
               ),
 
               ListTile(
-                onTap: () => Navigator.push(
+                onTap: () => Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => HotelHomepage()),
                 ),
@@ -164,7 +167,7 @@ class AppDrawer extends StatelessWidget {
               ),
 
               GFButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> TermsConditionsPage())),
                 text: "Terms and conditions",
                 textStyle: TextStyle(
                   decoration: TextDecoration.underline,

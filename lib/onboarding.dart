@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hotel_de_luna/Navigate_temp.dart';
 import 'package:hotel_de_luna/auth%20screens/guest_login.dart';
+<<<<<<< HEAD
 // import 'package:hotel_de_luna/services/header.dart';
 // import 'package:hotel_de_luna/services/widget_support.dart';
+=======
+>>>>>>> main
 
 class OnboardingContents {
   final String title;

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:hotel_de_luna/hotel%20screens/featured_retreats.dart';
-import 'package:hotel_de_luna/hotel%20screens/hotel_info_screens/hotel_info1.dart';
 import 'package:hotel_de_luna/hotel%20screens/recommended_hotels.dart';
+import 'package:hotel_de_luna/screens/explore_page.dart';
+import 'package:hotel_de_luna/screens/filtering_screen.dart';
 import 'package:hotel_de_luna/services/header.dart';
 import 'package:hotel_de_luna/services/widget_support.dart';
 
@@ -20,19 +20,27 @@ class _HotelHomepageState extends State<HotelHomepage> {
   // ignore: unused_field
   int _currentCardIndex = 0;
 
-  static Widget _buildCard(String title, String sub, String image) {
-    return GFCard(
-      margin: EdgeInsets.all(8),
-      padding: EdgeInsets.all(0),
-      showOverlayImage: true,
-      imageOverlay: AssetImage(image),
-      boxFit: BoxFit.cover,
-      title: GFListTile(
-        title: Text(
-          title,
-          style: AppWidget.headingcustomtext(Colors.white, 15),
+  static Widget _buildCard(
+    String title,
+    String sub,
+    String image,
+    VoidCallback onTapEvent,
+  ) {
+    return GestureDetector(
+      onTap: onTapEvent,
+      child: GFCard(
+        margin: EdgeInsets.all(8),
+        padding: EdgeInsets.all(0),
+        showOverlayImage: true,
+        imageOverlay: AssetImage(image),
+        boxFit: BoxFit.cover,
+        title: GFListTile(
+          title: Text(
+            title,
+            style: AppWidget.headingcustomtext(Colors.white, 15),
+          ),
+          subTitle: Text(sub, style: AppWidget.smalltext(Colors.white, 12)),
         ),
-        subTitle: Text(sub, style: AppWidget.smalltext(Colors.white, 12)),
       ),
     );
   }
@@ -169,7 +177,7 @@ class _HotelHomepageState extends State<HotelHomepage> {
                   left: 20,
                   right: 20,
                 ),
-                height: 400,
+                height: 300,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -203,24 +211,12 @@ class _HotelHomepageState extends State<HotelHomepage> {
                         color: const Color.fromARGB(130, 255, 255, 255),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: TextField(
-                        textAlignVertical: TextAlignVertical.center,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          isDense: true,
-                          prefixIcon: Icon(
-                            Icons.search_rounded,
-                            color: const Color.fromARGB(255, 0, 0, 0),
-                          ),
-                          hintText: "Search a location",
-                          hintStyle: AppWidget.smalltext(Colors.black, 16),
-                        ),
-                      ),
                     ),
                   ],
                 ),
               ),
             ),
+            SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Row(
@@ -229,19 +225,6 @@ class _HotelHomepageState extends State<HotelHomepage> {
                   Text(
                     "Featured Retreats ",
                     style: AppWidget.headingcustomtext(Colors.black, 20),
-                  ),
-                  GFButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => FeaturedRetreats(),
-                        ),
-                      );
-                    },
-                    text: "See all",
-                    color: const Color.fromARGB(255, 50, 109, 48),
-                    type: GFButtonType.transparent,
                   ),
                 ],
               ),
@@ -254,19 +237,40 @@ class _HotelHomepageState extends State<HotelHomepage> {
                 height: 220,
                 items: [
                   _buildCard(
-                    "Hotel name",
-                    "description",
+                    "ANDHERI",
+                    "Andheri Location",
                     "assets/images/onboarding/placeholder.webp",
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            HotelFilterScreen(selectedLocation: 'ANDHERI'),
+                      ),
+                    ),
                   ),
                   _buildCard(
-                    "Hotel name",
-                    "description",
+                    "BANDRA",
+                    "Bandra Location",
                     "assets/images/onboarding/placeholder.webp",
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            HotelFilterScreen(selectedLocation: 'BANDRA'),
+                      ),
+                    ),
                   ),
                   _buildCard(
-                    "Hotel name",
-                    "description",
+                    "BORIVALI",
+                    "Borivali Location",
                     "assets/images/onboarding/placeholder.webp",
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            HotelFilterScreen(selectedLocation: 'BORIVALI'),
+                      ),
+                    ),
                   ),
                 ],
                 viewportFraction: 0.8,
@@ -292,18 +296,17 @@ class _HotelHomepageState extends State<HotelHomepage> {
                     "Recommended",
                     style: AppWidget.headingcustomtext(Colors.black, 20),
                   ),
-                  GFButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RecommendedHotels(),
-                        ),
-                      );
-                    },
-                    text: "See all",
-                    color: const Color.fromARGB(255, 50, 109, 48),
-                    type: GFButtonType.transparent,
+                  TextButton(
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RecommendedHotels(),
+                      ),
+                    ),
+                    child: Text(
+                      "See all",
+                      style: TextStyle(color: Colors.green),
+                    ),
                   ),
                 ],
               ),
@@ -350,9 +353,7 @@ class _HotelHomepageState extends State<HotelHomepage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => HotelDetailsPage(),
-                      ),
+                      MaterialPageRoute(builder: (context) => ExplorePage()),
                     );
                     /* Will navigate to booking screen/ filtering screen*/
                   },

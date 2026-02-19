@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // ignore_for_file: avoid_print
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,12 +11,23 @@ import 'package:hotel_de_luna/services/header.dart';
 
 // ignore_for_file: avoid_print
 
+=======
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:hotel_de_luna/services/database.dart';
+import 'package:hotel_de_luna/employee%20screens/employee/employee_tasks.dart';
+import 'package:hotel_de_luna/services/header.dart';
+
+>>>>>>> main
 class EmployeeMain extends StatelessWidget {
   final String uid;
   final DatabaseService _db = DatabaseService();
 
   EmployeeMain({super.key, required this.uid});
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +37,7 @@ class EmployeeMain extends StatelessWidget {
         colors: Colors.black,
         overlayStyle: SystemUiOverlayStyle.dark,
       ),
+<<<<<<< HEAD
       body: StreamBuilder<List<Employee>>(
         stream: _db.Employees,
         builder: (context, empSnapshot) {
@@ -61,6 +74,17 @@ class EmployeeMain extends StatelessWidget {
             ),
           );
           print("Current user name: ${currentUser.Name}");
+=======
+      endDrawer: const AppDrawer(),
+      body: StreamBuilder<List<Employee>>(
+        stream: _db.employees,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final currentUser = snapshot.data!.firstWhere((e) => e.uid == uid);
+>>>>>>> main
 
           return SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: 20),
@@ -69,6 +93,7 @@ class EmployeeMain extends StatelessWidget {
                 const ProfilePic(),
                 const SizedBox(height: 40),
 
+<<<<<<< HEAD
                 Text(
                   "Welcome, ${currentUser.Name != 'Unknown' ? currentUser.Name : 'Employee'}",
                   style: const TextStyle(
@@ -84,6 +109,8 @@ class EmployeeMain extends StatelessWidget {
                   press: () => {},
                 ),
 
+=======
+>>>>>>> main
                 ProfileMenu(
                   text: "Tasks",
                   icon: Icons.task,
@@ -91,12 +118,17 @@ class EmployeeMain extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
+<<<<<<< HEAD
                         builder: (context) =>
                             EmployeeTasks(uid: uid, name: currentUser.Name),
+=======
+                        builder: (context) => EmployeeTasks(uid: uid),
+>>>>>>> main
                       ),
                     );
                   },
                 ),
+<<<<<<< HEAD
 
                 ProfileMenu(
                   text: "Schedule",
@@ -128,6 +160,16 @@ class EmployeeMain extends StatelessWidget {
                     }
                   },
                 ),
+=======
+                if (currentUser.permissions != "none")
+                  ProfileMenu(
+                    text: "Manage Employees",
+                    icon: Icons.calendar_month,
+                    press: () {},
+                  ),
+
+                ProfileMenu(text: "Log Out", icon: Icons.login, press: () {}),
+>>>>>>> main
               ],
             ),
           );
@@ -150,7 +192,13 @@ class ProfilePic extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           const CircleAvatar(
+<<<<<<< HEAD
             backgroundImage: AssetImage("assets/images/no_profile.webp"),
+=======
+            backgroundImage: AssetImage(
+              "assets/images/onboarding/placeholder.webp",
+            ),
+>>>>>>> main
           ),
         ],
       ),

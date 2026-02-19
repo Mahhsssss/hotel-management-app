@@ -26,6 +26,25 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:172313738627:android:a1f42662bdf4104e788ab6",
+        "android_client_info": {
+          "package_name": "com.example.registrationform_mediaquery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQNYBfRRJn1wLzvzI5-bH5EFGWlq_8eSs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:172313738627:android:35305399f0e309b2788ab6",
         "android_client_info": {
           "package_name": "material.dart"
