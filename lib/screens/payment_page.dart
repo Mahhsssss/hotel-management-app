@@ -1,30 +1,32 @@
-// FILE LOCATION: lib/screens/payment_page.dart
-// PASTE THIS — replaces your current file completely
-// NO qr_flutter needed. NO withOpacity. Loading is an overlay not full screen.
+// lib/screens/payment_page.dart
+//
+// LOGIC CHANGES ONLY — UI IS IDENTICAL TO ORIGINAL:
+// 1. Now receives `bookingData` + `totalAmount` instead of
+//    individual params (hotel, checkIn, checkOut, adults, children, totalPrice).
+// 2. Firestore save now matches BOOKINGS schema from the database screenshots:
+//    CustomerID, HotelID, RoomID + full booking details.
+// 3. Booking is saved ONLY after user confirms payment.
+// 4. Passes bookingData to PaymentSuccessPage.
+// Every widget, animation, colour, tab style is unchanged.
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/hotel_model.dart';
+import '../models/booking_data.dart';
 import 'payment_success_page.dart';
 
 class PaymentPage extends StatefulWidget {
   final Hotel hotel;
-  final DateTime checkIn;
-  final DateTime checkOut;
-  final int adults;
-  final int children;
-  final int totalPrice;
+  final BookingData bookingData; // ← replaces checkIn/checkOut/adults/children
+  final int totalAmount; // ← replaces totalPrice
 
   const PaymentPage({
     super.key,
     required this.hotel,
-    required this.checkIn,
-    required this.checkOut,
-    required this.adults,
-    required this.children,
-    required this.totalPrice,
+    required this.bookingData,
+    required this.totalAmount,
   });
 
   @override
@@ -34,11 +36,13 @@ class PaymentPage extends StatefulWidget {
 class _PaymentPageState extends State<PaymentPage> {
   int selectedTab = 0;
   bool isLoading = false;
-  String errorMessage = ''; // shown on screen if something fails
+  String errorMessage = '';
 
-  String _fmt(DateTime d) => '${d.day}/${d.month}/${d.year}';
   static const String upiId = 'hoteldeLuna@upi';
 
+  String _fmt(DateTime d) => '${d.day}/${d.month}/${d.year}';
+
+  // ── Save to Firestore matching BOOKINGS schema, then navigate ─
   Future<void> _saveBookingAndNavigate(String paymentMethod) async {
     setState(() {
       isLoading = true;
@@ -47,29 +51,39 @@ class _PaymentPageState extends State<PaymentPage> {
 
     try {
       final user = FirebaseAuth.instance.currentUser;
+      final data = widget.bookingData;
+      final hotel = widget.hotel;
 
-      // Print to terminal so you can see what's happening
-      debugPrint('▶ Trying to save booking...');
-      debugPrint(
-        '▶ Logged in user: ${user?.uid ?? "NOT LOGGED IN — saving as guest"}',
-      );
-      debugPrint('▶ Hotel: ${widget.hotel.name}');
-      debugPrint('▶ Price: ${widget.totalPrice}');
+      debugPrint('▶ Saving booking...');
 
-      final docRef = FirebaseFirestore.instance.collection('bookings').doc();
+      final docRef = FirebaseFirestore.instance.collection('BOOKINGS').doc();
 
+      // Fields match your BOOKINGS database schema exactly:
+      // CustomerID, HotelID, RoomID (from screenshots)
+      // + extra fields for a complete booking record
       await docRef.set({
-        'hotelName': widget.hotel.name,
-        'hotelId': widget.hotel.id,
-        'userId': user?.uid ?? 'guest',
-        'price': widget.totalPrice,
-        'guests': {'adults': widget.adults, 'children': widget.children},
-        'dates': {
-          'checkIn': _fmt(widget.checkIn),
-          'checkOut': _fmt(widget.checkOut),
+        // Core schema fields from DB screenshots
+        'CustomerID': user?.uid ?? 'guest',
+        'HotelID': hotel.id,
+        'RoomID': hotel.roomType,
+
+        // Full booking details
+        'hotelName': hotel.name,
+        'location': hotel.location,
+        'checkIn': _fmt(data.checkIn),
+        'checkOut': _fmt(data.checkOut),
+        'numberOfNights': data.numberOfNights,
+        'guests': {
+          'adults': data.adults,
+          'children': data.children,
+          'total': data.totalGuests,
         },
+        'selectedAmenities': data.selectedAmenities,
+        'pricePerNight': hotel.price,
+        'totalAmount': widget.totalAmount,
         'paymentMethod': paymentMethod,
-        'paymentStatus': 'paid',
+        'paymentStatus': 'success',
+        'bookingStatus': 'confirmed',
         'createdAt': Timestamp.now(),
       });
 
@@ -78,25 +92,23 @@ class _PaymentPageState extends State<PaymentPage> {
       if (!mounted) return;
       setState(() => isLoading = false);
 
+      // Navigate to success — only after successful Firestore write
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (_) => PaymentSuccessPage(
             bookingId: docRef.id,
-            hotelName: widget.hotel.name,
-            checkIn: widget.checkIn,
-            checkOut: widget.checkOut,
-            totalPrice: widget.totalPrice,
+            hotelName: hotel.name,
+            bookingData: widget.bookingData,
+            totalAmount: widget.totalAmount,
           ),
         ),
       );
     } catch (e) {
-      debugPrint('❌ ERROR saving booking: $e');
-
+      debugPrint('❌ Error: $e');
       if (!mounted) return;
       setState(() {
         isLoading = false;
-        // Show error directly on screen — never gets hidden
         errorMessage = e.toString();
       });
     }
@@ -124,7 +136,6 @@ class _PaymentPageState extends State<PaymentPage> {
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
       ),
-      // Stack lets loading overlay sit ON TOP — not replace the whole screen
       body: Stack(
         children: [
           // ── Main scrollable content ──────────────────────────
@@ -136,7 +147,6 @@ class _PaymentPageState extends State<PaymentPage> {
                 _orderSummaryCard(),
                 const SizedBox(height: 24),
 
-                // ── Error box — visible on screen if write fails ─
                 if (errorMessage.isNotEmpty) _errorBox(),
 
                 const Text(
@@ -153,7 +163,7 @@ class _PaymentPageState extends State<PaymentPage> {
             ),
           ),
 
-          // ── Loading overlay — appears on top when saving ─────
+          // ── Loading overlay ───────────────────────────────────
           if (isLoading)
             Container(
               color: Colors.black.withValues(alpha: 0.55),
@@ -185,7 +195,7 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-  // ── Error box shown directly on screen ─────────────────────
+  // ── Error box — unchanged ────────────────────────────────────
   Widget _errorBox() {
     return Container(
       width: double.infinity,
@@ -229,8 +239,9 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-  // ── Order Summary Card ─────────────────────────────────────
+  // ── Order Summary Card — same layout, updated to use bookingData ─
   Widget _orderSummaryCard() {
+    final data = widget.bookingData;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(18),
@@ -267,7 +278,7 @@ class _PaymentPageState extends State<PaymentPage> {
               const Icon(Icons.calendar_today, size: 14, color: Colors.grey),
               const SizedBox(width: 6),
               Text(
-                '${_fmt(widget.checkIn)}  →  ${_fmt(widget.checkOut)}',
+                '${data.checkInDisplay}  →  ${data.checkOutDisplay}',
                 style: const TextStyle(color: Colors.grey, fontSize: 14),
               ),
             ],
@@ -278,8 +289,8 @@ class _PaymentPageState extends State<PaymentPage> {
               const Icon(Icons.people, size: 14, color: Colors.grey),
               const SizedBox(width: 6),
               Text(
-                '${widget.adults} Adult${widget.adults > 1 ? 's' : ''}'
-                '${widget.children > 0 ? ', ${widget.children} Child${widget.children > 1 ? 'ren' : ''}' : ''}',
+                '${data.adults} Adult${data.adults > 1 ? 's' : ''}'
+                '${data.children > 0 ? ', ${data.children} Child${data.children > 1 ? 'ren' : ''}' : ''}',
                 style: const TextStyle(color: Colors.grey, fontSize: 14),
               ),
             ],
@@ -293,7 +304,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Text(
-                '₹ ${widget.totalPrice}',
+                '₹ ${widget.totalAmount}',
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -307,7 +318,7 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-  // ── Tab Row ────────────────────────────────────────────────
+  // ── Tab Row — exact original with AnimatedContainer + icon ───
   Widget _tabRow() {
     return Row(
       children: [
@@ -359,7 +370,7 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-  // ── Google Pay Section ─────────────────────────────────────
+  // ── Google Pay Section — unchanged ───────────────────────────
   Widget _googlePaySection() {
     return Container(
       width: double.infinity,
@@ -422,7 +433,7 @@ class _PaymentPageState extends State<PaymentPage> {
               ),
               onPressed: isLoading ? null : _handleGooglePay,
               child: Text(
-                'Pay  ₹${widget.totalPrice}  via Google Pay',
+                'Pay  ₹${widget.totalAmount}  via Google Pay',
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.white,
@@ -436,7 +447,7 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-  // ── UPI Section ────────────────────────────────────────────
+  // ── UPI Section — unchanged ──────────────────────────────────
   Widget _upiSection() {
     return Container(
       width: double.infinity,
@@ -467,7 +478,7 @@ class _PaymentPageState extends State<PaymentPage> {
           ),
           const SizedBox(height: 6),
           Text(
-            'Amount: ₹${widget.totalPrice}',
+            'Amount: ₹${widget.totalAmount}',
             style: const TextStyle(
               fontSize: 17,
               color: Color(0xFF388E3C),
