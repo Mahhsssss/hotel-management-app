@@ -323,7 +323,7 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
     ValueChanged<String?> onChanged,
   ) {
     return DropdownButtonFormField<String>(
-      value: current,
+      initialValue: current,
       decoration: InputDecoration(
         labelText: label,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),

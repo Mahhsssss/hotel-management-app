@@ -1,18 +1,8 @@
-// lib/screens/payment_page.dart
-//
-// LOGIC CHANGES ONLY — UI IS IDENTICAL TO ORIGINAL:
-// 1. Now receives `bookingData` + `totalAmount` instead of
-//    individual params (hotel, checkIn, checkOut, adults, children, totalPrice).
-// 2. Firestore save now matches BOOKINGS schema from the database screenshots:
-//    CustomerID, HotelID, RoomID + full booking details.
-// 3. Booking is saved ONLY after user confirms payment.
-// 4. Passes bookingData to PaymentSuccessPage.
-// Every widget, animation, colour, tab style is unchanged.
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import '../models/hotel_model.dart';
 import '../models/booking_data.dart';
 import 'payment_success_page.dart';
@@ -447,8 +437,13 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-  // ── UPI Section — unchanged ──────────────────────────────────
+  // ── UPI Section — QR Code version ───────────────────────────
   Widget _upiSection() {
+    // Standard UPI deep-link format — works with GPay, PhonePe, Paytm, etc.
+    // Format: upi://pay?pa=UPI_ID&pn=NAME&am=AMOUNT&cu=INR&tn=NOTE
+    final String upiUrl =
+        'upi://pay?pa=$upiId&pn=Hotel%20De%20Luna&am=${widget.totalAmount}&cu=INR&tn=Hotel%20Booking';
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
@@ -458,22 +453,8 @@ class _PaymentPageState extends State<PaymentPage> {
       ),
       child: Column(
         children: [
-          Container(
-            width: 70,
-            height: 70,
-            decoration: const BoxDecoration(
-              color: Color(0xFFE8F5E9),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.account_balance,
-              color: Color(0xFF388E3C),
-              size: 36,
-            ),
-          ),
-          const SizedBox(height: 16),
           const Text(
-            'Pay via UPI / Bank Transfer',
+            'Scan & Pay via UPI',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 6),
@@ -485,62 +466,98 @@ class _PaymentPageState extends State<PaymentPage> {
               fontWeight: FontWeight.w700,
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 20),
+
+          // ── QR Code ───────────────────────────────────────────
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: const Color(0xFF388E3C), width: 2),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.07),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: QrImageView(
+              data: upiUrl,
+              version: QrVersions.auto,
+              size: 200,
+              backgroundColor: Colors.white,
+              eyeStyle: const QrEyeStyle(
+                eyeShape: QrEyeShape.square,
+                color: Color(0xFF1B5E20),
+              ),
+              dataModuleStyle: const QrDataModuleStyle(
+                dataModuleShape: QrDataModuleShape.square,
+                color: Color(0xFF1B5E20),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 16),
+
+          // ── UPI ID below QR with copy button ─────────────────
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             decoration: BoxDecoration(
               color: const Color(0xFFE8F5E9),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: const Color(0xFF388E3C), width: 1.5),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: const Color(0xFF388E3C), width: 1.2),
             ),
-            child: Column(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  'UPI ID',
-                  style: TextStyle(fontSize: 13, color: Colors.grey),
+                const Icon(
+                  Icons.account_balance_wallet,
+                  color: Color(0xFF388E3C),
+                  size: 18,
                 ),
-                const SizedBox(height: 6),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      upiId,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF1B5E20),
-                        letterSpacing: 1,
+                const SizedBox(width: 8),
+                const Text(
+                  upiId,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1B5E20),
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                InkWell(
+                  onTap: () {
+                    Clipboard.setData(const ClipboardData(text: upiId));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('UPI ID copied!'),
+                        duration: Duration(seconds: 2),
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                    InkWell(
-                      onTap: () {
-                        Clipboard.setData(const ClipboardData(text: upiId));
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('UPI ID copied!'),
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
-                      },
-                      child: const Icon(
-                        Icons.copy_rounded,
-                        size: 20,
-                        color: Color(0xFF388E3C),
-                      ),
-                    ),
-                  ],
+                    );
+                  },
+                  child: const Icon(
+                    Icons.copy_rounded,
+                    size: 18,
+                    color: Color(0xFF388E3C),
+                  ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 16),
-          _stepTile('1', 'Open PhonePe, Paytm, GPay, or any UPI app'),
-          _stepTile('2', 'Enter UPI ID above and the amount'),
-          _stepTile('3', 'Complete the payment in your UPI app'),
-          _stepTile('4', 'Come back here and tap the button below'),
+
+          const SizedBox(height: 20),
+
+          _stepTile('1', 'Open GPay, PhonePe, Paytm or any UPI app'),
+          _stepTile('2', 'Tap "Scan QR" and scan the code above'),
+          _stepTile('3', 'Confirm the amount and complete payment'),
+          _stepTile('4', 'Come back and tap the button below'),
+
           const SizedBox(height: 24),
+
           SizedBox(
             width: double.infinity,
             height: 56,
