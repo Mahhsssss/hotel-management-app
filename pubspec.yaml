@@ -46,6 +46,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/onboarding/
     - assets/andheri_img/
     - assets/bandra_img/
     - assets/borivali_img/

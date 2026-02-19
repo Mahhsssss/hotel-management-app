@@ -28,11 +28,9 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
   List<String> selectedAmenities = [];
 
   final List<String> amenitiesList = [
-    "WiFi",
-    "Swimming Pool",
-
-    "Parking",
-    "Gym",
+    "Wifi",
+    "Pool",
+    "Parking area",
     "Restaurant",
     "Spa",
   ];
