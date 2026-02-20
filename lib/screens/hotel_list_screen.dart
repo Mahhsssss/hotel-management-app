@@ -12,7 +12,7 @@ import 'hotel_details_page.dart';
 
 class HotelListScreen extends StatelessWidget {
   final List<Hotel> hotels;
-  final BookingData bookingData; // ← NEW: receives trip data
+  final BookingData bookingData; //receives trip data
 
   const HotelListScreen({
     super.key,
@@ -64,8 +64,9 @@ class HotelListScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (_) => HotelDetailsPage(
-                        hotels: hotel, // ← HotelDetailsPage names it 'hotels'
-                        bookingData: bookingData,
+                        hotels: hotel,
+                        bookingData:
+                            bookingData, // ← HotelDetailsPage names it 'hotels'
                       ),
                     ),
                   ),

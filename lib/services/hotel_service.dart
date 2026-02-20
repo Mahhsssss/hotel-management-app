@@ -16,31 +16,20 @@ class HotelService {
     // 1. Start with the collection reference
     Query<Map<String, dynamic>> query = _db.collection('hotels');
 
-    // 2. Apply Location Filter
+    // 2. Apply Location Filter (equality only)
     if (location.isNotEmpty) {
       query = query.where('location', isEqualTo: location.toUpperCase());
     }
 
-    // 3. Room Type Filter - ONLY APPLY IF NOT EMPTY
-    if (roomType.isNotEmpty) {
+    // 3. Room Type Filter (equality only - skip if "All Rooms")
+    if (roomType.isNotEmpty && roomType != "All Rooms") {
       query = query.where('roomType', isEqualTo: roomType);
     }
 
-    // 4. Star Rating
-    query = query.where('starRating', isGreaterThanOrEqualTo: starRating);
+    // ⚠️ NO RANGE FILTERS IN FIRESTORE!
+    // We'll handle starRating and price in Dart after fetching
 
-    // 5. Price Range
-    if (priceCategory == "Low") {
-      query = query.where('price', isLessThanOrEqualTo: 5000);
-    } else if (priceCategory == "Medium") {
-      query = query
-          .where('price', isLessThanOrEqualTo: 15000)
-          .where('price', isGreaterThan: 5000);
-    } else if (priceCategory == "High") {
-      query = query.where('price', isGreaterThan: 15000);
-    }
-
-    // 6. Amenities Filter
+    // 4. Amenities Filter (arrayContainsAny is fine - it's not a range)
     if (selectedAmenities.isNotEmpty) {
       query = query.where('amenities', arrayContainsAny: selectedAmenities);
     }
@@ -49,21 +38,44 @@ class HotelService {
       print("=== FILTER CRITERIA ===");
       print("Location: $location");
       print("Room Type: ${roomType.isEmpty ? 'ALL ROOMS' : roomType}");
-      print("Star Rating: $starRating");
+      print("Star Rating (min): $starRating");
       print("Price Category: $priceCategory");
       print("Amenities selected: $selectedAmenities");
 
+      // Get ALL hotels that match the equality filters
       final snapshot = await query.get();
 
-      print("=== RESULTS ===");
-      print("Number of hotels found: ${snapshot.docs.length}");
+      print("=== HOTELS BEFORE CLIENT FILTERING ===");
+      print("Raw results: ${snapshot.docs.length}");
 
-      return snapshot.docs.map((doc) {
+      // Convert to Hotel objects
+      List<Hotel> allHotels = snapshot.docs.map((doc) {
         return Hotel.fromFirestore(doc.data(), doc.id);
       }).toList();
+
+      // Apply ALL range filters in Dart
+      List<Hotel> filteredHotels = allHotels.where((hotel) {
+        // Filter by star rating (>=)
+        if (hotel.starRating < starRating) return false;
+
+        // Filter by price category
+        if (priceCategory == "Low" && hotel.price > 5000) return false;
+        if (priceCategory == "Medium" &&
+            (hotel.price <= 5000 || hotel.price > 15000))
+          return false;
+        if (priceCategory == "High" && hotel.price <= 15000) return false;
+
+        // All filters passed
+        return true;
+      }).toList();
+
+      print("=== FINAL RESULTS ===");
+      print("Hotels after client filtering: ${filteredHotels.length}");
+
+      return filteredHotels;
     } catch (e) {
       print("❌ Error fetching filtered hotels: $e");
-      rethrow;
+      return []; // Return empty list instead of crashing
     }
   }
 

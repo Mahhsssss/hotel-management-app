@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:hotel_de_luna/services/header.dart';
 import 'filtering_screen.dart';
 
 class ExplorePage extends StatefulWidget {
@@ -42,6 +44,13 @@ class _ExplorePageState extends State<ExplorePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppDrawer.customAppBar(
+        context: context,
+        colors: Colors.black,
+        title: "Explore",
+        overlayStyle: SystemUiOverlayStyle.dark,
+      ),
+      endDrawer: AppDrawer(),
       backgroundColor: const Color(0xFFEAF6EE),
       body: SafeArea(
         child: Padding(
@@ -49,11 +58,6 @@ class _ExplorePageState extends State<ExplorePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Explore",
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-              ),
-
               const SizedBox(height: 16),
 
               // 🔍 SEARCH BAR
