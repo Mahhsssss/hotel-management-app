@@ -5,12 +5,12 @@ import 'payment_page.dart';
 
 class FinalBookingDetailsPage extends StatefulWidget {
   final Hotel hotel;
-  final BookingData bookingData; // ← NEW
+  final BookingData bookingData;
 
   const FinalBookingDetailsPage({
     super.key,
     required this.hotel,
-    required this.bookingData, // ← NEW
+    required this.bookingData,
   });
 
   @override
