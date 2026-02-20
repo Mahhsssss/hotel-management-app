@@ -224,33 +224,56 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
 
                     const SizedBox(height: 15),
 
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: hotel.amenities.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 12,
+                    // Bulleted list of amenities
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 4,
+                            offset: const Offset(0, 4),
                           ),
-                      itemBuilder: (ctx, i) => Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              hotel.amenities[i],
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                              ),
+                        ],
+                      ),
+                      child: Column(
+                        children: List.generate(hotel.amenities.length, (
+                          index,
+                        ) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Bullet point
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                    top: 4,
+                                    right: 12,
+                                  ),
+                                  child: const Icon(
+                                    Icons.circle,
+                                    size: 8,
+                                    color: Color(0xFF3F5F45),
+                                  ),
+                                ),
+                                // Amenity text
+                                Expanded(
+                                  child: Text(
+                                    hotel.amenities[index],
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                      height: 1.4,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ),
+                          );
+                        }),
                       ),
                     ),
 
@@ -364,7 +387,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFA2C841),
+                      backgroundColor: const Color(0xFF3F5F45),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 35,
                         vertical: 15,
@@ -376,7 +399,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                     child: const Text(
                       "BOOK NOW",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Color.fromARGB(255, 255, 255, 255),
                         fontWeight: FontWeight.bold,
                       ),
                     ),

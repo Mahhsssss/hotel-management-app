@@ -6,6 +6,7 @@ import 'package:getwidget/getwidget.dart';
 import 'package:hotel_de_luna/auth%20screens/guest_login.dart';
 import 'package:hotel_de_luna/drawer%20nav%20screens/terms_cnd_page.dart';
 import 'package:hotel_de_luna/hotel%20screens/hotel_homepage.dart';
+import 'package:hotel_de_luna/screens/explore_page.dart';
 import 'package:hotel_de_luna/services/widget_support.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -64,6 +65,7 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: const Color(0xFFE8F4EA),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -105,7 +107,7 @@ class AppDrawer extends StatelessWidget {
               ListTile(
                 onTap: () => Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => HotelHomepage()),
+                  MaterialPageRoute(builder: (context) => ExplorePage()),
                 ),
                 contentPadding: EdgeInsets.zero,
                 trailing: const Icon(

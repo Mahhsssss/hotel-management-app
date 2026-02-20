@@ -125,7 +125,11 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
               groupValue: selectedPriceCategory,
               onChanged: (v) => setState(() => selectedPriceCategory = v!),
               values: const ["Low", "Medium", "High"],
-              labels: const ["Low", "Medium", "High"],
+              labels: const [
+                "Low (<= 5000)",
+                "Medium (5000 <= 15000)",
+                "High (> 15000)",
+              ],
               activeColor: primaryGreen,
             ),
             const SizedBox(height: 25),
@@ -185,7 +189,7 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
             ),
           ),
           child: const Text(
-            "Show Hotels 🌿",
+            "Show Hotels",
             style: TextStyle(
               fontSize: 18,
               color: Colors.white,
