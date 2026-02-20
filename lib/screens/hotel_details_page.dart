@@ -181,7 +181,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                       height: 55,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF388E3C),
+                          backgroundColor: const Color(0xFF3F5F45),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),

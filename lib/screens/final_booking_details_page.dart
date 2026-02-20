@@ -1,14 +1,3 @@
-// lib/screens/final_booking_details_page.dart
-//
-// LOGIC CHANGES ONLY — UI IS IDENTICAL TO ORIGINAL:
-// 1. Added `bookingData` constructor parameter.
-// 2. initState pre-fills checkIn/checkOut/adults/children from bookingData
-//    so dates from filter screen are already selected (user can still change).
-// 3. Price calc now includes extra guest charge (guests > 2 → ₹500/extra/night).
-// 4. Price summary card shows the breakdown.
-// 5. Passes bookingData to PaymentPage.
-// Every widget, colour, padding, and style is unchanged.
-
 import 'package:flutter/material.dart';
 import '../models/hotel_model.dart';
 import '../models/booking_data.dart';
@@ -82,7 +71,7 @@ class _FinalBookingDetailsPageState extends State<FinalBookingDetailsPage> {
       builder: (context, child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            colorScheme: const ColorScheme.light(primary: Color(0xFF388E3C)),
+            colorScheme: const ColorScheme.light(primary: Color(0xFF3F5F45)),
           ),
           child: child!,
         );
@@ -109,7 +98,7 @@ class _FinalBookingDetailsPageState extends State<FinalBookingDetailsPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFE8F5E9),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF388E3C),
+        backgroundColor: const Color(0xFF3F5F45),
         title: const Text(
           'Booking Details',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -218,7 +207,7 @@ class _FinalBookingDetailsPageState extends State<FinalBookingDetailsPage> {
               widget.hotel.roomType,
               style: const TextStyle(
                 fontSize: 13,
-                color: Color(0xFF388E3C),
+                color: Color(0xFF3F5F45),
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -228,7 +217,7 @@ class _FinalBookingDetailsPageState extends State<FinalBookingDetailsPage> {
             '₹ ${widget.hotel.price} per night',
             style: const TextStyle(
               fontSize: 18,
-              color: Color(0xFF388E3C),
+              color: Color(0xFF3F5F45),
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -260,7 +249,7 @@ class _FinalBookingDetailsPageState extends State<FinalBookingDetailsPage> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: const Color(0xFF388E3C), width: 1.5),
+          border: Border.all(color: const Color(0xFF3F5F45), width: 1.5),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -339,7 +328,7 @@ class _FinalBookingDetailsPageState extends State<FinalBookingDetailsPage> {
             children: [
               IconButton(
                 icon: const Icon(Icons.remove_circle_outline),
-                color: const Color(0xFF388E3C),
+                color: const Color(0xFF3F5F45),
                 onPressed: onDecrement,
               ),
               SizedBox(
@@ -355,7 +344,7 @@ class _FinalBookingDetailsPageState extends State<FinalBookingDetailsPage> {
               ),
               IconButton(
                 icon: const Icon(Icons.add_circle_outline),
-                color: const Color(0xFF388E3C),
+                color: const Color(0xFF3F5F45),
                 onPressed: onIncrement,
               ),
             ],
@@ -407,7 +396,7 @@ class _FinalBookingDetailsPageState extends State<FinalBookingDetailsPage> {
         Text(
           value,
           style: style.copyWith(
-            color: bold ? const Color(0xFF388E3C) : Colors.black,
+            color: bold ? const Color(0xFF3F5F45) : Colors.black,
           ),
         ),
       ],
@@ -420,7 +409,7 @@ class _FinalBookingDetailsPageState extends State<FinalBookingDetailsPage> {
       height: 56,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF388E3C),
+          backgroundColor: const Color(0xFF3F5F45),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),

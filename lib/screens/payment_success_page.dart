@@ -45,7 +45,7 @@ class PaymentSuccessPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF1B5E20),
+                  color: Color(0xFF3F5F45),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -79,11 +79,11 @@ class PaymentSuccessPage extends StatelessWidget {
         width: 130,
         height: 130,
         decoration: BoxDecoration(
-          color: const Color(0xFF388E3C),
+          color: const Color(0xFF3F5F45),
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF388E3C).withValues(alpha: 0.35),
+              color: const Color(0xFF3F5F45).withValues(alpha: 0.35),
               blurRadius: 24,
               spreadRadius: 4,
               offset: const Offset(0, 8),
@@ -117,7 +117,7 @@ class PaymentSuccessPage extends StatelessWidget {
             icon: Icons.confirmation_number_outlined,
             label: 'Booking ID',
             value: shortId,
-            valueColor: const Color(0xFF388E3C),
+            valueColor: const Color(0xFF3F5F45),
           ),
           _divider(),
           _detailRow(
@@ -158,7 +158,7 @@ class PaymentSuccessPage extends StatelessWidget {
             icon: Icons.currency_rupee,
             label: 'Amount Paid',
             value: '₹ $totalAmount',
-            valueColor: const Color(0xFF388E3C),
+            valueColor: const Color(0xFF3F5F45),
           ),
         ],
       ),
@@ -183,7 +183,7 @@ class PaymentSuccessPage extends StatelessWidget {
               color: const Color(0xFFE8F5E9),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, color: const Color(0xFF388E3C), size: 20),
+            child: Icon(icon, color: const Color(0xFF3F5F45), size: 20),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -222,7 +222,7 @@ class PaymentSuccessPage extends StatelessWidget {
       height: 56,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF388E3C),
+          backgroundColor: const Color(0xFF3F5F45),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),

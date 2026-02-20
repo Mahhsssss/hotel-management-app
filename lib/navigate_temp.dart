@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_de_luna/employee%20screens/employee_main.dart';
 import 'package:hotel_de_luna/hotel%20screens/hotel_homepage.dart';
-import 'package:hotel_de_luna/auth screens/guest_login.dart';
 import 'package:hotel_de_luna/models/booking_data.dart';
 import 'package:hotel_de_luna/models/hotel_model.dart';
 import 'package:hotel_de_luna/screens/explore_page.dart';
-import 'package:hotel_de_luna/screens/final_booking_details_page.dart';
 
 class NavigateTemp extends StatelessWidget {
   const NavigateTemp({super.key});
@@ -82,14 +80,14 @@ class NavigateTemp extends StatelessWidget {
             ElevatedButton(
               onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ExplorePage()),
+                MaterialPageRoute(builder: (context) => ExplorePage()),
               ),
               child: Text("Go to explore page"),
             ),
             ElevatedButton(
               onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ExplorePage()),
+                MaterialPageRoute(builder: (context) => ExplorePage()),
               ),
               child: Text("Go to explore page"),
             ),

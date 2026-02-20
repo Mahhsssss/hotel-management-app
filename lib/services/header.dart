@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:hotel_de_luna/auth%20screens/guest_login.dart';
 import 'package:hotel_de_luna/drawer%20nav%20screens/terms_cnd_page.dart';
 import 'package:hotel_de_luna/hotel%20screens/hotel_homepage.dart';
 import 'package:hotel_de_luna/services/widget_support.dart';
@@ -18,7 +20,7 @@ class AppDrawer extends StatelessWidget {
   }) {
     return AppBar(
       backgroundColor: const Color.fromARGB(0, 255, 255, 255),
-      scrolledUnderElevation: 0, 
+      scrolledUnderElevation: 0,
       surfaceTintColor: Colors.transparent,
       title: title != null
           ? Text(title, style: AppWidget.headingtext(colors, 20))
@@ -84,22 +86,6 @@ class AppDrawer extends StatelessWidget {
               const SizedBox(height: 30),
 
               ListTile(
-                onTap: () {
-                  /* Navigate */
-                },
-                contentPadding: EdgeInsets.zero,
-                trailing: const Icon(
-                  Icons.person,
-                  color: Color.fromARGB(255, 15, 56, 16),
-                ),
-                title: Text(
-                  "Profile",
-                  style: AppWidget.bodytext(Colors.black, 17),
-                  textAlign: TextAlign.end,
-                ),
-              ),
-
-              ListTile(
                 onTap: () => Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => HotelHomepage()),
@@ -148,14 +134,26 @@ class AppDrawer extends StatelessWidget {
               //     style: AppWidget.bodytext(Colors.black, 17),
               //     textAlign: TextAlign.end,
               //   ),
-
               // ),
 
               //add more drawer items here
               const Spacer(),
 
               GFButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut();
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(const SnackBar(content: Text('Signed out')));
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GuestLoginScreen(),
+                      ),
+                    );
+                  }
+                },
                 text: "Sign out",
                 textStyle: TextStyle(
                   decoration: TextDecoration.underline,
@@ -167,7 +165,12 @@ class AppDrawer extends StatelessWidget {
               ),
 
               GFButton(
-                onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> TermsConditionsPage())),
+                onPressed: () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TermsConditionsPage(),
+                  ),
+                ),
                 text: "Terms and conditions",
                 textStyle: TextStyle(
                   decoration: TextDecoration.underline,

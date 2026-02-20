@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:hotel_de_luna/screens/hotel_list_screen.dart';
 import '../models/booking_data.dart';
 import '../services/hotel_service.dart';
 
@@ -31,7 +32,7 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
     "Spa",
   ];
 
-  final Color primaryGreen = const Color(0xFF388E3C);
+  final Color primaryGreen = const Color(0xFF3F5F45);
   final Color lightGreenBg = const Color(0xFFE8F5E9);
 
   @override
@@ -92,34 +93,127 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
             ),
             const SizedBox(height: 25),
 
+            // ===== ROOM TYPES SECTION WITH SHOW ALL OPTION =====
             _buildSectionTitle("Room Types"),
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children:
-                  [
-                        "Deluxe Room",
-                        "One Bedroom Suite",
-                        "Junior Suite",
-                        "Executive Suite",
-                        "Presidential Suite",
-                        "Single Room",
-                        "Double / Queen",
-                        "Twin Room",
-                      ]
-                      .map(
-                        (type) => _buildSelectionChip(
-                          type,
-                          selectedRoomType == type,
-                          () => setState(() => selectedRoomType = type),
-                        ),
-                      )
-                      .toList(),
+            const SizedBox(height: 8),
+
+            // "Show All Rooms" button
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedRoomType = "All Rooms";
+                });
+              },
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+                decoration: BoxDecoration(
+                  color: selectedRoomType == "All Rooms"
+                      ? lightGreenBg
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: selectedRoomType == "All Rooms"
+                        ? primaryGreen
+                        : Colors.grey.shade300,
+                    width: selectedRoomType == "All Rooms" ? 2 : 1,
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.hotel_class,
+                      size: 20,
+                      color: selectedRoomType == "All Rooms"
+                          ? primaryGreen
+                          : Colors.grey.shade600,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      "Show All Rooms",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: selectedRoomType == "All Rooms"
+                            ? primaryGreen
+                            : Colors.grey.shade700,
+                      ),
+                    ),
+                    if (selectedRoomType == "All Rooms") ...[
+                      const SizedBox(width: 8),
+                      const Icon(
+                        Icons.check_circle,
+                        color: Color(0xFF3F5F45),
+                        size: 18,
+                      ),
+                    ],
+                  ],
+                ),
+              ),
             ),
+
+            // Room type chips - only show if "All Rooms" is NOT selected
+            if (selectedRoomType != "All Rooms") ...[
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children:
+                    [
+                          "Deluxe Room",
+                          "One Bedroom Suite",
+                          "Junior Suite",
+                          "Executive Suite",
+                          "Presidential Suite",
+                          "Single Room",
+                          "Double / Queen",
+                          "Twin Room",
+                        ]
+                        .map(
+                          (type) => _buildSelectionChip(
+                            type,
+                            selectedRoomType == type,
+                            () => setState(() => selectedRoomType = type),
+                          ),
+                        )
+                        .toList(),
+              ),
+            ] else ...[
+              // Optional info message when "All Rooms" is selected
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: lightGreenBg.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      color: Color(0xFF3F5F45),
+                      size: 18,
+                    ),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        "Showing all available room types",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFF3F5F45),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+
             const SizedBox(height: 25),
 
             _buildSectionTitle("Price Range"),
-            // Fixed: use RadioGroup instead of deprecated RadioListTile params
             RadioGroup<String>(
               groupValue: selectedPriceCategory,
               onChanged: (v) => setState(() => selectedPriceCategory = v!),
@@ -196,7 +290,7 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
     );
   }
 
-  // ── THE KEY FIX: build BookingData and pass it to next screen ─
+  // ── Search function with "All Rooms" handling ─
   void _search() async {
     if (startDate == null || endDate == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -218,9 +312,14 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
     );
 
     try {
+      // Handle "All Rooms" - pass empty string to skip room type filter
+      String roomTypeToSend = selectedRoomType == "All Rooms"
+          ? ""
+          : selectedRoomType;
+
       final hotels = await HotelService().getFilteredHotels(
         location: widget.selectedLocation,
-        roomType: selectedRoomType,
+        roomType: roomTypeToSend,
         starRating: selectedRating,
         priceCategory: selectedPriceCategory,
         selectedAmenities: selectedAmenities,
@@ -238,13 +337,13 @@ class _HotelFilterScreenState extends State<HotelFilterScreen> {
         selectedAmenities: List.from(selectedAmenities),
       );
 
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (_) =>
-      //         HotelListScreen(hotels: hotels, bookingData: bookingData),
-      //   ),
-      // );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) =>
+              HotelListScreen(hotels: hotels, bookingData: bookingData),
+        ),
+      );
     } catch (e) {
       if (!mounted) return;
       Navigator.pop(context);

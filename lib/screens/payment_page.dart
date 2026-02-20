@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:qr_flutter/qr_flutter.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import '../models/hotel_model.dart';
 import '../models/booking_data.dart';
 import 'payment_success_page.dart';
 
 class PaymentPage extends StatefulWidget {
   final Hotel hotel;
-  final BookingData bookingData; // ← replaces checkIn/checkOut/adults/children
-  final int totalAmount; // ← replaces totalPrice
+  final BookingData bookingData;
+  final int totalAmount;
 
   const PaymentPage({
     super.key,
@@ -44,7 +44,7 @@ class _PaymentPageState extends State<PaymentPage> {
       final data = widget.bookingData;
       final hotel = widget.hotel;
 
-      debugPrint('Saving booking...');
+      debugPrint('▶ Saving booking...');
 
       final docRef = FirebaseFirestore.instance.collection('BOOKINGS').doc();
 
@@ -118,7 +118,7 @@ class _PaymentPageState extends State<PaymentPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFE8F5E9),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF388E3C),
+        backgroundColor: const Color(0xFF3F5F45),
         title: const Text(
           'Payment',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -298,7 +298,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF388E3C),
+                  color: Color(0xFF3F5F45),
                 ),
               ),
             ],
@@ -332,23 +332,23 @@ class _PaymentPageState extends State<PaymentPage> {
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(vertical: 14),
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFF388E3C) : Colors.white,
+            color: isSelected ? const Color(0xFF3F5F45) : Colors.white,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: const Color(0xFF388E3C), width: 1.5),
+            border: Border.all(color: const Color(0xFF3F5F45), width: 1.5),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
                 icon,
-                color: isSelected ? Colors.white : const Color(0xFF388E3C),
+                color: isSelected ? Colors.white : const Color(0xFF3F5F45),
                 size: 20,
               ),
               const SizedBox(width: 8),
               Text(
                 label,
                 style: TextStyle(
-                  color: isSelected ? Colors.white : const Color(0xFF388E3C),
+                  color: isSelected ? Colors.white : const Color(0xFF3F5F45),
                   fontWeight: FontWeight.w600,
                   fontSize: 15,
                 ),
@@ -462,7 +462,7 @@ class _PaymentPageState extends State<PaymentPage> {
             'Amount: ₹${widget.totalAmount}',
             style: const TextStyle(
               fontSize: 17,
-              color: Color(0xFF388E3C),
+              color: Color(0xFF3F5F45),
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -483,22 +483,22 @@ class _PaymentPageState extends State<PaymentPage> {
                 ),
               ],
             ),
-            // child: QrImageView(
-            //   data: upiUrl,
-            //   version: QrVersions.auto,
-            //   size: 200,
-            //   backgroundColor: Colors.white,
-            //   eyeStyle: const QrEyeStyle(
-            //     eyeShape: QrEyeShape.square,
-            //     color: Color(0xFF1B5E20),
-            //   ),
-            //   dataModuleStyle: const QrDataModuleStyle(
-            //     dataModuleShape: QrDataModuleShape.square,
-            //     color: Color(0xFF1B5E20),
-            //   ),
+            child: QrImageView(
+              data: upiUrl,
+              version: QrVersions.auto,
+              size: 200,
+              backgroundColor: Colors.white,
+              eyeStyle: const QrEyeStyle(
+                eyeShape: QrEyeShape.square,
+                color: Color(0xFF3F5F45),
+              ),
+              dataModuleStyle: const QrDataModuleStyle(
+                dataModuleShape: QrDataModuleShape.square,
+                color: Color(0xFF3F5F45),
+              ),
+            ),
           ),
 
-          // ),
           const SizedBox(height: 16),
 
           // ── UPI ID below QR with copy button ─────────────────
@@ -508,14 +508,14 @@ class _PaymentPageState extends State<PaymentPage> {
             decoration: BoxDecoration(
               color: const Color(0xFFE8F5E9),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: const Color(0xFF388E3C), width: 1.2),
+              border: Border.all(color: const Color(0xFF3F5F45), width: 1.2),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(
                   Icons.account_balance_wallet,
-                  color: Color(0xFF388E3C),
+                  color: Color(0xFF3F5F45),
                   size: 18,
                 ),
                 const SizedBox(width: 8),
@@ -524,7 +524,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF1B5E20),
+                    color: Color(0xFF3F5F45),
                     letterSpacing: 0.5,
                   ),
                 ),
@@ -542,7 +542,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   child: const Icon(
                     Icons.copy_rounded,
                     size: 18,
-                    color: Color(0xFF388E3C),
+                    color: Color(0xFF3F5F45),
                   ),
                 ),
               ],
@@ -563,7 +563,7 @@ class _PaymentPageState extends State<PaymentPage> {
             height: 56,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF388E3C),
+                backgroundColor: const Color(0xFF3F5F45),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
                 ),
@@ -597,7 +597,7 @@ class _PaymentPageState extends State<PaymentPage> {
             width: 26,
             height: 26,
             decoration: const BoxDecoration(
-              color: Color(0xFF388E3C),
+              color: Color(0xFF3F5F45),
               shape: BoxShape.circle,
             ),
             child: Center(

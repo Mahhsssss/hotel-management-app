@@ -7,7 +7,7 @@ class TermsConditionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold( 
+    return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppDrawer.customAppBar(
         context: context,
@@ -21,14 +21,13 @@ class TermsConditionsPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-
               const SizedBox(height: 10),
 
               // Green Icon
               Icon(
                 Icons.verified_rounded,
                 size: 80,
-                color: Colors.green.shade700,
+                color: const Color.fromARGB(255, 51, 111, 54),
               ),
 
               const SizedBox(height: 20),
@@ -40,7 +39,7 @@ class TermsConditionsPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
-                  color: Colors.green.shade900,
+                  color: Color(0xFF3F5F45),
                 ),
               ),
 
@@ -81,7 +80,7 @@ By continuing to use this app, you acknowledge that you have read and agreed to 
                     style: TextStyle(
                       fontSize: 15,
                       height: 1.6,
-                      color: Colors.green.shade800,
+                      color: Color(0xFF3F5F45),
                     ),
                   ),
                 ),

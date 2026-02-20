@@ -22,7 +22,7 @@ class HotelListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryGreen = Color(0xFF388E3C);
+    const Color primaryGreen = Color(0xFF3F5F45);
     const Color lightGreenBg = Color(0xFFE8F5E9);
 
     return Scaffold(
