@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hotel_de_luna/auth%20screens/employee_login.dart';
+import 'package:hotel_de_luna/employee%20screens/analytics_dashboard.dart';
 import 'package:hotel_de_luna/services/employee_service.dart';
 import 'package:hotel_de_luna/employee%20screens/employee_tasks.dart';
 import 'package:hotel_de_luna/employee%20screens/manage_employees.dart';
@@ -133,7 +134,7 @@ class EmployeeMain extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.15),
+                          color: Colors.black12,
                           blurRadius: 25,
                           offset: const Offset(0, 10),
                         ),
@@ -162,7 +163,7 @@ class EmployeeMain extends StatelessWidget {
                           "Welcome back,",
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.white.withOpacity(0.9),
+                            color: Colors.white70,
                             letterSpacing: 0.5,
                           ),
                         ),
@@ -277,6 +278,26 @@ class EmployeeMain extends StatelessWidget {
                       },
                     ),
 
+                  const SizedBox(height: 12),
+
+                  if (currentUser.Permissions != "none")
+                    _buildMenuCard(
+                      context,
+                      icon: Icons.people_alt,
+                      title: "View hotel Analytics",
+                      subtitle: "View all hotel analytics",
+                      color1: const Color.fromARGB(255, 100, 80, 60),
+                      color2: const Color.fromARGB(255, 120, 100, 80),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AnalyticsDashboard(),
+                          ),
+                        );
+                      },
+                    ),
+
                   const SizedBox(height: 30),
 
                   // Log Out Button (Styled differently)
@@ -315,7 +336,7 @@ class EmployeeMain extends StatelessWidget {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red.shade400,
+                        backgroundColor: const Color.fromARGB(255, 145, 66, 64),
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(

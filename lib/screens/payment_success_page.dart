@@ -33,11 +33,12 @@ class PaymentSuccessPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFE8F5E9),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Spacer(),
               _checkIcon(),
               const SizedBox(height: 24),
               const Text(
@@ -57,9 +58,8 @@ class PaymentSuccessPage extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               _bookingCard(),
-              const Spacer(),
+              const SizedBox(height: 32),
               _backToHomeButton(context),
-              const SizedBox(height: 16),
             ],
           ),
         ),

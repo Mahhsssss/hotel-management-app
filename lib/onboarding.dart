@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hotel_de_luna/Navigate_temp.dart';
 import 'package:hotel_de_luna/auth%20screens/guest_login.dart';
-import 'package:hotel_de_luna/auth%20screens/guest_signup.dart';
-// import 'package:hotel_de_luna/services/header.dart';
-// import 'package:hotel_de_luna/services/widget_support.dart';
 
 class OnboardingContents {
   final String title;

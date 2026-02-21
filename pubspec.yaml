@@ -40,7 +40,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: assets/images/logo.png
+  image_path: assets/images/logo3.png
   android_gravity: center
 
 flutter_native_splash:
@@ -49,6 +49,10 @@ flutter_native_splash:
   android: true
   ios: true
 
+android_12:
+  color: "#faf9f2"
+  image: assets/images/logo3.png
+  
 flutter:
   uses-material-design: true
 

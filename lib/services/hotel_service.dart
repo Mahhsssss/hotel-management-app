@@ -61,8 +61,9 @@ class HotelService {
         // Filter by price category
         if (priceCategory == "Low" && hotel.price > 5000) return false;
         if (priceCategory == "Medium" &&
-            (hotel.price <= 5000 || hotel.price > 15000))
+            (hotel.price <= 5000 || hotel.price > 15000)) {
           return false;
+        }
         if (priceCategory == "High" && hotel.price <= 15000) return false;
 
         // All filters passed
