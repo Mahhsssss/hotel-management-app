@@ -116,8 +116,7 @@ ratings, the check-in/check-out dates and desired amenities they want.
 
 ### Side navbar
 
-<img src="./assets/screenshots/sidebar.png" width="180" height="400">
-<img src="./assets/screenshots/terms.jpeg" width="180" height="400">
+<img src="./assets/screenshots/sidebar.png" width="180" height="400"> <img src="./assets/screenshots/terms.jpeg" width="180" height="400">
 
 <hr>
 
