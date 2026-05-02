@@ -17,6 +17,20 @@
 
 A dynamic hotel management application for a hotel group using flutter and firebase as a part of a college group project!
 
+
+## Table of Contents
+
+* [Description](#Description)
+* [Screens](#Screens)
+  * [Onboarding Screens](#onboarding-screens)
+  * [Hotel Booking Screens](#hotel-booking-screens)
+  * [Employee Screens](#employee-screens)
+  * [Side navbar](#side-navbar)
+  * [Analytics](#analytics)
+* [Database Schema](#database-schema)
+
+
+
 ## Description
 
 The Hotel Management Application is a mobile booking application that was created with the
@@ -48,17 +62,85 @@ ratings, the check-in/check-out dates and desired amenities they want.
 
 ### Onboarding Screens
 
+<div>
+<img src="./assets/screenshots/onboarding_1.png" width="180" height="400">
+<img src="./assets/screenshots/onboarding_2.png" width="180" height="400">
+<img src="./assets/screenshots/onboarding_3.png" width="180" height="400">
+</div>
+
+<hr>
+
+### Hotel Booking Screens
+
+<div>
+
+<h5>Homescreen</h5>
+<img src="./assets/screenshots/homescreen.png" width="180" height="400">
+
+<h5>Explore page</h5>
+<img src="./assets/screenshots/explore.png" width="180" height="400">
+
+<h5>Filtering pages</h5>
+<img src="./assets/screenshots/filter_1.png" width="180" height="400">
+<img src="./assets/screenshots/filter_2.png" width="180" height="400">
+
+<h5>Result page</h5>
+<img src="./assets/screenshots/available.png" width="180" height="400">
+
+<h5>Hotel Info Screen</h5>
+<img src="./assets/screenshots/hotel_info_1.png" width="180" height="400">
+<img src="./assets/screenshots/hotel_info_2.png" width="180" height="400">
+
+<h5>Payment Screens</h5>
+<img src="./assets/screenshots/payment_1.png" width="180" height="400">
+<img src="./assets/screenshots/payment_2.png" width="180" height="400">
+<img src="./assets/screenshots/payment_3.png" width="180" height="400">
+
+</div>
+
+<hr>
 
 
+### Employee Screens
+
+<div>
+<img src="./assets/screenshots/employee_login.png" width="180" height="400">
+<img src="./assets/screenshots/employee_dash.png" width="180" height="400">
+<img src="./assets/screenshots/employee_overview.png" width="180" height="400">         
+<img src="./assets/screenshots/employee_tasks.png" width="180" height="400">
+
+</div>
+
+<hr>
+
+
+### Side navbar
+
+<img src="./assets/screenshots/sidebar.png" width="180" height="400">
+<img src="./assets/screenshots/terms.jpeg" width="180" height="400">
+
+<hr>
+
+
+### Analytics
+
+<img src="./assets/screenshots/analytics_1.jpeg" width="180" height="400">
+<img src="./assets/screenshots/analytics_2.jpeg" width="180" height="400">
+<img src="./assets/screenshots/analytics_3.jpeg" width="180" height="400">
+
+
+<hr>
 
 ## Database Schema
 
-* Bookings- to store customer bookings [CustomerID, RoomID, HotelID, Booked by
+* **Bookings**- to store customer bookings [CustomerID, RoomID, HotelID, Booked by
 (EmployeeID)]
-* Customers- to store customer information [Name, Email, UserID]
-* Employees- to store employee records [Name, Permissions, Role, Salary, EmployeeID]
-* Hotels- storing hotel information [Name, Location, Ratings, Price, Amenities, RoomType,
+* **Customers**- to store customer information [Name, Email, UserID]
+* **Employees**- to store employee records [Name, Permissions, Role, Salary, EmployeeID]
+* **Hotels**- storing hotel information [Name, Location, Ratings, Price, Amenities, RoomType,
 Images, Description]
-* Payments- storing payment transactions [Amount, BookingID]
-* Tasks- storing employee tasks [Task name, EmployeeID, Completed, Description]
+* **Payments**- storing payment transactions [Amount, BookingID]
+* **Tasks**- storing employee tasks [Task name, EmployeeID, Completed, Description]
+
+<hr>
 
