@@ -1,4 +1,19 @@
-# Hotel De Luna
+ <div align="center">
+  <picture>
+    <source
+    srcset="./assets/images/logo3.png"
+    media="(prefers-color-scheme: dark)"
+    width="150" height="150"
+    />
+    <img
+    srcset="./assets/images/logo4.png"
+    alt="Hotel De Luna Logo"
+    width="150" height="150"
+    style = "border-radius: 20;"
+    />
+  </picture>
+  <h1 align="center">Hotel De Luna</h1>
+</div>
 
 A dynamic hotel management application for a hotel group using flutter and firebase as a part of a college group project!
 
@@ -14,30 +29,36 @@ two parts: **User login & Employee login**.
 
 The system allows an employee to:
 
-● Log in to their personal employee accounts.
-● View assigned tasks and track their progress.
-● The list view lets the employee verify the tasks they have completed.
-● Employees have different permissions:none,some,all
-● Employees that have all permissions can manage the other employees and view all their
+* Log in to their personal employee accounts.
+* View assigned tasks and track their progress.
+* The list view lets the employee verify the tasks they have completed.
+* Employees have different permissions:none,some,all
+* Employees that have all permissions can manage the other employees and view all their
 tasks.
 
 The system allows the customer to:
-● Sign up and create an account within the Hotel De Luna application.
-● Take a look at all the locations of hotels and select their preferred destination.
-● Use the filtering options that allows a user to find a hotel based on their price range,
+* Sign up and create an account within the Hotel De Luna application.
+* Take a look at all the locations of hotels and select their preferred destination.
+* Use the filtering options that allows a user to find a hotel based on their price range,
 ratings, the check-in/check-out dates and desired amenities they want.
-● Book a room.
-● Process payments and confirm the booking.
+* Book a room.
+* Process payments and confirm the booking.
+
+## Screens
+
+### Onboarding Screens
 
 
-## DATABASE SCHEMA (DATA DICTIONARY)
 
-Bookings- to store customer bookings [CustomerID, RoomID, HotelID, Booked by
+
+## Database Schema
+
+* Bookings- to store customer bookings [CustomerID, RoomID, HotelID, Booked by
 (EmployeeID)]
-Customers- to store customer information [Name, Email, UserID]
-Employees- to store employee records [Name, Permissions, Role, Salary, EmployeeID]
-Hotels- storing hotel information [Name, Location, Ratings, Price, Amenities, RoomType,
+* Customers- to store customer information [Name, Email, UserID]
+* Employees- to store employee records [Name, Permissions, Role, Salary, EmployeeID]
+* Hotels- storing hotel information [Name, Location, Ratings, Price, Amenities, RoomType,
 Images, Description]
-Payments- storing payment transactions [Amount, BookingID]
-Tasks- storing employee tasks [Task name, EmployeeID, Completed, Description]
+* Payments- storing payment transactions [Amount, BookingID]
+* Tasks- storing employee tasks [Task name, EmployeeID, Completed, Description]
 
