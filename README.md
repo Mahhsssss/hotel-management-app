@@ -1,8 +1,8 @@
-# hotel_de_luna
+# Hotel De Luna
 
 A dynamic hotel management application for a hotel group using flutter and firebase as a part of a college group project!
 
-## Introduction
+## Description
 
 The Hotel Management Application is a mobile booking application that was created with the
 use of Flutter. The application was created for a made-up chain of high-end resort hotels, Hotel De Luna.
@@ -10,9 +10,10 @@ The app was created with the primary objective of customers making sure they boo
 instead of confirming their bookings through third-party websites. By promoting direct bookings,
 the application helps the hotel offer better pricing, customer data and overall service quality.
 This also helps build customer loyalty and provides convenience for them. The application has
-two parts: User login as well as Employee login.
+two parts: **User login & Employee login**.
 
 The system allows an employee to:
+
 ● Log in to their personal employee accounts.
 ● View assigned tasks and track their progress.
 ● The list view lets the employee verify the tasks they have completed.
