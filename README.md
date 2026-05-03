@@ -123,8 +123,7 @@ ratings, the check-in/check-out dates and desired amenities they want.
 
 ### Analytics
 
-<img src="./assets/screenshots/analytics_1.jpeg" width="180" height="400">
-<img src="./assets/screenshots/analytics_2.jpeg" width="180" height="400">
+<img src="./assets/screenshots/analytics_1.jpeg" width="180" height="400">    <img src="./assets/screenshots/analytics_2.jpeg" width="180" height="400">
 <img src="./assets/screenshots/analytics_3.jpeg" width="180" height="400">
 
 
